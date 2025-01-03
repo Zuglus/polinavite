@@ -18,7 +18,7 @@ const ExperienceSection = () => {
 
                     <div>
                         <p className="mb-[0.1875rem] md:mb-[0.125rem] font-extralight font-onest text-[3.28125rem] md:text-[2.1875rem] leading-[1.33] tracking-[0.01em]">
-                            2023-по наст. время
+                            2023-2024
                         </p>
                         <h3 className="mb-[0.65625rem] md:mb-[0.4375rem] font-medium font-onest text-[3.28125rem] md:text-[2.1875rem] leading-[1.25] tracking-[0.01em]">
                             Центр Педагогического<br />Мастерства

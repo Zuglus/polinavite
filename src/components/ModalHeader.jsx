@@ -8,8 +8,8 @@ const ModalHeader = ({ title, description, audience }) => {
           <h4 className="mb-4 font-extralight text-[3.28125rem] md:text-[2.1875rem] text-white">
             {description}
           </h4>
-          <p className="font-onest text-[2.875rem] md:text-[1.25rem] text-white/80">
-            <span className="font-semibold text-white">Целевая аудитория:</span>{" "}
+          <p className="font-onest text-[3.28125rem] md:text-[1.25rem] text-white/80">
+            <span className="font-semibold text-white">Целевая аудитория: </span>
             {audience}
           </p>
         </div>

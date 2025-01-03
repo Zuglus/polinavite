@@ -20,7 +20,7 @@ function ModalSlider({ slides, currentIndex, onPrev, onNext }) {
               <img
                 src={currentSlide.image}
                 alt={`Slide ${currentIndex + 1}`}
-                className="w-full object-cover rounded-[1.25rem] min-h-[400px]"
+                className="w-full object-cover rounded-[1.25rem]"
               />
             </div>
 
@@ -41,7 +41,7 @@ function ModalSlider({ slides, currentIndex, onPrev, onNext }) {
             </div>
 
             {/* --- Текст «Задача»/«Решение» --- */}
-            <div className="font-onest text-[2.875rem] md:text-[1.25rem] text-white/80 space-y-4">
+            <div className="font-onest text-[3.28125rem] md:text-[1.25rem] text-white/80 space-y-4">
               <p>
                 <span className="font-semibold text-white">Задача:</span>{' '}
                 {currentSlide.task}
