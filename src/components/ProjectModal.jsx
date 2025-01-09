@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import ModalSlider from "./ModalSlider";
 import ModalHeader from "./ModalHeader";
 
 function ProjectModal({ project, onClose }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    // Фокус на модальное окно при открытии
+    if (modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, []);
 
   const handleClose = () => {
     onClose();
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + project.slides.length) % project.slides.length);
+    setCurrentIndex((prev) =>
+      prev - 1 >= 0 ? prev - 1 : project.slides.length - 1
+    );
   };
 
   const nextSlide = () => {
@@ -27,6 +37,8 @@ function ProjectModal({ project, onClose }) {
         bg-[#04061B]/90
       "
       onClick={handleClose}
+      aria-modal="true"
+      role="dialog"
     >
       <div
         className={`
@@ -37,6 +49,8 @@ function ProjectModal({ project, onClose }) {
           h-[90vh]
         `}
         onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
+        tabIndex={-1} // Добавляем tabIndex, чтобы модальное окно было фокусируемым
       >
         {/* Кнопка закрытия (островок) */}
         <div
@@ -50,6 +64,7 @@ function ProjectModal({ project, onClose }) {
             <button
               tabIndex={-1}
               onClick={handleClose}
+              aria-label="Закрыть"
               className="
                 flex justify-center items-center
                 border border-white/10 hover:border-white/20
@@ -85,16 +100,12 @@ function ProjectModal({ project, onClose }) {
           "
         >
           <ModalHeader
-            title={project.title}
-            description={project.description}
-            audience={project.audience}
+            project={project}
           />
 
           <ModalSlider
             slides={project.slides}
-            currentIndex={currentIndex}
-            onPrev={prevSlide}
-            onNext={nextSlide}
+            sliderControls={{currentIndex, onPrev: prevSlide, onNext: nextSlide}}
           />
         </div>
       </div>

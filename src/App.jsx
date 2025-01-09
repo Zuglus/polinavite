@@ -8,39 +8,66 @@ import ExperienceSection from './components/ExperienceSection';
 import Footer from './components/Footer';
 import ProjectModal from './components/ProjectModal';
 
+function useLockBodyScroll(isOpen) {
+  useEffect(() => {
+    if (isOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.overflowY = 'hidden';
+    } else {
+      const scrollY = parseInt(document.body.style.top || '0');
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, -scrollY);
+    }
+
+    return () => {
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.overflowY = '';
+    };
+  }, [isOpen]);
+}
+
 const App = () => {
   const [openModalId, setOpenModalId] = useState(null);
+  useLockBodyScroll(openModalId !== null);
 
   // Используем useEffect вместо useRef
   useEffect(() => {
-      const handleScrollLock = () => {
-        if (openModalId !== null) {
-          // Блокируем скролл
-          const scrollY = window.scrollY;
-          document.body.style.position = 'fixed';
-          document.body.style.width = '100%';
-          document.body.style.top = `-${scrollY}px`;
-          document.body.style.overflowY = 'hidden';
-        } else {
-          // Разблокируем скролл
-          const scrollY = parseInt(document.body.style.top || '0');
-          document.body.style.position = '';
-          document.body.style.width = '';
-          document.body.style.top = '';
-          document.body.style.overflowY = '';
-          window.scrollTo(0, -scrollY);
-        }
-      };
-
-      handleScrollLock();
-
-      return () => {
-        // Очистка при размонтировании компонента
+    const handleScrollLock = () => {
+      if (openModalId !== null) {
+        // Блокируем скролл
+        const scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.overflowY = 'hidden';
+      } else {
+        // Разблокируем скролл
+        const scrollY = parseInt(document.body.style.top || '0');
         document.body.style.position = '';
         document.body.style.width = '';
         document.body.style.top = '';
         document.body.style.overflowY = '';
+        window.scrollTo(0, -scrollY);
       }
+    };
+
+    handleScrollLock();
+
+    return () => {
+      // Очистка при размонтировании компонента
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      document.body.style.overflowY = '';
+    }
   }, [openModalId]); // Зависимость от openModalId
 
   return (
@@ -52,21 +79,19 @@ const App = () => {
       <Footer />
 
       <AnimatePresence>
-        {projects.map((proj) =>
-          openModalId === proj.id && (
-            <motion.div
-              key={proj.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ProjectModal
-                project={proj}
-                onClose={() => setOpenModalId(null)}
-              />
-            </motion.div>
-          )
+        {openModalId !== null && (
+          <motion.div
+            key={openModalId}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ProjectModal
+              project={projects.find((p) => p.id === openModalId)}
+              onClose={() => setOpenModalId(null)}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
