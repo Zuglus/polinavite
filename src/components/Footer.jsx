@@ -1,9 +1,15 @@
+import React from 'react';
+import buttonCircle from '../assets/images/koltsa_fon1.svg';
+
 const Footer = () => {
 
     const telegram = "https://t.me/Migranovap";
     return (
         <footer className="relative mt-[12.375rem] md:mt-[9.75rem] pb-[30.9375rem] md:pb-[20.625rem]">
-            <div className="mx-auto px-4 max-w-[75rem]">
+            <div className="absolute -top-96 left-1/2 w-[56rem] md:w-[40rem] -translate-x-[36rem] md:-translate-x-[24.5rem] -translate-y-[13rem] md:-translate-y-[3rem] overflow-hidden">
+                <img src={buttonCircle} alt="" className="w-full h-full object-contain" />
+            </div>
+            <div className="mx-auto px-4 max-w-[75rem] relative">
                 <a
                     href={telegram}
                     target="_blank"

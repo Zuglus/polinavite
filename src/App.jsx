@@ -75,7 +75,7 @@ const App = () => {
       <Header />
       <PortfolioSection onCardClick={(id) => setOpenModalId(id)} />
       {/* <ResumeSection /> */}
-      <ExperienceSection />
+      {/* <ExperienceSection /> */}
       <Footer />
 
       <AnimatePresence>
