@@ -22,8 +22,56 @@ function ModalSlider({ slides, sliderControls }) {
     checkIfTouchDevice();
   }, []);
 
+  const getOptimalDimensions = () => {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    
+    // Оставляем небольшие отступы от краев экрана
+    const availableWidth = screenWidth * 0.95;
+    const availableHeight = screenHeight * 0.95;
+    
+    if (!naturalDimensions.width || !naturalDimensions.height) {
+      return { maxWidth: '95vw', maxHeight: '95vh' };
+    }
+
+    const imageRatio = naturalDimensions.width / naturalDimensions.height;
+    const screenRatio = availableWidth / availableHeight;
+
+    let finalWidth, finalHeight;
+
+    if (imageRatio > screenRatio) {
+      // Изображение шире экрана относительно своей высоты
+      finalWidth = availableWidth;
+      finalHeight = availableWidth / imageRatio;
+    } else {
+      // Изображение выше экрана относительно своей ширины
+      finalHeight = availableHeight;
+      finalWidth = availableHeight * imageRatio;
+    }
+
+    return {
+      maxWidth: `${Math.min(finalWidth, naturalDimensions.width)}px`,
+      maxHeight: `${Math.min(finalHeight, naturalDimensions.height)}px`
+    };
+  };
+
+  const handleImageClick = async (e) => {
+    e.stopPropagation();
+    setIsFullscreen(true);
+      
+    // Получаем реальные размеры изображения
+    const img = new Image();
+    img.src = currentSlide.image;
+    img.onload = () => {
+      setNaturalDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      if (isTouchDevice) {
+        determineOptimalRotation(img.naturalWidth, img.naturalHeight);
+      }
+    };
+  };
+
   const determineOptimalRotation = (naturalWidth, naturalHeight) => {
-    if (!isTouchDevice) return; // Поворачиваем только на тачскринах
+    if (!isTouchDevice) return;
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
@@ -42,61 +90,10 @@ function ModalSlider({ slides, sliderControls }) {
     }
   };
 
-  const handleImageClick = async (e) => {
-    e.stopPropagation();
-    if (isTouchDevice) {
-      setIsFullscreen(true);
-      
-      const img = new Image();
-      img.src = currentSlide.image;
-      img.onload = () => {
-        setNaturalDimensions({ width: img.naturalWidth, height: img.naturalHeight });
-        determineOptimalRotation(img.naturalWidth, img.naturalHeight);
-      };
-    }
-  };
-
   const handleClose = () => {
     setIsFullscreen(false);
     setRotation(0);
-  };
-
-  const getOptimalDimensions = () => {
-    const bodyWidth = document.body.clientWidth;
-    const bodyHeight = document.body.clientHeight;
-    
-    // Учитываем небольшой отступ от краев
-    const availableWidth = bodyWidth - 40; // 20px с каждой стороны
-    const availableHeight = bodyHeight - 40;
-
-    let maxWidth, maxHeight;
-
-    if (rotation === 90) {
-      // При повороте меняем местами ширину и высоту
-      const effectiveNaturalWidth = naturalDimensions.height;
-      const effectiveNaturalHeight = naturalDimensions.width;
-
-      // Пробуем подогнать по ширине (которая при повороте стала высотой)
-      let scale = availableHeight / effectiveNaturalWidth;
-      maxWidth = `${Math.min(availableHeight, effectiveNaturalWidth)}px`;
-      maxHeight = `${Math.min(availableWidth, effectiveNaturalHeight)}px`;
-    } else {
-      // Пробуем подогнать по ширине
-      let scale = availableWidth / naturalDimensions.width;
-      maxWidth = `${availableWidth}px`;
-      let scaledHeight = naturalDimensions.height * scale;
-      
-      // Если высота после масштабирования больше доступной, подгоняем по высоте
-      if (scaledHeight > availableHeight) {
-        scale = availableHeight / naturalDimensions.height;
-        scaledHeight = availableHeight;
-        maxWidth = `${naturalDimensions.width * scale}px`;
-      }
-      
-      maxHeight = `${scaledHeight}px`;
-    }
-
-    return { maxWidth, maxHeight };
+    setNaturalDimensions({ width: 0, height: 0 });
   };
 
   const SliderImage = () => (
@@ -176,7 +173,7 @@ function ModalSlider({ slides, sliderControls }) {
             className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center"
             onClick={handleClose}
           >
-                          <motion.div
+            <motion.div
               className="relative flex items-center justify-center"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -189,7 +186,11 @@ function ModalSlider({ slides, sliderControls }) {
                   <img
                     src={currentSlide.image}
                     alt={`Slide ${currentIndex + 1}`}
-                    className="max-w-[90vw] max-h-[90vh] object-contain hover:scale-150 transition-transform duration-300"
+                    className="max-w-[95vw] max-h-[95vh] object-contain transition-all duration-300 ease-in-out cursor-zoom-out"
+                    style={{
+                      ...(getOptimalDimensions()),
+                      transition: 'max-width 0.3s ease-in-out, max-height 0.3s ease-in-out'
+                    }}
                   />
                   <button
                     onClick={handleClose}
@@ -215,6 +216,7 @@ function ModalSlider({ slides, sliderControls }) {
                       src={currentSlide.image}
                       alt={`Slide ${currentIndex + 1}`}
                       className="w-full h-full object-contain"
+                      style={getOptimalDimensions()}
                     />
                     <div
                       className="absolute w-full h-full"
