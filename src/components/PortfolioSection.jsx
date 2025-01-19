@@ -4,14 +4,14 @@ import rings from "./../assets/images/rings_with_circle.svg";
 // Импортируй изображения с помощью import
 import nitiImage from "./../assets/images/threads.png";
 import codeImage from "./../assets/images/code.png";
-import centerImage from "./../assets/images/center.png";
 import dayImage from "./../assets/images/day.png";
+import presentationImage from "./../assets/images/presentation.png";
 
 const projectsData = [
   { id: 'project1', image: nitiImage, alt: "НИТИ" },
   { id: 'project2', image: codeImage, alt: "КОДИИМ" },
-  { id: 'project3', image: centerImage, alt: "В центре науки" },
-  { id: 'project4', image: dayImage, alt: "День физики" },
+  { id: 'project3', image: dayImage, alt: "День физики" },
+  { id: 'project4', image: presentationImage, alt: "Дизайн презентаций" },
 ];
 
 const PortfolioSection = ({ onCardClick }) => {
