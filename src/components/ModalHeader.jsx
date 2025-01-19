@@ -5,7 +5,7 @@ const ModalHeader = ({ project }) => {
           <h3 className="font-mv-skifer text-[4.6875rem] md:text-[3.125rem]">
             {project.title}
           </h3>
-          <h4 className="mb-4 font-extralight text-[3.28125rem] md:text-[2.1875rem]">
+          <h4 className="mb-4 font-extralight text-[3.28125rem] md:text-[2.1875rem] leading-[1.1]">
             {project.description}
           </h4>
           <p className="font-onest text-[3.28125rem] md:text-[1.25rem]">
