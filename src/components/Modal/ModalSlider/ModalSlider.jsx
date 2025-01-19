@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useImageDimensions, useDeviceDetection, useImageRotation } from './ModalSlider/hooks';
-import { SliderImage, NavigationButtons, FullscreenImage } from './ModalSlider/components';
+import { useImageDimensions, useDeviceDetection, useImageRotation } from './hooks';
+import { SliderImage, NavigationButtons, FullscreenImage } from './components';
 
 function ModalSlider({ slides, sliderControls }) {
   const { currentIndex, onPrev, onNext } = sliderControls;

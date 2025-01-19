@@ -1,28 +1,26 @@
-import nitiSlide1 from "./../assets/images/niti/niti1.png";
-import nitiSlide2 from "./../assets/images/niti/niti2.png";
-import nitiSlide3 from "./../assets/images/niti/niti3.png";
-import nitiSlide4 from "./../assets/images/niti/niti4.png";
-import nitiSlide5 from "./../assets/images/niti/niti5.png";
-import codeEventDesign from "./../assets/images/code/code1.png";
-import codeBootcampMerch from "./../assets/images/code/code2.png";
-import codeSmmMaterials from "./../assets/images/code/code3.png";
-import codePlaceholder from "./../assets/images/code/code4.png";
-import fizicsPostcard from "./../assets/images/fizics/fizics1.png";
-import fizicsCards from "./../assets/images/fizics/fizics2.png";
-import fizicsPlaceholder from "./../assets/images/fizics/fizics3.png";
-import presentation11 from "./../assets/images/presentations/1-1.png";
-import presentation12 from "./../assets/images/presentations/1-2.png";
-import presentation13 from "./../assets/images/presentations/1-3.png";
-import presentation21 from "./../assets/images/presentations/2-1.png";
-import presentation22 from "./../assets/images/presentations/2-2.png";
-import presentation23 from "./../assets/images/presentations/2-3.png";
-import presentation24 from "./../assets/images/presentations/2-4.png";
-import presentation25 from "./../assets/images/presentations/2-5.png";
-import presentation31 from "./../assets/images/presentations/3-1.png";
-import presentation32 from "./../assets/images/presentations/3-2.png";
-import presentation33 from "./../assets/images/presentations/3-3.png";
-
-const PLACEHOLDER_TEXT = "Находится в разработке";
+import nitiSlide1 from "../../assets/images/niti/niti1.png";
+import nitiSlide2 from "../../assets/images/niti/niti2.png";
+import nitiSlide3 from "../../assets/images/niti/niti3.png";
+import nitiSlide4 from "../../assets/images/niti/niti4.png";
+import nitiSlide5 from "../../assets/images/niti/niti5.png";
+import codeEventDesign from "../../assets/images/code/code1.png";
+import codeBootcampMerch from "../../assets/images/code/code2.png";
+import codeSmmMaterials from "../../assets/images/code/code3.png";
+import codePlaceholder from "../../assets/images/code/code4.png";
+import fizicsPostcard from "../../assets/images/fizics/fizics1.png";
+import fizicsCards from "../../assets/images/fizics/fizics2.png";
+import fizicsPlaceholder from "../../assets/images/fizics/fizics3.png";
+import presentation11 from "../../assets/images/presentations/1-1.png";
+import presentation12 from "../../assets/images/presentations/1-2.png";
+import presentation13 from "../../assets/images/presentations/1-3.png";
+import presentation21 from "../../assets/images/presentations/2-1.png";
+import presentation22 from "../../assets/images/presentations/2-2.png";
+import presentation23 from "../../assets/images/presentations/2-3.png";
+import presentation24 from "../../assets/images/presentations/2-4.png";
+import presentation25 from "../../assets/images/presentations/2-5.png";
+import presentation31 from "../../assets/images/presentations/3-1.png";
+import presentation32 from "../../assets/images/presentations/3-2.png";
+import presentation33 from "../../assets/images/presentations/3-3.png";
 
 export const projects = [
   {
