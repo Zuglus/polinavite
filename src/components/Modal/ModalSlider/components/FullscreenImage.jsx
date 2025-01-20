@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
-const FullscreenImage = ({ 
-    src, 
-    alt, 
-    isTouchDevice, 
-    dimensions, 
-    rotation, 
-    onClose 
-}) => {
+const FullscreenImage = ({ src, alt, isTouchDevice, dimensions, rotation, onClose }) => {
   const [containerDimensions, setContainerDimensions] = useState({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   useEffect(() => {
     const handleResize = () => {
       setContainerDimensions({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
 
     const handleOrientation = () => {
-      setTimeout(handleResize, 100); // Delay to ensure new dimensions are available
+      setTimeout(handleResize, 100);
     };
 
     window.addEventListener('resize', handleResize);
@@ -43,7 +36,6 @@ const FullscreenImage = ({
     let finalWidth, finalHeight;
 
     if (rotation === 90 || rotation === 270) {
-      // For rotated view
       if (imageRatio > 1) {
         finalHeight = Math.min(containerWidth, dimensions.width);
         finalWidth = finalHeight * imageRatio;
@@ -52,7 +44,6 @@ const FullscreenImage = ({
         finalHeight = finalWidth / imageRatio;
       }
     } else {
-      // For normal view
       if (imageRatio > containerRatio) {
         finalWidth = containerWidth;
         finalHeight = containerWidth / imageRatio;
@@ -66,57 +57,49 @@ const FullscreenImage = ({
       width: `${finalWidth}px`,
       height: `${finalHeight}px`,
       maxWidth: '100%',
-      maxHeight: '100%'
+      maxHeight: '100%',
     };
   };
 
-  const CloseButton = () => (
-    <button
-      onClick={onClose}
-      className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center transition-colors duration-300"
-      aria-label="Закрыть"
-    >
-      <X className="w-5 h-5 text-white" />
-    </button>
-  );
-
-  if (!isTouchDevice) {
-    return (
-      <div className="relative">
-        <img 
-          src={src} 
-          alt={alt} 
-          style={calculateImageDimensions()}
-          className="object-contain transition-all duration-300 ease-in-out cursor-zoom-out" 
-        />
-        <CloseButton />
-      </div>
-    );
-  }
-
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <div 
-        className="relative flex items-center justify-center w-full h-full"
+    <div className="fixed inset-0 flex items-center justify-center bg-transparent">
+      <div
+        className="relative"
         style={{
+          width: calculateImageDimensions().width,
           transform: `rotate(${rotation}deg)`,
-          transition: 'transform 0.3s ease-in-out'
+          transition: 'transform 0.3s ease-in-out',
         }}
       >
-        <img 
-          src={src} 
+        {/* Изображение */}
+        <img
+          src={src}
           alt={alt}
-          style={calculateImageDimensions()}
-          className="object-contain transition-all duration-300 ease-in-out" 
+          style={{
+            width: '100%',
+            height: 'auto',
+            objectFit: 'contain',
+          }}
+          className="transition-all duration-300 ease-in-out"
         />
+        {/* Кнопка закрытия в правом верхнем углу изображения */}
         <div
-          className="absolute w-full h-full"
+          className="absolute top-0 right-0 z-50 p-4"
           style={{
             transform: `rotate(-${rotation}deg)`,
-            transformOrigin: 'center center'
+            transformOrigin: 'top right',
           }}
         >
-          <CloseButton />
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            className="w-14 h-14 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md flex items-center justify-center transition-colors duration-300"
+            aria-label="Закрыть"
+          >
+            <X />
+          </button>
         </div>
       </div>
     </div>
