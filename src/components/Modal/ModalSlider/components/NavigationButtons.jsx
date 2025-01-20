@@ -3,14 +3,14 @@ const NavigationButtons = ({ onPrev, onNext }) => (
       <button
         onClick={onPrev}
         aria-label="Предыдущий слайд"
-        className="border border-white/10 text-9xl md:text-4xl hover:bg-white hover:text-[#3624A6] hover:font-normal rounded-full w-[10rem] md:w-[2.5rem] h-[10rem] md:h-[2.5rem] flex items-center justify-center transition-colors duration-300"
+        className="border border-white/10 text-8xl md:text-4xl hover:bg-white hover:text-[#3624A6] hover:font-normal rounded-full w-[7rem] md:w-[2.5rem] h-[7rem] md:h-[2.5rem] flex items-center justify-center transition-colors duration-300"
       >
         &larr;
       </button>
       <button
         onClick={onNext}
         aria-label="Следующий слайд"
-        className="border border-white/10 text-9xl md:text-4xl hover:bg-white hover:text-[#3624A6] hover:font-normal rounded-full w-[10rem] md:w-[2.5rem] h-[10rem] md:h-[2.5rem] flex items-center justify-center transition-colors duration-300"
+        className="border border-white/10 text-8xl md:text-4xl hover:bg-white hover:text-[#3624A6] hover:font-normal rounded-full w-[7rem] md:w-[2.5rem] h-[7rem] md:h-[2.5rem] flex items-center justify-center transition-colors duration-300"
       >
         &rarr;
       </button>

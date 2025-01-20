@@ -1,9 +1,3 @@
-/**
- * Этот файл является точкой входа для React приложения.
- * Он инициализирует React приложение и рендерит корневой компонент App.
- */
-
-
 // Библиотеки
 import React from 'react';
 import ReactDOM from 'react-dom/client';

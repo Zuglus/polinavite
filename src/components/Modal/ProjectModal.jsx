@@ -68,8 +68,8 @@ function ProjectModal({ project, onClose }) {
               className="
                 flex justify-center items-center
                 border border-white/10 hover:border-white/20
-                rounded-full w-[10rem] md:w-[2.5rem]
-                h-[10rem] md:h-[2.5rem]
+                rounded-full w-[7rem] md:w-[2.5rem]
+                h-[7rem] md:h-[2.5rem]
                 transition-all hover:rotate-90
                 duration-300 outline-none
               "
@@ -79,7 +79,7 @@ function ProjectModal({ project, onClose }) {
                 viewBox="0 0 14 14"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="scale-125 md:scale-100"
+                className="scale-75 md:scale-100"
               >
                 <path
                   d="M1 1L13 13M1 13L13 1"

@@ -35,8 +35,6 @@ const App = () => {
     <div className="bg-primary text-white min-h-screen">
       <Header />
       <PortfolioSection onCardClick={(id) => setOpenModalId(id)} />
-      {/* <ResumeSection /> */}
-      {/* <ExperienceSection /> */}
       <Footer />
 
       <AnimatePresence>
