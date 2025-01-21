@@ -8,7 +8,7 @@ export const useImageRotation = (isTouchDevice) => {
 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
-    
+
     if (naturalHeight > naturalWidth) {
       setRotation(0);
       return;

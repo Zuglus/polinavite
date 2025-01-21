@@ -5,7 +5,7 @@ export const useDeviceDetection = () => {
 
   useEffect(() => {
     setIsTouchDevice(
-      'ontouchstart' in window || 
+      'ontouchstart' in window ||
       navigator.maxTouchPoints > 0 ||
       navigator.msMaxTouchPoints > 0
     );

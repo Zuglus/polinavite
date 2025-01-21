@@ -14,9 +14,8 @@ const SliderImage = ({ src, index, onClick, isTouchDevice }) => {
   return (
     <div
       onClick={onClick}
-      className={`relative rounded-[1.25rem] mb-4 group/image ${
-        !isTouchDevice ? 'cursor-zoom-in' : ''
-      }`}
+      className={`relative rounded-[1.25rem] mb-4 group/image ${!isTouchDevice ? 'cursor-zoom-in' : ''
+        }`}
     >
       {isLoading ? (
         <ImageSkeleton width="100%" height="300px" />
@@ -34,9 +33,8 @@ const SliderImage = ({ src, index, onClick, isTouchDevice }) => {
 [chunk 183] duration-300`}
       >
         <ZoomIn
-          className={`${
-            isTouchDevice ? 'w-32 h-32 md:w-24 md:h-24' : 'w-16 h-16'
-          } text-white`}
+          className={`${isTouchDevice ? 'w-32 h-32 md:w-24 md:h-24' : 'w-16 h-16'
+            } text-white`}
           strokeWidth={1}
         />
       </div>
