@@ -1,26 +1,35 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
+import { observer } from 'mobx-react-lite';
+import { navigationStore } from '../../../stores/navigation.store';
+import { 
   useImageDimensions,
   useDeviceDetection,
   useImageRotation
 } from '../../../hooks';
-import { SliderImage, NavigationButtons, FullscreenImage } from './components';
+import { SliderImage, FullscreenImage, NavigationButtons } from './components';
 
-function ModalSlider({ slides, sliderControls }) {
-  const { currentIndex, onPrev, onNext } = sliderControls;
+const ModalSlider = observer(({ slides }) => {
+  const currentIndex = navigationStore.currentIndex;
   const currentSlide = slides[currentIndex] || {};
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
 
+  // Инициализация хранилища
+  useEffect(() => {
+    navigationStore.setTotalSlides(slides.length);
+    return () => navigationStore.reset();
+  }, [slides]);
+
+  // Хуки для работы с изображениями
   const isTouchDevice = useDeviceDetection();
   const { naturalDimensions, calculateOptimalDimensions, loadImageDimensions } = useImageDimensions();
-  const { rotation, setRotation, determineOptimalRotation } = useImageRotation(isTouchDevice);
+  const { rotation, setRotation } = useImageRotation(isTouchDevice);
 
   useEffect(() => {
     if (currentSlide?.image) {
       loadImageDimensions(currentSlide.image);
     }
-  }, [currentSlide?.image]);
+  }, [currentSlide?.image, loadImageDimensions]);
 
   const handleImageClick = (e) => {
     e.stopPropagation();
@@ -32,9 +41,9 @@ function ModalSlider({ slides, sliderControls }) {
     setRotation(0);
   };
 
-  const optimizedDimensions = useMemo(() =>
+  const optimizedDimensions = useMemo(() => 
     calculateOptimalDimensions(),
-    [naturalDimensions]
+    [calculateOptimalDimensions]
   );
 
   return (
@@ -56,7 +65,7 @@ function ModalSlider({ slides, sliderControls }) {
               dimensions={optimizedDimensions}
             />
 
-            <NavigationButtons onPrev={onPrev} onNext={onNext} />
+            <NavigationButtons />
 
             <div className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4">
               <p>
@@ -93,6 +102,6 @@ function ModalSlider({ slides, sliderControls }) {
       </AnimatePresence>
     </div>
   );
-}
+});
 
 export default ModalSlider;
