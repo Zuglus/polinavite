@@ -6,33 +6,59 @@ import { projects } from './components/Modal/ProjectsData';
 import Footer from './components/Footer';
 import ProjectModal from './components/Modal/ProjectModal';
 
+// Вынесем стили блокировки скролла в константы
+const SCROLL_LOCK_STYLES = {
+  LOCKED: {
+    position: 'fixed',
+    width: '100%',
+    overflowY: 'hidden'
+  },
+  UNLOCKED: {
+    position: '',
+    width: '',
+    overflowY: ''
+  }
+};
+
 const useLockBodyScroll = (isLocked) => {
   useEffect(() => {
+    let scrollY = 0;
+
     if (isLocked) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
+      scrollY = window.scrollY;
+      Object.assign(document.body.style, SCROLL_LOCK_STYLES.LOCKED);
       document.body.style.top = `-${scrollY}px`;
-      document.body.style.overflowY = 'hidden';
-    } else {
-      const scrollY = parseInt(document.body.style.top || '0', 10);
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
-      document.body.style.overflowY = '';
-      window.scrollTo(0, scrollY * -1);
     }
+
+    return () => {
+      Object.assign(document.body.style, SCROLL_LOCK_STYLES.UNLOCKED);
+      window.scrollTo(0, scrollY);
+    };
   }, [isLocked]);
 };
 
 const App = () => {
+  useEffect(() => {
+    projects.forEach(project => {
+      project.slides.slice(0, 3).forEach(slide => {
+        const img = new Image();
+        img.src = slide.image;
+        img.loading = 'eager';
+      });
+    });
+  }, []);
   const [openModalId, setOpenModalId] = useState(null);
   useLockBodyScroll(openModalId !== null);
+
+  const handleCardClick = (id) => setOpenModalId(id);
+  const handleCloseModal = () => setOpenModalId(null);
+
+  const currentProject = projects.find(p => p.id === openModalId) || null;
 
   return (
     <div className="bg-primary text-white min-h-screen">
       <Header />
-      <PortfolioSection onCardClick={(id) => setOpenModalId(id)} />
+      <PortfolioSection onCardClick={handleCardClick} />
       <Footer />
 
       <AnimatePresence>
@@ -45,8 +71,8 @@ const App = () => {
             transition={{ duration: 0.3 }}
           >
             <ProjectModal
-              project={projects.find((p) => p.id === openModalId) || null}
-              onClose={() => setOpenModalId(null)}
+              project={currentProject}
+              onClose={handleCloseModal}
             />
           </motion.div>
         )}

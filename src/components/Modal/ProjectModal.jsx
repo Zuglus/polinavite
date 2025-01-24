@@ -1,58 +1,73 @@
-import React, { useRef, useEffect, useCallback, useMemo } from "react";
-import { useObservable } from "@legendapp/state/react";
-import ModalSlider from "./ModalSlider";
-import ModalHeader from "./ModalHeader";
+import React, { useRef, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
+import ModalSlider from '@components/Modal/ModalSlider';
+import ModalHeader from '@components/Modal/ModalHeader';
 import { navigationService } from '@stores/navigation.service';
 
-function ProjectModal({ project, onClose }) {
-  if (!project?.slides?.length) return null;
-  const currentIndex = useObservable(0);
+// Константы для стилей
+const MODAL_STYLES = {
+  OVERLAY: 'fixed inset-0 z-50 flex items-center justify-center bg-[#04061B]/90',
+  CONTENT: 'relative inline-block w-full max-w-[93.75rem] md:max-w-[62.5rem] my-4 bg-[#04061B] border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl transform transition-all duration-300 h-[90vh]',
+  CLOSE_BUTTON: 'flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[7rem] md:w-[2.5rem] h-[7rem] md:h-[2.5rem] transition-all hover:rotate-90 duration-300 outline-none'
+};
+
+const ProjectModal = ({ project, onClose }) => {
   const modalRef = useRef(null);
 
-  useEffect(() => {
-    if (project?.slides?.length) {
-      console.log('Initializing with slides:', project.slides);
-      navigationService.setTotalSlides(project.slides.length);
-      navigationService.actions$.next('init'); // Принудительный триггер
-    }
-    return () => {
-      console.log('Cleaning up navigation');
-      navigationService.reset();
-    };
-  }, [project]);
-
+  // Обработчик закрытия модалки
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  if (!project || !project.slides) return null;
+  // Обработчик клавиатуры
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Escape') handleClose();
+  }, [handleClose]);
+
+  // Эффекты
+  useEffect(() => {
+    if (project?.slides) {
+      navigationService.setTotalSlides(project.slides.length);
+    }
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      navigationService.reset();
+    };
+  }, [project, handleKeyDown]);
+
+  if (!project?.slides?.length) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#04061B]/90"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={MODAL_STYLES.OVERLAY}
       onClick={handleClose}
-      aria-modal="true"
       role="dialog"
+      aria-modal="true"
     >
       <div
-        className="relative inline-block w-full max-w-[93.75rem] md:max-w-[62.5rem] my-4 bg-[#04061B] border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl transform transition-all duration-300 h-[90vh]"
-        onClick={(e) => e.stopPropagation()}
         ref={modalRef}
+        className={MODAL_STYLES.CONTENT}
+        onClick={(e) => e.stopPropagation()}
         tabIndex={-1}
       >
-        <div className="absolute top-[1.875rem] md:top-[1.25rem] right-[1.875rem] md:right-[1.25rem] z-50 flex justify-center items-center">
+        {/* Кнопка закрытия */}
+        <div className="absolute top-[1.875rem] md:top-[1.25rem] right-[1.875rem] md:right-[1.25rem] z-50">
           <div className="bg-white/2 backdrop-blur-md rounded-full p-1">
             <button
               onClick={handleClose}
-              aria-label="Закрыть"
-              className="flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[7rem] md:w-[2.5rem] h-[7rem] md:h-[2.5rem] transition-all hover:rotate-90 duration-300 outline-none"
+              aria-label="Закрыть модальное окно"
+              className={MODAL_STYLES.CLOSE_BUTTON}
             >
               <svg
                 width="21"
                 height="21"
                 viewBox="0 0 14 14"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
                 className="scale-75 md:scale-100"
               >
                 <path
@@ -66,13 +81,14 @@ function ProjectModal({ project, onClose }) {
           </div>
         </div>
 
+        {/* Контент */}
         <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem]">
           <ModalHeader project={project} />
           <ModalSlider slides={project.slides.filter(slide => slide.image)} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
-}
+};
 
-export default ProjectModal;
+export default React.memo(ProjectModal);

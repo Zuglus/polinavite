@@ -1,13 +1,21 @@
-const PortfolioCard = ({ project, onClick }) => {
-    return (
-        <button
-            type="button"
-            className="portfolio-card bg-white/5 hover:shadow-lg rounded-[1.875rem] md:rounded-[1.25rem] transition-all hover:-translate-y-2 duration-300 cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 group"
-            onClick={onClick}
-        >
-            <img src={project.image} alt={project.alt} className="group-hover:scale-105 w-full transition-transform duration-300 object-cover" />
-        </button>
-    );
-}
+import React from 'react';
+import { CARD_STYLES } from '@constants/styles';
 
-export default PortfolioCard;
+const PortfolioCard = ({ project, onClick }) => {
+  return (
+    <button
+      type="button"
+      className={CARD_STYLES.CONTAINER}
+      onClick={onClick}
+      aria-label={`Открыть проект: ${project.alt}`}
+    >
+      <img 
+        src={project.image} 
+        alt={project.alt} 
+        className={CARD_STYLES.IMAGE} 
+      />
+    </button>
+  );
+};
+
+export default React.memo(PortfolioCard);

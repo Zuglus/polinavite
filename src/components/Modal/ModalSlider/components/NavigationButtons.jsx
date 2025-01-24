@@ -1,5 +1,5 @@
 import React from 'react';
-import { navigationService } from '@stores/navigation.service';
+import {navigationService} from '@stores/navigation.service';
 
 const NavigationButtons = ({ onNavigate }) => {
   const buttonStyle = `border transition-colors duration-300 rounded-full flex items-center justify-center 
