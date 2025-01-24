@@ -1,107 +1,99 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { observer } from 'mobx-react-lite';
-import { navigationStore } from '../../../stores/navigation.store';
-import { 
-  useImageDimensions,
-  useDeviceDetection,
-  useImageRotation
-} from '../../../hooks';
-import { SliderImage, FullscreenImage, NavigationButtons } from './components';
+import { useObservable } from '@legendapp/state/react';
+import { navigationService } from '@stores/navigation.service';
+import { SliderImage, NavigationButtons } from './components';
 
-const ModalSlider = observer(({ slides }) => {
-  const currentIndex = navigationStore.currentIndex;
-  const currentSlide = slides[currentIndex] || {};
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
+const ModalSlider = ({ slides }) => {
+  const state = useObservable({ currentIndex: 0 });
+  const [direction, setDirection] = useState(1);
 
-  // Инициализация хранилища
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleNavigation = (direction) => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      direction === 'next' 
+        ? navigationService.goNext()
+        : navigationService.goPrev();
+      setTimeout(() => setIsAnimating(false), 300);
+    }
+  };
+
   useEffect(() => {
-    navigationStore.setTotalSlides(slides.length);
-    return () => navigationStore.reset();
+    const sub = navigationService.state$.subscribe(({ currentIndex }) => {
+      setDirection(currentIndex > state.currentIndex.get() ? 1 : -1);
+      state.currentIndex.set(currentIndex);
+    });
+    return () => sub.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (slides?.length > 0) {
+      navigationService.setTotalSlides(slides.length);
+    }
   }, [slides]);
 
-  // Хуки для работы с изображениями
-  const isTouchDevice = useDeviceDetection();
-  const { naturalDimensions, calculateOptimalDimensions, loadImageDimensions } = useImageDimensions();
-  const { rotation, setRotation } = useImageRotation(isTouchDevice);
+  const currentSlide = slides?.[state.currentIndex.get()] || {};
 
-  useEffect(() => {
-    if (currentSlide?.image) {
-      loadImageDimensions(currentSlide.image);
-    }
-  }, [currentSlide?.image, loadImageDimensions]);
-
-  const handleImageClick = (e) => {
-    e.stopPropagation();
-    setIsFullscreen(true);
+  const variants = {
+    enter: (dir) => ({
+      x: dir > 0 ? '100%' : '-100%',
+      opacity: 0.5,
+      transition: { duration: 0.3 }
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.3 }
+    },
+    exit: (dir) => ({
+      x: dir < 0 ? '100%' : '-100%',
+      opacity: 0.5,
+      transition: { duration: 0.3 }
+    })
   };
 
-  const handleClose = () => {
-    setIsFullscreen(false);
-    setRotation(0);
-  };
-
-  const optimizedDimensions = useMemo(() => 
-    calculateOptimalDimensions(),
-    [calculateOptimalDimensions]
-  );
+  if (!slides?.length) return null;
 
   return (
     <div className="slider w-full max-w-[93.75rem] mx-auto overflow-hidden group">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div>
+      {slides?.length > 0 && (
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={state.currentIndex.get()}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
             <SliderImage
               src={currentSlide.image}
-              index={currentIndex}
-              onClick={handleImageClick}
-              isTouchDevice={isTouchDevice}
-              dimensions={optimizedDimensions}
+              index={state.currentIndex.get()}
             />
 
-            <NavigationButtons />
+<NavigationButtons onNavigate={handleNavigation} />
 
             <div className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4">
-              <p>
-                <span className="font-semibold">Задача:</span>
-                <span className="opacity-80">{currentSlide.task}</span>
-              </p>
-              <p>
-                <span className="font-semibold">Решение:</span>
-                <span className="opacity-80">{currentSlide.solution}</span>
-              </p>
+              {currentSlide.task && (
+                <p>
+                  <span className="font-semibold">Задача:</span>
+                  <span className="opacity-80">{currentSlide.task}</span>
+                </p>
+              )}
+              {currentSlide.solution && (
+                <p>
+                  <span className="font-semibold">Решение:</span>
+                  <span className="opacity-80">{currentSlide.solution}</span>
+                </p>
+              )}
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isFullscreen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center"
-            onClick={handleClose}
-          >
-            <FullscreenImage
-              src={currentSlide.image}
-              alt={`Slide ${currentIndex + 1}`}
-              dimensions={naturalDimensions}
-              rotation={rotation}
-              onClose={handleClose}
-            />
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )}
     </div>
   );
-});
+};
 
 export default ModalSlider;

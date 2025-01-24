@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PortfolioSection from './components/PortfolioSection';
 import Header from './components/Header';
-import ResumeSection from './components/ResumeSection';
 import { projects } from './components/Modal/ProjectsData';
-import ExperienceSection from './components/ExperienceSection';
 import Footer from './components/Footer';
 import ProjectModal from './components/Modal/ProjectModal';
 
@@ -47,7 +45,7 @@ const App = () => {
             transition={{ duration: 0.3 }}
           >
             <ProjectModal
-              project={projects.find((p) => p.id === openModalId)}
+              project={projects.find((p) => p.id === openModalId) || null}
               onClose={() => setOpenModalId(null)}
             />
           </motion.div>

@@ -55,6 +55,6 @@
 }
 
 html {
-  overscroll-behavior: contain;
+  overscroll-behavior: contain; /* Блокировка нежелательного скролла */
   background-color: #04061B;
 }
