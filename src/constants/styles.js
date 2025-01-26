@@ -37,3 +37,10 @@ export const CARD_STYLES = {
       md:max-w-full
     `
   };
+
+  export const IMAGE_STYLES = {
+    CONTAINER: "relative w-full",
+    SKELETON: "block inset-0 rounded-[1.25rem] bg-white w-full h-[400px]",
+    ERROR: "text-red-500 text-center",
+    IMAGE: "w-full object-contain"
+  };

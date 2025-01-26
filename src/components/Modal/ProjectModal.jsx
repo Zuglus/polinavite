@@ -8,7 +8,7 @@ import { navigationService } from '@stores/navigation.service';
 const MODAL_STYLES = {
   OVERLAY: 'fixed inset-0 z-50 flex items-center justify-center bg-[#04061B]/90',
   CONTENT: 'relative inline-block w-full max-w-[93.75rem] md:max-w-[62.5rem] my-4 bg-[#04061B] border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl transform transition-all duration-300 h-[90vh]',
-  CLOSE_BUTTON: 'flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[7rem] md:w-[2.5rem] h-[7rem] md:h-[2.5rem] transition-all hover:rotate-90 duration-300 outline-none'
+  CLOSE_BUTTON: 'flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[3rem] h-[3rem] transition-all hover:rotate-90 duration-300 outline-none'
 };
 
 const ProjectModal = ({ project, onClose }) => {

@@ -1,19 +1,35 @@
-// src/services/image.service.js
-import { BehaviorSubject } from 'rxjs';
+import { observable } from "@legendapp/state";
 
 export class ImageService {
   constructor() {
-    this.loadQueue$ = new BehaviorSubject(null);
-    this.cache = new Map();
+    this.status$ = observable('init');
+    this.retryCount$ = observable(0);
   }
 
   loadImage(src) {
-    if (!this.cache.has(src)) {
+    return new Promise((resolve, reject) => {
+      this.status$.set('loading');
+
       const img = new Image();
+      img.onload = () => {
+        this.status$.set('loaded');
+        resolve(img);
+      };
+      img.onerror = (err) => {
+        this.retry();
+        reject(err);
+      };
       img.src = src;
-      this.cache.set(src, img);
+    });
+  }
+
+  retry() {
+    if (this.retryCount$.get() < 3) {
+      this.retryCount$.set(prev => prev + 1);
+      this.status$.set('retrying');
+    } else {
+      this.status$.set('error');
     }
-    return this.cache.get(src);
   }
 }
 
