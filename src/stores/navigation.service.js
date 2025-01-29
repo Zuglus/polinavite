@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subject } from 'rxjs';
-import { scan, shareReplay, withLatestFrom, tap } from 'rxjs/operators';
+import { scan, shareReplay, withLatestFrom } from 'rxjs/operators';
 
 export class NavigationService {
   actions$ = new Subject();

@@ -78,13 +78,13 @@ const ModalSlider = ({ slides }) => {
             <div className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4">
               {currentSlide.task && (
                 <p>
-                  <span className="font-semibold">Задача:</span>
+                  <span className="font-semibold">Задача: </span>
                   <span className="opacity-80">{currentSlide.task}</span>
                 </p>
               )}
               {currentSlide.solution && (
                 <p>
-                  <span className="font-semibold">Решение:</span>
+                  <span className="font-semibold">Решение: </span>
                   <span className="opacity-80">{currentSlide.solution}</span>
                 </p>
               )}
