@@ -73,7 +73,7 @@ const ModalSlider = ({ slides }) => {
             {/* Контейнер для изображения */}
             <motion.div
               layout
-              className="h-[60vh] min-h-[400px] overflow-hidden"
+              className="overflow-hidden"
             >
               <SliderImage
                 src={currentSlide.image}
