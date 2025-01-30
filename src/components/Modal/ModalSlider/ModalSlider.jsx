@@ -13,7 +13,7 @@ const ModalSlider = ({ slides }) => {
   const handleNavigation = (direction) => {
     if (!isAnimating) {
       setIsAnimating(true);
-      direction === 'next' 
+      direction === 'next'
         ? navigationService.goNext()
         : navigationService.goPrev();
       setTimeout(() => setIsAnimating(false), 300);
@@ -57,7 +57,7 @@ const ModalSlider = ({ slides }) => {
   if (!slides?.length) return null;
 
   return (
-    <div className="slider w-full max-w-[93.75rem] mx-auto overflow-hidden group">
+    <div className="slider w-full max-w-[93.75rem] mx-auto overflow-visible group relative">
       {slides?.length > 0 && (
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
@@ -67,28 +67,45 @@ const ModalSlider = ({ slides }) => {
             initial="enter"
             animate="center"
             exit="exit"
+            layout // Добавляем автоматическую анимацию макета
+            className="relative w-full"
           >
-            <SliderImage
-              src={currentSlide.image}
-              index={state.currentIndex.get()}
-            />
+            {/* Контейнер для изображения */}
+            <motion.div
+              layout
+              className="h-[60vh] min-h-[400px] overflow-hidden"
+            >
+              <SliderImage
+                src={currentSlide.image}
+                index={state.currentIndex.get()}
+              />
+            </motion.div>
 
-<NavigationButtons onNavigate={handleNavigation} />
+            {/* Контент для прокрутки */}
+            <motion.div
+              layout
+              className="px-8 pb-8"
+            >
+              <NavigationButtons onNavigate={handleNavigation} />
 
-            <div className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4">
-              {currentSlide.task && (
-                <p>
-                  <span className="font-semibold">Задача: </span>
-                  <span className="opacity-80">{currentSlide.task}</span>
-                </p>
-              )}
-              {currentSlide.solution && (
-                <p>
-                  <span className="font-semibold">Решение: </span>
-                  <span className="opacity-80">{currentSlide.solution}</span>
-                </p>
-              )}
-            </div>
+              <motion.div
+                layout
+                className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4"
+              >
+                {currentSlide.task && (
+                  <p>
+                    <span className="font-semibold">Задача: </span>
+                    <span className="opacity-80">{currentSlide.task}</span>
+                  </p>
+                )}
+                {currentSlide.solution && (
+                  <p>
+                    <span className="font-semibold">Решение: </span>
+                    <span className="opacity-80">{currentSlide.solution}</span>
+                  </p>
+                )}
+              </motion.div>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       )}
