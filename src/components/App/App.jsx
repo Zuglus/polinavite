@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PortfolioSection from './components/PortfolioSection';
-import Header from './components/Header';
-import { projects } from './components/Modal/ProjectsData';
-import Footer from './components/Footer';
-import ProjectModal from './components/Modal/ProjectModal';
+import PortfolioSection from '../PortfolioSection';
+import Header from '../Header';
+import { projects } from '../Modal/ProjectsData';
+import Footer from '../Footer';
+import ProjectModal from '../Modal/ProjectModal';
 
 // Вынесем стили блокировки скролла в константы
 const SCROLL_LOCK_STYLES = {

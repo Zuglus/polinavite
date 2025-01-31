@@ -12,7 +12,6 @@ const SliderImage = ({ src, alt, priority = false }) => {
     if (src) {
       imageService.loadImage(src);
       imageService.status$.onChange(({value}) => {
-        console.log('Статус загрузки:', value)
     });
     }
   }, [src]);

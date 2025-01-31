@@ -2,18 +2,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-// Компоненты
-import App from './App';
+import '@assets/main.css';
 
-// Стили
-import './main.css';
+// Основной компонент приложения (ленивая загрузка при необходимости)
+const App = React.lazy(() => import('@components/App/App'));
+
 
 // Создание корневого элемента React 18+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-// Рендеринг приложения в StrictMode
+/**
+ * Точка входа приложения
+ * - Использует StrictMode для детектирования проблем
+ * - Оборачивает App в Suspense для ленивой загрузки
+ */
 root.render(
   <React.StrictMode>
-    <App />
+    <React.Suspense fallback={<div>Загрузка...</div>}>
+      <App />
+    </React.Suspense>
   </React.StrictMode>
 );
