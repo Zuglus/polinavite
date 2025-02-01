@@ -3,7 +3,6 @@ import PortfolioCard from './PortfolioCard';
 import rings from '@images/rings_with_circle.svg';
 import { SECTION_STYLES } from '@constants/styles';
 
-// Импорты через алиасы
 import nitiImage from '@images/threads.png';
 import codeImage from '@images/code.png';
 import dayImage from '@images/day.png';
@@ -17,6 +16,11 @@ const projectsData = [
 ];
 
 const PortfolioSection = ({ onCardClick }) => {
+
+  const handleCardClick = (id) => {
+    onCardClick?.(id);
+  };
+
   return (
     <section className={SECTION_STYLES.CONTAINER}>
       <div className={SECTION_STYLES.HEADER_WRAPPER}>
@@ -35,7 +39,7 @@ const PortfolioSection = ({ onCardClick }) => {
           <PortfolioCard
             key={project.id}
             project={project}
-            onClick={() => onCardClick(project.id)}
+            onClick={handleCardClick}
           />
         ))}
       </div>

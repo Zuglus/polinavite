@@ -2,11 +2,15 @@ import React from 'react';
 import { CARD_STYLES } from '@constants/styles';
 
 const PortfolioCard = ({ project, onClick }) => {
+  const handleClick = () => {
+    onClick(project.id);
+  };
+
   return (
     <button
       type="button"
       className={CARD_STYLES.CONTAINER}
-      onClick={onClick}
+      onClick={handleClick}
       aria-label={`Открыть проект: ${project.alt}`}
     >
       <img 

@@ -1,43 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { observable } from '@legendapp/state';
+import { useSelector } from '@legendapp/state/react';
+
 import PortfolioSection from '../PortfolioSection';
 import Header from '../Header';
-import { projects } from '../Modal/ProjectsData';
 import Footer from '../Footer';
 import ProjectModal from '../Modal/ProjectModal';
+import { projects } from '../Modal/ProjectsData';
 
-// Вынесем стили блокировки скролла в константы
-const SCROLL_LOCK_STYLES = {
-  LOCKED: {
-    position: 'fixed',
-    width: '100%',
-    overflowY: 'hidden'
-  },
-  UNLOCKED: {
-    position: '',
-    width: '',
-    overflowY: ''
-  }
+// Создаем глобальное состояние
+const appState = observable({
+  modalId: null,
+  currentProject: null
+});
+
+const ANIMATION_CONFIG = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.3 }
 };
 
 const useLockBodyScroll = (isLocked) => {
   useEffect(() => {
-    let scrollY = 0;
+    if (!isLocked) return;
 
-    if (isLocked) {
-      scrollY = window.scrollY;
-      Object.assign(document.body.style, SCROLL_LOCK_STYLES.LOCKED);
-      document.body.style.top = `-${scrollY}px`;
-    }
+    const scrollY = window.scrollY;
+    const originalStyle = {
+      position: document.body.style.position,
+      width: document.body.style.width,
+      overflowY: document.body.style.overflowY,
+      top: document.body.style.top
+    };
+
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.overflowY = 'hidden';
+    document.body.style.top = `-${scrollY}px`;
 
     return () => {
-      Object.assign(document.body.style, SCROLL_LOCK_STYLES.UNLOCKED);
+      Object.assign(document.body.style, originalStyle);
       window.scrollTo(0, scrollY);
     };
   }, [isLocked]);
 };
 
 const App = () => {
+  // Используем селектор для получения значений
+  const modalId = useSelector(() => appState.modalId.get());
+  const currentProject = useSelector(() => appState.currentProject.get());
+
   useEffect(() => {
     projects.forEach(project => {
       project.slides.slice(0, 3).forEach(slide => {
@@ -47,13 +60,20 @@ const App = () => {
       });
     });
   }, []);
-  const [openModalId, setOpenModalId] = useState(null);
-  useLockBodyScroll(openModalId !== null);
 
-  const handleCardClick = (id) => setOpenModalId(id);
-  const handleCloseModal = () => setOpenModalId(null);
+  useLockBodyScroll(modalId !== null);
 
-  const currentProject = projects.find(p => p.id === openModalId) || null;
+  const handleCardClick = (id) => {
+    const project = projects.find(p => p.id === id);
+    
+    appState.modalId.set(id);
+    appState.currentProject.set(project);
+  };
+
+  const handleCloseModal = () => {
+    appState.modalId.set(null);
+    appState.currentProject.set(null);
+  };
 
   return (
     <div className="bg-primary text-white min-h-screen">
@@ -62,13 +82,10 @@ const App = () => {
       <Footer />
 
       <AnimatePresence>
-        {openModalId !== null && (
+        {modalId !== null && (
           <motion.div
             key="modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            {...ANIMATION_CONFIG}
           >
             <ProjectModal
               project={currentProject}

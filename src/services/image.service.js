@@ -23,6 +23,12 @@ export class ImageService {
     });
   }
 
+  preloadImages(sources) {
+    return Promise.all(
+      sources.map(src => this.loadImage(src))
+    );
+  }
+
   retry() {
     if (this.retryCount$.get() < 3) {
       this.retryCount$.set(prev => prev + 1);
