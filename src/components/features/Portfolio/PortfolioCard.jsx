@@ -1,6 +1,7 @@
 // src/components/features/Portfolio/PortfolioCard.jsx
 import React, { useCallback } from 'react';
 import { CARD_STYLES } from '@constants/styles';
+import { ProgressiveImage } from '@ui';
 
 /**
  * Компонент карточки портфолио
@@ -12,7 +13,6 @@ import { CARD_STYLES } from '@constants/styles';
  * @param {Function} props.onClick - Обработчик клика по карточке
  */
 const PortfolioCard = ({ project, onClick }) => {
-  // Мемоизируем обработчик клика для предотвращения лишних ререндеров
   const handleClick = useCallback(() => {
     onClick(project.id);
   }, [onClick, project.id]);
@@ -24,18 +24,15 @@ const PortfolioCard = ({ project, onClick }) => {
       onClick={handleClick}
       aria-label={`Открыть проект: ${project.alt}`}
     >
-      <img 
+      <ProgressiveImage 
         src={project.image} 
         alt={project.alt} 
         className={CARD_STYLES.IMAGE}
-        loading="lazy" // Добавляем ленивую загрузку
-        decoding="async" // Асинхронное декодирование
       />
     </button>
   );
 };
 
-// Оптимизируем через React.memo с кастомной функцией сравнения
 export default React.memo(PortfolioCard, (prevProps, nextProps) => {
   return prevProps.project.id === nextProps.project.id && 
          prevProps.project.image === nextProps.project.image;
