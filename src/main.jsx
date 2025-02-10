@@ -7,39 +7,69 @@ const App = React.lazy(() => import('./App'));
 
 const Loader = () => (
   <div className="flex h-screen w-full items-center justify-center bg-primary">
-    <div className="relative h-48 w-48">
-      {/* Серп и молот */}
-      <svg
-        className="absolute left-1/2 top-1/2 z-10 h-24 w-24 -translate-x-1/2 -translate-y-1/2 transform text-red-500"
-        viewBox="0 0 100 100"
-      >
-        {/* Молот */}
-        <path
-          d="M50 20L70 35V65L50 85L30 65V35L50 20Z"
-          fill="currentColor"
-          className="drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]"
-        />
-        
-        {/* Серп (исправленная кривая) */}
-        <path
-          d="M25 70Q40 45 70 40Q85 55 80 75L55 95L25 70Z"
-          fill="currentColor"
-          className="drop-shadow-[0_0_8px_rgba(239,68,68,0.7)]"
-        />
-      </svg>
-
-      {/* Вращающаяся звезда с исправленной орбитой */}
-      <div className="absolute left-0 top-0 h-full w-full animate-[soviet-orbit_4s_linear_infinite]">
-        <svg
-          className="h-10 w-10 text-red-500"
-          viewBox="0 0 100 100"
-        >
-          <path
-            d="M50 5L63.3 35.8H98.4L70.8 56.1L84.1 86.8L50 66.5L15.9 86.8L29.2 56.1L1.6 35.8H36.7L50 5Z"
-            fill="currentColor"
-            className="animate-[spin-slow_3s_linear_infinite] drop-shadow-[0_0_6px_rgba(239,68,68,0.9)]"
+    <div className="relative">
+      {/* Группа колец */}
+      <div className="relative h-32 w-32">
+        {/* Статичные кольца на фоне */}
+        <svg className="absolute inset-0" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="#3624A6"
+            strokeWidth="2"
+            opacity="0.2"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="35"
+            fill="none"
+            stroke="#3624A6"
+            strokeWidth="2"
+            opacity="0.15"
           />
         </svg>
+
+        {/* Анимированное внешнее кольцо */}
+        <svg 
+          className="absolute inset-0 animate-[spin_8s_linear_infinite]" 
+          viewBox="0 0 100 100"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke="#3624A6"
+            strokeWidth="2"
+            strokeDasharray="30 10"
+          />
+        </svg>
+
+        {/* Анимированное внутреннее кольцо */}
+        <svg 
+          className="absolute inset-0 animate-[spin_6s_linear_infinite_reverse]" 
+          viewBox="0 0 100 100"
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r="35"
+            fill="none"
+            stroke="#3624A6"
+            strokeWidth="2"
+            strokeDasharray="20 10"
+          />
+        </svg>
+      </div>
+
+      {/* Текст */}
+      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full text-center">
+        <div className="text-[#3624A6] text-xl tracking-widest animate-pulse font-mv-skifer">
+          ЗАГРУЗКА
+        </div>
       </div>
     </div>
   </div>
