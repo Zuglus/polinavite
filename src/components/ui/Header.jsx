@@ -1,3 +1,4 @@
+// src/components/ui/Header.jsx
 import React from 'react';
 import { useObservable } from '@legendapp/state/react';
 import logo from "@images/logo.svg";

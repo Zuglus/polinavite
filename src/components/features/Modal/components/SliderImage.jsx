@@ -1,8 +1,9 @@
+// src/components/features/Modal/components/SliderImage.jsx
 import React from 'react';
 import { useSelector } from '@legendapp/state/react';
-import ImageSkeleton from '@components/Skeleton';
+import { Skeleton } from '@ui';
 import { IMAGE_STYLES } from '@constants/styles';
-import { imageService } from '@services/image.service';
+import { imageService } from '@services';
 
 const SliderImage = ({ src, alt, priority = false }) => {
   const status = useSelector(() => imageService.status$.get());
@@ -18,7 +19,7 @@ const SliderImage = ({ src, alt, priority = false }) => {
 
   return (
     <div className={IMAGE_STYLES.CONTAINER}>
-      {status === 'loading' && <ImageSkeleton />}
+      {status === 'loading' && <Skeleton />}
 
       {status === 'error' && (
         <div className={IMAGE_STYLES.ERROR}>

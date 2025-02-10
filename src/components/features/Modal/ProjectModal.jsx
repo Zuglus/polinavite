@@ -1,8 +1,9 @@
+// src/components/features/Modal/ProjectModal.jsx
 import React, { useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import ModalSlider from '@components/Modal/ModalSlider';
-import ModalHeader from '@components/Modal/ModalHeader';
-import { navigationService } from '@stores/navigation.service';
+import { ModalSlider } from '@features/Modal';
+import { ModalHeader } from '@features/Modal';
+import { navigationService } from '@services';
 
 // Константы для стилей
 const MODAL_STYLES = {

@@ -1,5 +1,6 @@
+// src/components/ui/Footer.jsx
 import React from 'react';
-import buttonCircle from '../assets/images/koltsa_fon1.svg';
+import buttonCircle from '@images/koltsa_fon1.svg';
 
 const Footer = () => {
     const telegram = "https://t.me/Migranovap";

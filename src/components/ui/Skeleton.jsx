@@ -1,3 +1,4 @@
+// src/components/ui/Skeleton.jsx
 import React from 'react';
 
 const ImageSkeleton = ({ width, height }) => {

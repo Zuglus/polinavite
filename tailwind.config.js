@@ -10,6 +10,20 @@ module.exports = {
       colors: {
         primary: '#04061B',
       },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+        'soviet-orbit': 'orbit 4s linear infinite',
+      },
+      keyframes: {
+        orbit: {
+          '0%': { 
+            transform: 'rotate(0deg) translateX(70px) translateY(10px) rotate(0deg)',
+          },
+          '100%': { 
+            transform: 'rotate(360deg) translateX(70px) translateY(10px) rotate(-360deg)',
+          },
+        }
+      }
     },
   },
   plugins: [],

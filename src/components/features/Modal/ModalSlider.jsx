@@ -1,7 +1,8 @@
+// src/components/features/Modal/ModalSlider.jsx
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useObservable } from '@legendapp/state/react';
-import { navigationService } from '@stores/navigation.service';
+import { navigationService } from '@services';
 import { SliderImage, NavigationButtons } from './components';
 
 const ModalSlider = ({ slides }) => {

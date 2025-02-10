@@ -1,7 +1,8 @@
+// src/components/features/Experience/ExperienceSection.jsx
 import React from 'react';
-import circle from '../assets/images/kruzhok_opyt_raboty.svg';
-import buttonCircle from '../assets/images/koltsa_fon1.svg';
-import ExperienceItem from './ExperienceItem';
+import { ExperienceItem } from '@features/Experience';
+import circle from '@images/kruzhok_opyt_raboty.svg';
+import buttonCircle from '@images/koltsa_fon1.svg';
 
 const ExperienceSection = () => {
   const experienceData = [

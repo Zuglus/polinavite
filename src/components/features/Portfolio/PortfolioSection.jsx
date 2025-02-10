@@ -1,8 +1,8 @@
+// src/components/features/Portfolio/PortfolioSection.jsx
 import React from 'react';
-import PortfolioCard from './PortfolioCard';
-import rings from '@images/rings_with_circle.svg';
+import { PortfolioCard } from '@features/Portfolio';
 import { SECTION_STYLES } from '@constants/styles';
-
+import rings from '@images/rings_with_circle.svg';
 import nitiImage from '@images/threads.png';
 import codeImage from '@images/code.png';
 import dayImage from '@images/day.png';

@@ -1,6 +1,8 @@
-import bigrings from "./../assets/images/portfolio.svg";
-import foto from "./../assets/images/foto.png";
-import rings from "./../assets/images/rings_with_circle.svg";
+// src/components/features/Resume/ResumeSection.jsx
+import React from 'react';
+import bigrings from "@images/portfolio.svg";
+import foto from "@images/foto.png";
+import rings from "@images/rings_with_circle.svg";
 
 const ResumeSection = () => {
     return (
