@@ -1,10 +1,21 @@
-import React from 'react';
+// src/components/features/Portfolio/PortfolioCard.jsx
+import React, { useCallback } from 'react';
 import { CARD_STYLES } from '@constants/styles';
 
+/**
+ * Компонент карточки портфолио
+ * @param {Object} props - Свойства компонента
+ * @param {Object} props.project - Данные проекта
+ * @param {string} props.project.id - Уникальный идентификатор проекта
+ * @param {string} props.project.image - Импортированное изображение проекта
+ * @param {string} props.project.alt - Альтернативный текст для изображения
+ * @param {Function} props.onClick - Обработчик клика по карточке
+ */
 const PortfolioCard = ({ project, onClick }) => {
-  const handleClick = () => {
+  // Мемоизируем обработчик клика для предотвращения лишних ререндеров
+  const handleClick = useCallback(() => {
     onClick(project.id);
-  };
+  }, [onClick, project.id]);
 
   return (
     <button
@@ -16,10 +27,16 @@ const PortfolioCard = ({ project, onClick }) => {
       <img 
         src={project.image} 
         alt={project.alt} 
-        className={CARD_STYLES.IMAGE} 
+        className={CARD_STYLES.IMAGE}
+        loading="lazy" // Добавляем ленивую загрузку
+        decoding="async" // Асинхронное декодирование
       />
     </button>
   );
 };
 
-export default React.memo(PortfolioCard);
+// Оптимизируем через React.memo с кастомной функцией сравнения
+export default React.memo(PortfolioCard, (prevProps, nextProps) => {
+  return prevProps.project.id === nextProps.project.id && 
+         prevProps.project.image === nextProps.project.image;
+});
