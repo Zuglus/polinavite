@@ -99,8 +99,7 @@ const ProjectModal = ({ project, onClose }) => {
         </div>
 
         {/* Контент */}
-        <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem]"
-          style={{
+        <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem] modal-scrollbar" style={{
             cssText: MODAL_STYLES.SCROLLBAR,
             scrollbarWidth: 'thin',
             scrollbarColor: '#3624A6 transparent'

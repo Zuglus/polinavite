@@ -28,12 +28,11 @@ export class ImageService {
 
       img.onerror = () => {
         if (this.retryCount$.get() < 3) {
-          this.retryCount$.set(prev => prev + 1);
-          this.status$.set('retrying');
-          img.src = src; // Повторная попытка
-        } else {
-          this.status$.set('error');
-          reject(new Error('Failed to load image after 3 retries'));
+          setTimeout(() => {
+            this.retryCount$.set(prev => prev + 1);
+            this.status$.set('retrying');
+            img.src = src;
+          }, 1000 * this.retryCount$.get()); // Экспоненциальная задержка
         }
       };
 

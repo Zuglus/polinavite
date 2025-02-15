@@ -58,3 +58,23 @@ html {
   overscroll-behavior: contain;
   background-color: #04061B;
 }
+
+
+/* Добавить в main.css */
+.modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #3624A6 transparent;
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: #3624A6;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #4A5568;
+  border-radius: 4px;
+}
