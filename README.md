@@ -1,8 +1,52 @@
-# React + Vite
+# Портфолио Полины Миграновой - Графический дизайнер
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание
 
-Currently, two official plugins are available:
+Сайт-портфолио графического дизайнера Полины Миграновой. Представляет собой одностраничное приложение (SPA) на React, использующее Vite для сборки.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Используемые технологии
+
+*   React
+*   Vite
+*   Tailwind CSS
+*   @legendapp/state (для управления состоянием)
+*   framer-motion (для анимаций)
+*   RxJS (для предзагрузки изображений и обработки событий)
+
+## Структура проекта
+
+src/
+├── components/        # Переиспользуемые компоненты
+│   ├── ui/            # Базовые UI компоненты (кнопки, инпуты, скелетоны)
+│   └── features/      # Компоненты с бизнес-логикой (секции портфолио, модальные окна)
+├── hooks/             # Кастомные хуки
+├── stores/            # Observable stores (@legendapp/state)
+├── services/          # Сервисы (imageService, navigationService)
+├── constants/         # Константы (цвета, стили, данные проектов)
+├── utils/             # Вспомогательные функции
+├── assets/            # Статические файлы
+│   ├── images/        # Изображения
+│   └── fonts/         # Шрифты
+└── App.jsx            # Главный компонент приложения
+
+## Установка и запуск
+
+1.  Клонировать репозиторий:
+```bash
+git clone https://github.com/Zuglus/polinavite.git
+```
+
+2. Установить зависимости:
+```bash
+npm install
+```
+
+3. Запустить в режиме разработки
+```bash
+npm run dev
+```
+
+## Сборка
+```bash
+  npm run build
+```

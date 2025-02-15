@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useObservable } from '@legendapp/state/react';
 import { navigationService } from '@services';
-import { SliderImage, NavigationButtons } from './components';
+import { SliderImage, NavigationButtons } from './components/index';
 
 const ModalSlider = ({ slides }) => {
   const state = useObservable({ currentIndex: 0 });

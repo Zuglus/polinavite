@@ -9,11 +9,11 @@ module.exports = {
       },
       colors: {
         primary: '#04061B',
+        secondary: '#3624A6',
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',
         'pulse-slow': 'pulse 3s ease-in-out infinite',
-        'soviet-orbit': 'orbit 4s linear infinite',
       },
       keyframes: {
         spin: {
