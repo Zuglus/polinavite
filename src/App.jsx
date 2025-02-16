@@ -14,7 +14,7 @@ import { modalStore } from '@/stores';
 import { imageService } from '@/services';
 
 // Data
-import { projects } from '@/constants/ProjectsData';
+import { projects } from '@/constants/projectsData';
 
 // Hooks
 import { useLockBodyScroll } from '@/hooks';
