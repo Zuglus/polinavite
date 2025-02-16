@@ -1,5 +1,5 @@
 // src/components/features/Modal/ProjectModal.jsx
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ModalSlider } from '@features/Modal';
 import { ModalHeader } from '@features/Modal';
@@ -29,7 +29,6 @@ const MODAL_STYLES = {
 };
 
 const ProjectModal = ({ project, onClose }) => {
-  const modalRef = useRef(null);
 
   // Обработчик закрытия модалки
   const handleClose = useCallback(() => {
@@ -67,7 +66,6 @@ const ProjectModal = ({ project, onClose }) => {
       aria-modal="true"
     >
       <div
-        ref={modalRef}
         className={MODAL_STYLES.CONTENT}
         onClick={(e) => e.stopPropagation()}
         tabIndex={-1}

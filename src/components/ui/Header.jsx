@@ -1,6 +1,5 @@
 // src/components/ui/Header.jsx
 import React from 'react';
-import { useObservable } from '@legendapp/state/react';
 import logo from "@images/logo.svg";
 
 // Вынесенные константы стилей
@@ -18,9 +17,6 @@ const HEADER_STYLES = {
 };
 
 const Header = () => {
-  const state = useObservable({
-    isScrolled: false
-  });
 
   return (
     <header className={HEADER_STYLES.CONTAINER}>

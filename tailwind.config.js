@@ -30,14 +30,6 @@ module.exports = {
             transform: 'scale(0.95)'
           }
         },
-        orbit: {
-          '0%': { 
-            transform: 'rotate(0deg) translateX(70px) translateY(10px) rotate(0deg)',
-          },
-          '100%': { 
-            transform: 'rotate(360deg) translateX(70px) translateY(10px) rotate(-360deg)',
-          },
-        }
       }
     },
   },
