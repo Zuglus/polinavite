@@ -10,22 +10,6 @@ const MODAL_STYLES = {
   OVERLAY: 'fixed inset-0 z-50 flex items-center justify-center bg-[#04061B]/90',
   CONTENT: 'relative inline-block w-full max-w-[93.75rem] md:max-w-[62.5rem] my-4 bg-[#04061B] border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl transform transition-all duration-300 h-[90vh]',
   CLOSE_BUTTON: 'flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[3rem] h-[3rem] transition-all hover:rotate-90 duration-300 outline-none',
-  SCROLLBAR: `
-    /* Стилизация скроллбара */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #3624A6;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #4A5568;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #718096;
-    }
-  `
 };
 
 const ProjectModal = ({ project, onClose }) => {
@@ -97,11 +81,7 @@ const ProjectModal = ({ project, onClose }) => {
         </div>
 
         {/* Контент */}
-        <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem] modal-scrollbar" style={{
-            cssText: MODAL_STYLES.SCROLLBAR,
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#3624A6 transparent'
-          }}>
+        <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem] modal-scrollbar">
           <ModalHeader project={project} />
           <ModalSlider slides={project.slides.filter(slide => slide.image)} />
         </div>

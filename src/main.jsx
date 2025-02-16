@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@assets/main.css';
+import ErrorBoundary from '@components/ErrorBoundary';
 
 const App = React.lazy(() => import('./App'));
 
@@ -82,8 +83,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <React.Suspense fallback={<Loader />}>
-      <App />
-    </React.Suspense>
+    <ErrorBoundary>
+      <React.Suspense fallback={<Loader />}>
+        <App />
+      </React.Suspense>
+    </ErrorBoundary>
   </React.StrictMode>
 );

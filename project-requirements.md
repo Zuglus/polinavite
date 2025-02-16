@@ -11,7 +11,6 @@ src/
 ├── stores/          # Observable stores (@legendapp/state)
 ├── services/        # Сервисы (imageService, navigationService)
 ├── constants/       # Константы и базовые темы
-├── utils/           # Вспомогательные функции
 ├── assets/          # Статические файлы
 │   ├── images/      # Изображения
 │   └── fonts/       # Шрифты
@@ -45,20 +44,6 @@ src/
 ### 2.2 Стилизация
 - Основной инструмент: Tailwind CSS
 - Стили компонентов должны быть самодостаточными
-- Переиспользуемые стили через @apply в CSS
-- Базовые значения в constants/theme.js:
-  ```javascript
-  export const THEME = {
-    colors: {
-      primary: '#04061B',
-      secondary: '#3624A6'
-    },
-    fonts: {
-      mvSkifer: 'MV-SKIFER',
-      onest: 'Onest'
-    }
-  }
-  ```
 
 ### 2.3 RxJS и Observable
 - Использовать только для:
