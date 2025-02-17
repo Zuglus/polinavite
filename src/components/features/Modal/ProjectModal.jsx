@@ -1,91 +1,92 @@
 // src/components/features/Modal/ProjectModal.jsx
 import React, { useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { ModalSlider } from '@features/Modal';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ModalHeader } from '@features/Modal';
-import { navigationService } from '@services';
+import { ModalSlider } from '@features/Modal';
+import { modalStore } from '@stores';
 
-// Константы для стилей
-const MODAL_STYLES = {
-  OVERLAY: 'fixed inset-0 z-50 flex items-center justify-center bg-[#04061B]/90',
-  CONTENT: 'relative inline-block w-full max-w-[93.75rem] md:max-w-[62.5rem] my-4 bg-[#04061B] border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl transform transition-all duration-300 h-[90vh]',
-  CLOSE_BUTTON: 'flex justify-center items-center border border-white/10 hover:border-white/20 rounded-full w-[3rem] h-[3rem] transition-all hover:rotate-90 duration-300 outline-none',
+const ANIMATION_VARIANTS = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { duration: 0.2, ease: 'easeOut' }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.9,
+    transition: { duration: 0.15, ease: 'easeIn' }
+  }
 };
 
 const ProjectModal = ({ project, onClose }) => {
-
-  // Обработчик закрытия модалки
+  // Обработчики
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  // Обработчик клавиатуры
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') handleClose();
+    if (e.key === 'Escape') {
+      handleClose();
+    } else if (e.key === 'ArrowRight') {
+      modalStore.nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      modalStore.prevSlide();
+    }
   }, [handleClose]);
 
   // Эффекты
   useEffect(() => {
-    if (project?.slides) {
-      navigationService.setTotalSlides(project.slides.length);
-    }
-
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      navigationService.reset();
     };
-  }, [project, handleKeyDown]);
+  }, [handleKeyDown]);
 
   if (!project?.slides?.length) return null;
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className={MODAL_STYLES.OVERLAY}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      variants={ANIMATION_VARIANTS}
       onClick={handleClose}
-      role="dialog"
-      aria-modal="true"
     >
-      <div
-        className={MODAL_STYLES.CONTENT}
-        onClick={(e) => e.stopPropagation()}
-        tabIndex={-1}
+      <motion.div
+        className="relative w-full max-w-7xl mx-auto my-4 bg-primary border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl overflow-hidden"
+        onClick={e => e.stopPropagation()}
+        layoutId={`project-${project.id}`}
       >
-        {/* Кнопка закрытия */}
-        <div className="absolute top-[1.875rem] md:top-[1.25rem] right-[1.875rem] md:right-[1.25rem] z-50">
-          <div className="bg-white/2 backdrop-blur-md rounded-full p-1">
-            <button
-              onClick={handleClose}
-              aria-label="Закрыть модальное окно"
-              className={MODAL_STYLES.CLOSE_BUTTON}
-            >
-              <svg
-                width="21"
-                height="21"
-                viewBox="0 0 14 14"
-                fill="none"
-                className="scale-75 md:scale-100"
-              >
-                <path
-                  d="M1 1L13 13M1 13L13 1"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </button>
+        <div className="h-[90vh] overflow-y-auto modal-scrollbar">
+          <div className="p-[3.75rem] md:p-[2.5rem]">
+            <ModalHeader project={project} />
+            <ModalSlider slides={project.slides} />
           </div>
         </div>
 
-        {/* Контент */}
-        <div className="h-full overflow-y-auto p-[3.75rem] md:p-[2.5rem] modal-scrollbar">
-          <ModalHeader project={project} />
-          <ModalSlider slides={project.slides.filter(slide => slide.image)} />
-        </div>
-      </div>
+        {/* Кнопка закрытия */}
+        <button
+          onClick={handleClose}
+          className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+          aria-label="Закрыть"
+        >
+          <svg
+            className="w-6 h-6 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </motion.div>
     </motion.div>
   );
 };

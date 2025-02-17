@@ -1,3 +1,5 @@
+import React from "react";
+
 const ModalHeader = ({ project }) => {
   // Если project отсутствует или нет ни одного поля - не рендерим компонент
   if (!project || !(project.title || project.description || project.audience)) {
@@ -30,4 +32,4 @@ const ModalHeader = ({ project }) => {
   );
 };
 
-export default ModalHeader;
+export default React.memo(ModalHeader);

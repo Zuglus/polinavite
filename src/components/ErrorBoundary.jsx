@@ -1,43 +1,87 @@
-// src/components/ErrorBoundary.jsx
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null, errorInfo: null };
+    this.state = { 
+      hasError: false, 
+      error: null, 
+      errorInfo: null,
+      errorCount: 0
+    };
   }
 
   static getDerivedStateFromError(error) {
-    // Обновляем состояние, чтобы при следующем рендере отобразить резервный UI.
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    // Логируем ошибку.  В реальном приложении здесь можно отправить ошибку в систему мониторинга.
+    // Увеличиваем счетчик ошибок
+    this.setState(prevState => ({
+      error,
+      errorInfo,
+      errorCount: prevState.errorCount + 1
+    }));
+
+    // Отправка ошибки в сервис мониторинга (если будет добавлен)
     console.error('ErrorBoundary caught an error:', error, errorInfo);
-        this.setState({ error, errorInfo }); // Сохранение ошибки для диагностики.
   }
+
+  handleRetry = () => {
+    this.setState({ 
+      hasError: false,
+      error: null,
+      errorInfo: null
+    });
+  };
 
   render() {
     if (this.state.hasError) {
-      // Отображаем резервный UI.
+      // Если произошло слишком много ошибок, показываем сообщение о перезагрузке
+      if (this.state.errorCount > 3) {
+        return (
+          <div className="flex h-screen w-full items-center justify-center bg-primary text-white">
+            <div className="text-center p-8 max-w-lg">
+              <h1 className="text-2xl font-bold mb-4">
+                Произошла критическая ошибка
+              </h1>
+              <p className="mb-4">
+                Пожалуйста, перезагрузите страницу для продолжения работы.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-6 py-2 bg-secondary rounded-lg font-medium 
+                         hover:bg-opacity-80 transition-colors"
+              >
+                Перезагрузить страницу
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      // Для некритичных ошибок показываем кнопку повтора
       return (
         <div className="flex h-screen w-full items-center justify-center bg-primary text-white">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Что-то пошло не так.</h1>
-            <p>Пожалуйста, перезагрузите страницу или попробуйте позже.</p>
-            {/* (Опционально) кнопка для перезагрузки.  Просто для примера, в реальности нужна более сложная обработка */}
+          <div className="text-center p-8 max-w-lg">
+            <h1 className="text-2xl font-bold mb-4">
+              Что-то пошло не так
+            </h1>
+            <p className="mb-4">
+              Произошла ошибка при загрузке компонента.
+            </p>
             <button
-             onClick={() => window.location.reload()}
-             className='mt-2 px-4 py-1 bg-secondary rounded font-medium'
-            >Перезагрузить
+              onClick={this.handleRetry}
+              className="px-6 py-2 bg-secondary rounded-lg font-medium 
+                       hover:bg-opacity-80 transition-colors"
+            >
+              Попробовать снова
             </button>
           </div>
         </div>
       );
     }
 
-    // Если ошибок нет, рендерим дочерние компоненты как обычно.
     return this.props.children;
   }
 }

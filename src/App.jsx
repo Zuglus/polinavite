@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector } from '@legendapp/state/react';
+import { observer } from '@legendapp/state/react';
 
 // Features
 import { PortfolioSection } from '@/components/features/Portfolio';
@@ -26,9 +26,10 @@ const ANIMATION_CONFIG = {
   transition: { duration: 0.3 }
 };
 
-const App = () => {
-  const modalId = useSelector(() => modalStore.modalId.get());
-  const currentProject = useSelector(() => modalStore.currentProject.get());
+const App = observer(() => {
+  // Используем селекторы из modalStore
+  const isModalOpen = modalStore.useIsOpen();
+  const currentProject = modalStore.useCurrentProject();
 
   useEffect(() => {
     const imageUrls = projects
@@ -39,7 +40,7 @@ const App = () => {
     imageService.preloadImages(imageUrls);
   }, []);
 
-  useLockBodyScroll(modalId !== null);
+  useLockBodyScroll(isModalOpen);
 
   const handleCardClick = (id) => {
     const project = projects.find(p => p.id === id);
@@ -56,7 +57,7 @@ const App = () => {
       <PortfolioSection onCardClick={handleCardClick} />
       <Footer />
       <AnimatePresence>
-        {modalId !== null && (
+        {isModalOpen && currentProject && (
           <motion.div key="modal" {...ANIMATION_CONFIG}>
             <ProjectModal project={currentProject} onClose={handleCloseModal} />
           </motion.div>
@@ -64,6 +65,6 @@ const App = () => {
       </AnimatePresence>
     </div>
   );
-};
+});
 
 export default App;
