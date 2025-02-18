@@ -66,11 +66,11 @@ const ProjectModal = ({ project, onClose }) => {
 
         <button
           onClick={handleClose}
-          className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+          className="absolute top-6 right-6 p-4 md:p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
           aria-label="Закрыть"
         >
           <svg
-            className="w-6 h-6 text-white"
+            className="w-10 h-10 md:w-6 md:h-6 text-white"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
