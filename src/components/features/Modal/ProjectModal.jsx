@@ -76,7 +76,7 @@ const ProjectModal = ({ project, onClose }) => {
           aria-label="Закрыть"
         >
           <svg
-            className="w-8 h-8 md:w-6 md:h-6 text-white/80 group-hover:text-white
+            className="w-12 h-12 md:w-6 md:h-6 text-white/80 group-hover:text-white
                        transition-colors duration-300 ease-in-out"
             fill="none"
             viewBox="0 0 24 24"
