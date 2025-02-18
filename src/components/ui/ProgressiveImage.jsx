@@ -1,23 +1,37 @@
 // src/components/ui/ProgressiveImage.jsx
-import React, { useState } from 'react';
-import { useSelector } from '@legendapp/state/react';
+/**
+ * Компонент для постепенной загрузки изображений с поддержкой анимации и состояний загрузки
+ * @component
+ * @param {Object} props - Свойства компонента
+ * @param {string} props.src - URL изображения для загрузки
+ * @param {string} props.alt - Альтернативный текст для изображения
+ * @param {string} [props.className] - Дополнительные CSS классы
+ * @param {boolean} [props.priority=false] - Флаг приоритетной загрузки
+ * @returns {React.ReactElement} Компонент с изображением и состояниями загрузки
+ */
+
+import React from 'react';
+import { observable } from '@legendapp/state';
+import { observer } from '@legendapp/state/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '@ui';
 import { imageService } from '@services';
 
-const ProgressiveImage = ({ 
+// Создаем observable состояние
+const imageState = observable({ isLoaded: false });
+
+const ProgressiveImage = observer(({ 
   src, 
   alt, 
   className = '', 
   priority = false 
 }) => {
-  const status = useSelector(() => imageService.status$.get());
-  const retryCount = useSelector(() => imageService.retryCount$.get());
-  const [isLoaded, setIsLoaded] = useState(false);
+  const status = imageService.status$.get();
+  const retryCount = imageService.retryCount$.get();
 
   // Обработчик успешной загрузки
   const handleLoad = () => {
-    setIsLoaded(true);
+    imageState.isLoaded.set(true);
   };
 
   React.useEffect(() => {
@@ -25,12 +39,12 @@ const ProgressiveImage = ({
       imageService.loadImage(src);
     }
     return () => {
-      setIsLoaded(false);
+      imageState.isLoaded.set(false);
     };
   }, [src]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full overflow-hidden isolate">
       <AnimatePresence mode="wait">
         {/* Skeleton при загрузке */}
         {(status === 'loading' || status === 'retrying') && (
@@ -65,8 +79,8 @@ const ProgressiveImage = ({
             key="image"
             initial={{ opacity: 0, filter: 'blur(10px)' }}
             animate={{ 
-              opacity: isLoaded ? 1 : 0,
-              filter: isLoaded ? 'blur(0px)' : 'blur(10px)'
+              opacity: imageState.isLoaded.get() ? 1 : 0,
+              filter: imageState.isLoaded.get() ? 'blur(0px)' : 'blur(10px)'
             }}
             transition={{ duration: 0.3 }}
             className="w-full h-full"
@@ -84,6 +98,6 @@ const ProgressiveImage = ({
       </AnimatePresence>
     </div>
   );
-};
+});
 
 export default React.memo(ProgressiveImage);

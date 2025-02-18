@@ -12,8 +12,6 @@ const SliderImage = ({ src, alt, priority = false }) => {
   React.useEffect(() => {
     if (src) {
       imageService.loadImage(src);
-      imageService.status$.onChange(({value}) => {
-    });
     }
   }, [src]);
 

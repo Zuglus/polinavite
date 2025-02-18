@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
+// src/App.jsx
+import React, { useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { observer } from '@legendapp/state/react';
-
-// Features
-import { PortfolioSection } from '@/components/features/Portfolio';
-import { ProjectModal } from '@/components/features/Modal';
 
 // UI Components
 import { Header, Footer } from '@/components/ui';
@@ -19,19 +16,30 @@ import { projects } from '@/constants/projectsData';
 // Hooks
 import { useLockBodyScroll } from '@/hooks';
 
-const ANIMATION_CONFIG = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.3 }
-};
+// Ленивая загрузка компонентов
+const PortfolioSection = React.lazy(() => 
+  import('@/components/features/Portfolio').then(module => ({
+    default: module.PortfolioSection
+  }))
+);
+
+const ProjectModal = React.lazy(() => 
+  import('@/components/features/Modal').then(module => ({
+    default: module.ProjectModal
+  }))
+);
+
+// Компонент для отображения во время загрузки
+const ComponentLoader = () => (
+  <div className="w-full h-32 animate-pulse bg-white/5 rounded-lg" />
+);
 
 const App = observer(() => {
-  // Используем селекторы из modalStore
   const isModalOpen = modalStore.useIsOpen();
   const currentProject = modalStore.useCurrentProject();
 
   useEffect(() => {
+    // Предзагрузка только первых трех изображений для каждого проекта
     const imageUrls = projects
       .map(project => project.slides.slice(0, 3)
       .map(slide => slide.image))
@@ -54,13 +62,21 @@ const App = observer(() => {
   return (
     <div className="bg-primary text-white min-h-screen">
       <Header />
-      <PortfolioSection onCardClick={handleCardClick} />
+      
+      <Suspense fallback={<ComponentLoader />}>
+        <PortfolioSection onCardClick={handleCardClick} />
+      </Suspense>
+      
       <Footer />
+      
       <AnimatePresence>
         {isModalOpen && currentProject && (
-          <motion.div key="modal" {...ANIMATION_CONFIG}>
-            <ProjectModal project={currentProject} onClose={handleCloseModal} />
-          </motion.div>
+          <Suspense fallback={<ComponentLoader />}>
+            <ProjectModal 
+              project={currentProject} 
+              onClose={handleCloseModal} 
+            />
+          </Suspense>
         )}
       </AnimatePresence>
     </div>

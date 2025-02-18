@@ -20,7 +20,6 @@ const ANIMATION_VARIANTS = {
 };
 
 const ProjectModal = ({ project, onClose }) => {
-  // Обработчики
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -35,7 +34,6 @@ const ProjectModal = ({ project, onClose }) => {
     }
   }, [handleClose]);
 
-  // Эффекты
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
@@ -66,7 +64,6 @@ const ProjectModal = ({ project, onClose }) => {
           </div>
         </div>
 
-        {/* Кнопка закрытия */}
         <button
           onClick={handleClose}
           className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"

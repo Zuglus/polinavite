@@ -1,3 +1,14 @@
+// src/hooks/useDeviceDetection.js
+/**
+ * Хук для определения типа устройства пользователя
+ * @returns {boolean} true для сенсорных устройств
+ * @example
+ * const Component = () => {
+ *   const isTouchDevice = useDeviceDetection();
+ *   return isTouchDevice ? <TouchUI /> : <DesktopUI />;
+ * };
+ */
+
 import { useState, useEffect } from 'react';
 
 export const useDeviceDetection = () => {

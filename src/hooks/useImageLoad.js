@@ -1,20 +1,22 @@
 // src/hooks/useImageLoad.js
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { imageService } from '@/services';
+import { observable } from '@legendapp/state';
+
+// Создаем observable для статуса
+const loadStatus = observable('init');
 
 export const useImageLoad = (src) => {
-  const [status, setStatus] = useState('init');
-
   useEffect(() => {
     if (!src) return;
 
     const subscription = imageService.status$
-      .subscribe(newStatus => setStatus(newStatus));
+      .subscribe(newStatus => loadStatus.set(newStatus));
 
     imageService.loadImage(src).catch(console.error);
 
     return () => subscription.unsubscribe();
   }, [src]);
 
-  return status;
+  return loadStatus.get();
 };

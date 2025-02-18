@@ -1,117 +1,80 @@
 // src/components/features/Modal/ModalSlider.jsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useObservable } from '@legendapp/state/react';
-import { navigationService } from '@services';
-import { SliderImage, NavigationButtons } from './components/index';
+import { observer } from '@legendapp/state/react';
+import { navigationStore } from '@/stores/navigationStore';
+import { SliderImage, NavigationButtons } from './components';
 
-const ModalSlider = ({ slides }) => {
-  const state = useObservable({ currentIndex: 0 });
-  const [direction, setDirection] = useState(1);
+const ModalSlider = observer(({ slides }) => {
+  const currentIndex = navigationStore.useCurrentSlide();
 
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleNavigation = (direction) => {
-    if (!isAnimating) {
-      setIsAnimating(true);
-      direction === 'next'
-        ? navigationService.goNext()
-        : navigationService.goPrev();
-      setTimeout(() => setIsAnimating(false), 300);
-    }
-  };
-
-  useEffect(() => {
-    const sub = navigationService.state$.subscribe(({ currentIndex }) => {
-      setDirection(currentIndex > state.currentIndex.get() ? 1 : -1);
-      state.currentIndex.set(currentIndex);
-    });
-    return () => sub.unsubscribe();
-  }, []);
-
-  useEffect(() => {
+  React.useEffect(() => {
     if (slides?.length > 0) {
-      navigationService.setTotalSlides(slides.length);
+      navigationStore.setTotalSlides(slides.length);
     }
+    return () => navigationStore.reset();
   }, [slides]);
 
-  const currentSlide = slides?.[state.currentIndex.get()] || {};
-
-  const variants = {
-    enter: (dir) => ({
-      x: dir > 0 ? '100%' : '-100%',
-      opacity: 0.5,
-      transition: { duration: 0.3 }
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.3 }
-    },
-    exit: (dir) => ({
-      x: dir < 0 ? '100%' : '-100%',
-      opacity: 0.5,
-      transition: { duration: 0.3 }
-    })
+  const handleNavigation = (direction) => {
+    direction === 'next' 
+      ? navigationStore.nextSlide()
+      : navigationStore.prevSlide();
   };
 
   if (!slides?.length) return null;
 
+  const currentSlide = slides[currentIndex] || {};
+
   return (
     <div className="slider w-full max-w-[93.75rem] mx-auto overflow-visible group relative">
-      {slides?.length > 0 && (
-        <AnimatePresence initial={false} custom={direction}>
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0, x: 300 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -300 }}
+          className="relative w-full"
+        >
+          {/* Контейнер для изображения */}
           <motion.div
-            key={state.currentIndex.get()}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            layout // Добавляем автоматическую анимацию макета
-            className="relative w-full"
+            layout
+            className="overflow-hidden"
           >
-            {/* Контейнер для изображения */}
+            <SliderImage
+              src={currentSlide.image}
+              index={currentIndex}
+            />
+          </motion.div>
+
+          {/* Контент */}
+          <motion.div
+            layout
+            className="px-8 pb-8"
+          >
+            <NavigationButtons onNavigate={handleNavigation} />
+
             <motion.div
               layout
-              className="overflow-hidden"
+              className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4"
             >
-              <SliderImage
-                src={currentSlide.image}
-                index={state.currentIndex.get()}
-              />
-            </motion.div>
-
-            {/* Контент для прокрутки */}
-            <motion.div
-              layout
-              className="px-8 pb-8"
-            >
-              <NavigationButtons onNavigate={handleNavigation} />
-
-              <motion.div
-                layout
-                className="font-onest text-[3.28125rem] md:text-[1.25rem] space-y-4"
-              >
-                {currentSlide.task && (
-                  <p>
-                    <span className="font-semibold">Задача: </span>
-                    <span className="opacity-80">{currentSlide.task}</span>
-                  </p>
-                )}
-                {currentSlide.solution && (
-                  <p>
-                    <span className="font-semibold">Решение: </span>
-                    <span className="opacity-80">{currentSlide.solution}</span>
-                  </p>
-                )}
-              </motion.div>
+              {currentSlide.task && (
+                <p>
+                  <span className="font-semibold">Задача: </span>
+                  <span className="opacity-80">{currentSlide.task}</span>
+                </p>
+              )}
+              {currentSlide.solution && (
+                <p>
+                  <span className="font-semibold">Решение: </span>
+                  <span className="opacity-80">{currentSlide.solution}</span>
+                </p>
+              )}
             </motion.div>
           </motion.div>
-        </AnimatePresence>
-      )}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
-};
+});
 
 export default ModalSlider;

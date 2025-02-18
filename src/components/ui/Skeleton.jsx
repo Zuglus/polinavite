@@ -1,4 +1,14 @@
 // src/components/ui/Skeleton.jsx
+/**
+ * Компонент для отображения состояния загрузки с поддержкой анимации
+ * @component
+ * @param {Object} props
+ * @param {string} [props.className] - Дополнительные CSS классы
+ * @param {('default'|'circle'|'text')} [props.variant='default'] - Вариант отображения
+ * @param {('pulse'|'wave'|'none')} [props.animation='pulse'] - Тип анимации
+ * @returns {React.ReactElement} Компонент-заглушка с анимацией
+ */
+
 import React from 'react';
 
 /**

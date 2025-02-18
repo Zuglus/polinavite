@@ -1,4 +1,10 @@
 // src/components/ui/Footer.jsx
+/**
+ * Компонент подвала сайта с контактной информацией
+ * @component
+ * @returns {React.ReactElement} Компонент с контактной информацией и ссылками
+ */
+
 import React from 'react';
 import buttonCircle from '@images/koltsa_fon1.svg';
 

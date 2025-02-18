@@ -1,4 +1,10 @@
 // src/components/ui/Header.jsx
+/**
+ * Компонент заголовка сайта
+ * @component
+ * @returns {React.ReactElement} Компонент с логотипом и заголовком
+ */
+
 import React from 'react';
 import logo from "@images/logo.svg";
 

@@ -1,3 +1,14 @@
+// src/hooks/useLockBodyScroll.js
+/**
+ * Хук для блокировки прокрутки body при открытии модального окна
+ * @param {boolean} isLocked - Флаг блокировки прокрутки
+ * @example
+ * const Modal = () => {
+ *   useLockBodyScroll(true);
+ *   return <div>Modal content</div>;
+ * };
+ */
+
 import { useEffect } from 'react';
 
 export const useLockBodyScroll = (isLocked) => {

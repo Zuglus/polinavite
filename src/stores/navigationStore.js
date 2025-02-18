@@ -1,8 +1,4 @@
-// src/services/navigation.service.js
-/**
- * Сервис для управления навигацией по слайдам
- * @namespace
- */
+// src/stores/navigationStore.js
 import { observable } from '@legendapp/state';
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
 
@@ -18,19 +14,10 @@ const state = observable({
 
 // Действия
 const navigationActions = {
-
-  /**
-   * Устанавливает общее количество слайдов
-   * @param {number} total - Количество слайдов
-   */
   setTotalSlides: (total) => {
     state.totalSlides.set(total);
   },
 
-  /**
-   * Переключает на следующий слайд
-   * @throws {Error} Если достигнут последний слайд
-   */
   nextSlide: () => {
     const currentIndex = state.currentSlideIndex.get();
     const totalSlides = state.totalSlides.get();
@@ -39,10 +26,6 @@ const navigationActions = {
     }
   },
 
-  /**
-   * Переключает на предыдущий слайд
-   * @throws {Error} Если достигнут первый слайд
-   */
   prevSlide: () => {
     const currentIndex = state.currentSlideIndex.get();
     if (currentIndex > 0) {
@@ -50,9 +33,6 @@ const navigationActions = {
     }
   },
 
-  /**
-   * Сбрасывает навигацию в начальное состояние
-   */
   reset: () => {
     state.currentSlideIndex.set(0);
     state.totalSlides.set(0);
@@ -65,7 +45,7 @@ const navigationSelectors = {
   useTotalSlides: () => state.totalSlides.get(),
 };
 
-export const navigationService = {
+export const navigationStore = {
   ...navigationActions,
   ...navigationSelectors
 };
