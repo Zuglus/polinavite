@@ -7,13 +7,13 @@ import { modalStore } from '@stores';
 
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, scale: 0.9 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     scale: 1,
     transition: { duration: 0.2, ease: 'easeOut' }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     scale: 0.9,
     transition: { duration: 0.15, ease: 'easeIn' }
   }
@@ -66,11 +66,18 @@ const ProjectModal = ({ project, onClose }) => {
 
         <button
           onClick={handleClose}
-          className="absolute top-6 right-6 p-4 md:p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
+          className="absolute top-6 right-6 p-4 md:p-2 rounded-full 
+                     bg-black/40 backdrop-blur-sm 
+                     hover:bg-black/60 
+                     focus:outline-none focus:ring-2 focus:ring-white/50
+                     z-50 group
+                     transition-all duration-300 ease-in-out
+                     shadow-lg"
           aria-label="Закрыть"
         >
           <svg
-            className="w-10 h-10 md:w-6 md:h-6 text-white"
+            className="w-8 h-8 md:w-6 md:h-6 text-white/80 group-hover:text-white
+                       transition-colors duration-300 ease-in-out"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
