@@ -4,6 +4,19 @@ import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
+// Функция для очистки пробелов в ключах объекта
+const cleanGlobals = (globalsObj) => {
+  return Object.entries(globalsObj).reduce((acc, [key, value]) => {
+    const cleanKey = key.trim();
+    acc[cleanKey] = value;
+    return acc;
+  }, {});
+};
+
+// Очищаем глобальные объекты
+const browserGlobals = cleanGlobals(globals.browser);
+const nodeGlobals = cleanGlobals(globals.node);
+
 export default [
   { ignores: ['dist', '*.config.js'] },
   {
@@ -11,8 +24,8 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       globals: {
-        ...globals.browser,
-        ...globals.node
+        ...browserGlobals,
+        ...nodeGlobals
       },
       parserOptions: {
         ecmaFeatures: { jsx: true },
