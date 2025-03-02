@@ -1,0 +1,1147 @@
+Project Codebase (Generated on polinavite)
+==================================================
+
+
+File: index.html
+--------------------------------------------------
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO метатеги -->
+  <title>Полина Мигранова | Графический дизайнер</title>
+  <meta name="description"
+    content="Портфолио графического дизайнера Полины Миграновой. Создание современного дизайна, брендинг, иллюстрации и веб-дизайн.">
+  <meta name="keywords" content="графический дизайнер, дизайн, брендинг, логотипы, веб-дизайн, Полина Мигранова">
+  <meta name="author" content="Полина Мигранова">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body class="bg-primary text-white font-onest">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
+==================================================
+
+File: tailwind.config.js
+--------------------------------------------------
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  theme: {
+    extend: {
+      fontFamily: {
+        'mv-skifer': ['MV-SKIFER', 'sans-serif'],
+        'onest': ['Onest', 'sans-serif'],
+      },
+      colors: {
+        primary: '#04061B',
+        secondary: '#3624A6',
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+      },
+      keyframes: {
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
+        },
+        pulse: {
+          '0%, 100%': {
+            opacity: 1,
+            transform: 'scale(1)'
+          },
+          '50%': {
+            opacity: 0.5,
+            transform: 'scale(0.95)'
+          }
+        },
+      }
+    },
+  },
+  plugins: [],
+};
+==================================================
+Other file: .DS_Store
+Other file: project-requirements.md
+Other file: postcss.config.cjs
+
+File: vite.config.js
+--------------------------------------------------
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@ui': path.resolve(__dirname, './src/components/ui'),
+      '@features': path.resolve(__dirname, './src/components/features'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@stores': path.resolve(__dirname, './src/stores'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@utils': path.resolve(__dirname, './src/utils'),
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@images': path.resolve(__dirname, './src/assets/images'),
+      '@fonts': path.resolve(__dirname, './src/assets/fonts')
+    }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'animation-vendor': ['framer-motion'],
+          'state-vendor': ['@legendapp/state', 'rxjs']
+        }
+      }
+    }
+  },
+  server: {
+    port: 3000,
+    strictPort: true,
+    open: true
+  }
+});
+==================================================
+Other file: README.md
+Other file: package-lock.json
+Other file: package.json
+
+File: eslint.config.js
+--------------------------------------------------
+import js from '@eslint/js'
+import globals from 'globals'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+
+export default [
+  { ignores: ['dist', '*.config.js'] },
+  {
+    files: ['**/*.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      },
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module'
+      }
+    },
+    settings: { 
+      react: { 
+        version: 'detect'
+      }
+    },
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
+      'react/jsx-uses-react': 'error',
+      'react/jsx-uses-vars': 'error',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true }
+      ],
+      'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn'
+    }
+  }
+]
+==================================================
+Media/Shrift: public/favicon-16x16.png
+Other file: public/favicon.ico
+Other file: public/.DS_Store
+Media/Shrift: public/android-chrome-192x192.png
+Media/Shrift: public/apple-touch-icon.png
+Media/Shrift: public/android-chrome-512x512.png
+Other file: public/site.webmanifest
+Other file: public/manifest.json
+Other file: public/robots.txt
+Media/Shrift: public/favicon-32x32.png
+Other file: src/.DS_Store
+Other file: src/main.jsx
+Other file: src/App.jsx
+
+File: src/constants/portfolioData.js
+--------------------------------------------------
+// Импортируем изображения обложек
+import nitiImage from '@images/threads.png';
+import codeImage from '@images/code.png';
+import fizicsImage from '@images/day.png';
+import presentationImage from '@images/presentation.png';
+
+export const portfolioData = [
+  { id: 'project1', image: nitiImage, alt: "НИТИ" },
+  { id: 'project2', image: codeImage, alt: "КОДИИМ" },
+  { id: 'project3', image: fizicsImage, alt: "День физики" },
+  { id: 'project4', image: presentationImage, alt: "Дизайн презентаций" },
+];
+==================================================
+
+File: src/constants/projectsData.js
+--------------------------------------------------
+import nitiSlide1 from "@images/niti/niti1.png";
+import nitiSlide2 from "@images/niti/niti2.png";
+import nitiSlide3 from "@images/niti/niti3.png";
+import nitiSlide4 from "@images/niti/niti4.png";
+import nitiSlide5 from "@images/niti/niti5.png";
+import codeEventDesign from "@images/code/code1.png";
+import codeBootcampMerch from "@images/code/code2.png";
+import codeSmmMaterials from "@images/code/code3.png";
+import codePlaceholder from "@images/code/code4.png";
+import fizicsPostcard from "@images/fizics/fizics1.png";
+import fizicsCards from "@images/fizics/fizics2.png";
+import fizicsPlaceholder from "@images/fizics/fizics3.png";
+import presentation11 from "@images/presentations/1-1.png";
+import presentation12 from "@images/presentations/1-2.png";
+import presentation13 from "@images/presentations/1-3.png";
+import presentation21 from "@images/presentations/2-1.png";
+import presentation22 from "@images/presentations/2-2.png";
+import presentation23 from "@images/presentations/2-3.png";
+import presentation24 from "@images/presentations/2-4.png";
+import presentation25 from "@images/presentations/2-5.png";
+import presentation31 from "@images/presentations/3-1.png";
+import presentation32 from "@images/presentations/3-2.png";
+
+export const projects = [
+  {
+    id: "project1",
+    title: "НИТИ",
+    description: "Кластер проектов по управлению современным образованием",
+    audience:
+      "менеджеры образования, управленцы, преимущественно женщины старше 40",
+    slides: [
+      {
+        image: nitiSlide1,
+        task: "ребрендинг образовательного продукта, создание айдентики, гармонично сочетающей эстетику с глубоким смысловым содержанием. Основной акцент на женственность, лидерство и стремление к профессиональному росту",
+        solution: "цветовая палитра создает ощущение серьезного подхода к вызовам современного образования. Возраст целевой аудитории определяет использование цветов с более короткой длиной волны (выбран синий, использовался и ранее, но изменены оттенки и градиенты). Новые элементы айдентики подчеркивают глубину образовательного материала",
+      },
+      {
+        image: nitiSlide2,
+        task: "ребрендинг образовательного продукта, создание айдентики, гармонично сочетающей эстетику с глубоким смысловым содержанием. Основной акцент на женственность, лидерство и стремление к профессиональному росту",
+        solution:
+          "цветовая палитра создает ощущение серьезного подхода к вызовам современного образования. Возраст целевой аудитории определяет использование цветов с более короткой длиной волны (выбран синий, использовался и ранее, но изменены оттенки и градиенты). Новые элементы айдентики подчеркивают глубину образовательного материала",
+      },
+      {
+        image: nitiSlide3,
+        task: "разработка мерча для мероприятия",
+        solution: "цветовая палитра создает ощущение серьезного подхода к вызовам современного образования. Возраст целевой аудитории определяет использование цветов с более короткой длиной волны (выбран синий, использовался и ранее, но изменены оттенки и градиенты). Новые элементы айдентики подчеркивают глубину образовательного материала",
+      },
+      {
+        image: nitiSlide4,
+        task: "создание smm-материалов (карточек)",
+        solution: "разработка основных элементов фирменного стиля (сохранение общих моментов и введение разнообразия для привлечения внимания), расстановка акцентов для выделения существенной информации",
+      },
+      {
+        image: nitiSlide5,
+        task: "создание smm-материалов (карточек)",
+        solution: "разработка основных элементов фирменного стиля (сохранение общих моментов и введение разнообразия для привлечения внимания), расстановка акцентов для выделения существенной информации",
+      },
+    ],
+  },
+  {
+    id: "project2",
+    title: "КОДИИМ",
+    description:
+      "Проект по искусственному интеллекту, обучению программированию и созданию нейронных сетей",
+    audience: "учащиеся 6-11 классов, интересующиеся программированием и ИИ",
+    slides: [
+      {
+        image: codeEventDesign,
+        task: "оформление ивента — Московского городского конкурса для школьников в области ИИ (мерча для подарков победителям и призерам)",
+        solution:
+          "современная подача, цветовые отличия в бейджах, палитра отражает технологичность бренда",
+      },
+      {
+        image: codeBootcampMerch,
+        task: "создать уникальный и запоминающийся мерч для буткемпа по ИИ",
+        solution:
+          "в разработке мерча реализован уникальный подход: смыслы мероприятия представлены как код в программировании",
+      },
+      {
+        image: codeSmmMaterials,
+        task: "редизайн smm-материалов",
+        solution:
+          "разнообразие цветов, активное использование нейросетей для генерации иллюстраций и персонажей",
+      },
+      {
+        image: codePlaceholder,
+        task: "редизайн smm-материалов",
+        solution: "разнообразие цветов, активное использование нейросетей для генерации иллюстраций и персонажей",
+      },
+    ],
+  },
+  {
+    id: "project3",
+    title: "День физики",
+    description:
+      "Мероприятие состоялось 17 сентября 2023 года в день рождения Циолковского на базе вузов в 22 городах страны",
+    audience: "старшеклассники, интересующиеся наукой, выбирают будущую профессию",
+    slides: [
+      {
+        image: fizicsPostcard,
+        task: "разработать карточки для игры «Технообмен» в айдентике бренда, но с указанными новыми цветами. Участники получали карточки в обмен на выполнение заданий",
+        solution:
+          "изучить биографии российских и советских учёных. Было важно показать, что теоретические открытия не самоцель, наука призвана решать конкретные практические задачи. Так родилась идея написать тексты об открытиях на обороте и добавлять надпись «НАУКА=ТЕОРИЯ+ПРАКТИКА». Цитаты учёных были подобраны для трансляции ценностей об отношении к профессии, труду и обществу",
+      },
+      {
+        image: fizicsCards,
+        task: "разработать макет открыток с российскими физиками, используя айдентику мероприятия",
+        solution: "изучить биографии российских и советских учёных. Было важно показать, что теоретические открытия не самоцель, наука призвана решать конкретные практические задачи. Так родилась идея написать тексты об открытиях на обороте и добавлять надпись «НАУКА=ТЕОРИЯ+ПРАКТИКА». Цитаты учёных были подобраны для трансляции ценностей об отношении к профессии, труду и обществу",
+      },
+      {
+        image: fizicsPlaceholder,
+        task: "разработать карточки для игры «Технообмен» в айдентике бренда, но с указанными новыми цветами. Участники получали карточки в обмен на выполнение заданий",
+        solution: "создание легко читаемых макетов с указанием темы, года, ранжирования и категории по цвету",
+      },
+    ],
+  },
+  {
+    id: "project4",
+    title: "Презентации",
+    description:
+      "",
+    audience: "",
+    slides: [
+      {
+        image: presentation31,
+        task: "разработка учебной презентации по Сталинградской битве",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации",
+      },
+      {
+        image: presentation32,
+        task: "разработка учебной презентации по Сталинградской битве",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации",
+      },
+      {
+        image: presentation21,
+        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+      },
+      {
+        image: presentation22,
+        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+      },
+      {
+        image: presentation23,
+        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+      },
+      {
+        image: presentation24,
+        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+      },
+      {
+        image: presentation25,
+        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
+        solution:
+          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+      },
+      {
+        image: presentation11,
+        task: "создание презентации услуги по грузоперевозкам и переезду",
+        solution:
+          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
+      },
+      {
+        image: presentation12,
+        task: "создание презентации услуги по грузоперевозкам и переезду",
+        solution:
+          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
+      },
+      {
+        image: presentation13,
+        task: "создание презентации услуги по грузоперевозкам и переезду",
+        solution:
+          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
+      },
+    ],
+  },
+];
+==================================================
+
+File: src/constants/styles.js
+--------------------------------------------------
+// src/constants/styles.js
+export const CARD_STYLES = {
+  CONTAINER: 'bg-white/5 hover:shadow-lg rounded-[1.875rem] md:rounded-[1.25rem] transition-all hover:-translate-y-2 duration-300 cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 group',
+  IMAGE: 'group-hover:scale-105 w-full transition-transform duration-300 object-cover'
+};
+
+export const SECTION_STYLES = {
+  CONTAINER: 'relative mx-auto px-4 py-[7.75rem] max-w-[75rem]',
+  HEADER_WRAPPER: 'relative mb-[4.1875rem] text-center z-0',
+  DECORATION: 'absolute top-[-2.875rem] md:top-[-1.875rem] left-[50%] w-[25.875rem] md:w-[17.25rem] h-[28.0125rem] md:h-[18.675rem] transform -translate-x-[20.6rem] md:-translate-x-[13.625rem] z-0',
+  DECORATION_IMAGE: 'w-full h-full object-contain',
+  TITLE: 'font-mv-skifer text-[4.6875rem] md:text-[3.125rem] leading-[1.24] tracking-[0.01em] relative z-10',
+  GRID: 'relative z-10 gap-[2.71875rem] md:gap-[1.8125rem] grid grid-cols-1 md:grid-cols-2 mx-auto max-w-[70.65625rem] md:max-w-full'
+};
+
+export const IMAGE_STYLES = {
+  CONTAINER: 'relative w-full',
+  SKELETON: 'block inset-0 rounded-[1.25rem] bg-white w-full h-[400px]',
+  ERROR: 'text-red-500 text-center',
+  IMAGE: 'w-full object-contain'
+};
+==================================================
+
+File: src/stores/modalStore.js
+--------------------------------------------------
+// src/stores/modalStore.js
+import { observable, computed } from '@legendapp/state';
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
+
+// Включаем отслеживание для React
+enableReactTracking({
+  auto: true,
+});
+
+// Создаем базовый стейт
+const state = observable({
+  modalId: null,
+  currentProject: null,
+  currentSlideIndex: 0
+});
+
+// Действия с модальными окнами
+const modalActions = {
+  openModal: (id, project) => {
+    state.modalId.set(id);
+    state.currentProject.set(project);
+    state.currentSlideIndex.set(0);
+  },
+
+  closeModal: () => {
+    state.modalId.set(null);
+    state.currentProject.set(null);
+    state.currentSlideIndex.set(0);
+  },
+
+  setSlide: (index) => {
+    state.currentSlideIndex.set(index);
+  },
+
+  nextSlide: () => {
+    const currentIndex = state.currentSlideIndex.get();
+    const totalSlides = state.currentProject.get()?.slides?.length || 0;
+    if (currentIndex < totalSlides - 1) {
+      state.currentSlideIndex.set(currentIndex + 1);
+    }
+  },
+
+  prevSlide: () => {
+    const currentIndex = state.currentSlideIndex.get();
+    if (currentIndex > 0) {
+      state.currentSlideIndex.set(currentIndex - 1);
+    }
+  }
+};
+
+// Селекторы
+const modalSelectors = {
+  useIsOpen: () => state.modalId.get() !== null,
+  useCurrentProject: () => state.currentProject.get(),
+  useCurrentSlide: () => state.currentSlideIndex.get(),
+};
+
+export const modalStore = {
+  ...modalActions,
+  ...modalSelectors
+};
+==================================================
+
+File: src/stores/index.js
+--------------------------------------------------
+// src/stores/index.js
+export * from './modalStore';
+==================================================
+
+File: src/stores/navigationStore.js
+--------------------------------------------------
+// src/stores/navigationStore.js
+import { observable } from '@legendapp/state';
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
+
+enableReactTracking({
+  auto: true,
+});
+
+const state = observable({
+  currentSlideIndex: 0,
+  totalSlides: 0,
+  direction: 'none' // 'left' или 'right'
+});
+
+const navigationActions = {
+  setTotalSlides: (total) => {
+    state.totalSlides.set(total);
+  },
+
+  nextSlide: () => {
+    state.direction.set('right');
+    const currentIndex = state.currentSlideIndex.get();
+    const totalSlides = state.totalSlides.get();
+    state.currentSlideIndex.set(
+      currentIndex === totalSlides - 1 ? 0 : currentIndex + 1
+    );
+  },
+
+  prevSlide: () => {
+    state.direction.set('left');
+    const currentIndex = state.currentSlideIndex.get();
+    const totalSlides = state.totalSlides.get();
+    state.currentSlideIndex.set(
+      currentIndex === 0 ? totalSlides - 1 : currentIndex - 1
+    );
+  },
+
+  reset: () => {
+    state.currentSlideIndex.set(0);
+    state.totalSlides.set(0);
+    state.direction.set('none');
+  }
+};
+
+const navigationSelectors = {
+  useCurrentSlide: () => state.currentSlideIndex.get(),
+  useTotalSlides: () => state.totalSlides.get(),
+  useDirection: () => state.direction.get(),
+};
+
+export const navigationStore = {
+  ...navigationActions,
+  ...navigationSelectors
+};
+==================================================
+Other file: src/components/.DS_Store
+Other file: src/components/ErrorBoundary.jsx
+Other file: src/components/ui/ProgressiveImage.jsx
+Other file: src/components/ui/Header.jsx
+Other file: src/components/ui/Footer.jsx
+Other file: src/components/ui/Skeleton.jsx
+
+File: src/components/ui/index.js
+--------------------------------------------------
+// src/components/ui/index.js
+export { default as Header } from './Header';
+export { default as Footer } from './Footer';
+export { default as Skeleton } from './Skeleton';
+export { default as ProgressiveImage } from './ProgressiveImage';
+
+==================================================
+Other file: src/components/features/.DS_Store
+Other file: src/components/features/Experience/ExperienceItem.jsx
+
+File: src/components/features/Experience/index.js
+--------------------------------------------------
+// src/components/features/Experience/index.js
+export { default as ExperienceItem } from './ExperienceItem';
+export { default as ExperienceSection } from './ExperienceSection';
+==================================================
+Other file: src/components/features/Experience/ExperienceSection.jsx
+
+File: src/components/features/Resume/index.js
+--------------------------------------------------
+// src/components/features/Resume/index.js
+export { default as ResumeSection } from './ResumeSection';
+==================================================
+Other file: src/components/features/Resume/ResumeSection.jsx
+
+File: src/components/features/Portfolio/index.js
+--------------------------------------------------
+// src/components/features/Portfolio/index.js
+export { default as PortfolioCard } from './PortfolioCard';
+export { default as PortfolioSection } from './PortfolioSection';
+==================================================
+Other file: src/components/features/Portfolio/PortfolioSection.jsx
+Other file: src/components/features/Portfolio/PortfolioCard.jsx
+Other file: src/components/features/Modal/.DS_Store
+
+File: src/components/features/Modal/index.js
+--------------------------------------------------
+// src/components/features/Modal/index.js
+export { default as ModalHeader } from './ModalHeader';
+export { default as ProjectModal } from './ProjectModal';
+export { default as ModalSlider } from './ModalSlider';
+==================================================
+Other file: src/components/features/Modal/ModalHeader.jsx
+Other file: src/components/features/Modal/ProjectModal.jsx
+Other file: src/components/features/Modal/ModalSlider.jsx
+Other file: src/components/features/Modal/components/NavigationButtons.jsx
+Other file: src/components/features/Modal/components/SliderImage.test.jsx
+
+File: src/components/features/Modal/components/index.js
+--------------------------------------------------
+// src/components/features/Modal/index.js
+export { default as NavigationButtons } from './NavigationButtons';
+export { default as SliderImage } from './SliderImage';
+==================================================
+Other file: src/components/features/Modal/components/SliderImage.jsx
+
+File: src/hooks/useLockBodyScroll.js
+--------------------------------------------------
+// src/hooks/useLockBodyScroll.js
+/**
+ * Хук для блокировки прокрутки body при открытии модального окна
+ * @param {boolean} isLocked - Флаг блокировки прокрутки
+ * @example
+ * const Modal = () => {
+ *   useLockBodyScroll(true);
+ *   return <div>Modal content</div>;
+ * };
+ */
+
+import { useEffect } from 'react';
+
+export const useLockBodyScroll = (isLocked) => {
+  useEffect(() => {
+    if (!isLocked) return;
+
+    const scrollY = window.scrollY;
+    const originalStyle = {
+      position: document.body.style.position,
+      width: document.body.style.width,
+      overflowY: document.body.style.overflowY,
+      top: document.body.style.top
+    };
+
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.overflowY = 'hidden';
+    document.body.style.top = `-${scrollY}px`;
+
+    return () => {
+      Object.assign(document.body.style, originalStyle);
+      window.scrollTo(0, scrollY);
+    };
+  }, [isLocked]);
+};
+==================================================
+
+File: src/hooks/index.js
+--------------------------------------------------
+// src/hooks/index.js
+export { useDeviceDetection } from './useDeviceDetection';
+export { useLockBodyScroll } from './useLockBodyScroll';
+==================================================
+
+File: src/hooks/usePreloadImages.js
+--------------------------------------------------
+// src/hooks/usePreloadImages.js
+/**
+ * Хук для предварительной загрузки набора изображений
+ * @param {string[]} images - Массив URL изображений для загрузки
+ * @param {number} [concurrency=3] - Количество параллельных загрузок
+ * @returns {Object} Объект с информацией о статусе загрузки
+ * @property {number} progress - Прогресс загрузки (0-100)
+ * @property {boolean} isComplete - Флаг завершения загрузки
+ * @property {Error|null} error - Ошибка загрузки, если есть
+ * @example
+ * const Component = () => {
+ *   const { progress, isComplete } = usePreloadImages(['img1.jpg', 'img2.jpg']);
+ *   return isComplete ? <Content /> : <Loading progress={progress} />;
+ * };
+ */
+
+import { observable } from '@legendapp/state';
+import { imageService } from '@services';
+
+const preloadState = observable({
+  progress: 0,
+  isComplete: false,
+  error: null
+});
+
+export const usePreloadImages = (images, concurrency = 3) => {
+  React.useEffect(() => {
+    if (!images?.length) return;
+
+    const totalImages = images.length;
+    let loadedImages = 0;
+
+    preloadState.set({
+      progress: 0,
+      isComplete: false,
+      error: null
+    });
+
+    imageService.preloadImages(images, concurrency)
+      .then(() => {
+        preloadState.set({
+          progress: 100,
+          isComplete: true,
+          error: null
+        });
+      })
+      .catch(error => {
+        preloadState.error.set(error);
+      });
+
+    return () => {
+      preloadState.set({
+        progress: 0,
+        isComplete: false,
+        error: null
+      });
+    };
+  }, [images, concurrency]);
+
+  return {
+    progress: preloadState.progress.get(),
+    isComplete: preloadState.isComplete.get(),
+    error: preloadState.error.get()
+  };
+};
+==================================================
+
+File: src/hooks/useImageLoad.js
+--------------------------------------------------
+// src/hooks/useImageLoad.js
+import { useEffect } from 'react';
+import { imageService } from '@/services';
+import { observable } from '@legendapp/state';
+
+// Создаем observable для статуса
+const loadStatus = observable('init');
+
+export const useImageLoad = (src) => {
+  useEffect(() => {
+    if (!src) return;
+
+    const subscription = imageService.status$
+      .subscribe(newStatus => loadStatus.set(newStatus));
+
+    imageService.loadImage(src).catch(console.error);
+
+    return () => subscription.unsubscribe();
+  }, [src]);
+
+  return loadStatus.get();
+};
+==================================================
+
+File: src/hooks/useDeviceDetection.js
+--------------------------------------------------
+// src/hooks/useDeviceDetection.js
+/**
+ * Хук для определения типа устройства пользователя
+ * @returns {boolean} true для сенсорных устройств
+ * @example
+ * const Component = () => {
+ *   const isTouchDevice = useDeviceDetection();
+ *   return isTouchDevice ? <TouchUI /> : <DesktopUI />;
+ * };
+ */
+
+import { useState, useEffect } from 'react';
+
+export const useDeviceDetection = () => {
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      navigator.msMaxTouchPoints > 0
+    );
+  }, []);
+
+  return isTouchDevice;
+};
+==================================================
+Other file: src/assets/.DS_Store
+
+File: src/assets/main.css
+--------------------------------------------------
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'MV-SKIFER';
+  src: url('@assets/fonts/MV-SKIFER.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('@assets/fonts/Onest-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('@assets/fonts/Onest-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('@assets/fonts/Onest-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('@assets/fonts/Onest-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('@assets/fonts/Onest-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-size: clamp(4.27px, calc(100vw / 75), 16px);
+}
+
+html {
+  overscroll-behavior: contain;
+  background-color: #04061B;
+}
+
+.modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #3624A6 transparent;
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: #3624A6;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: #4A5568;
+  border-radius: 4px;
+}
+
+.object-cover {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: static;
+}
+==================================================
+Media/Shrift: src/assets/images/code.png
+Media/Shrift: src/assets/images/day.png
+Other file: src/assets/images/.DS_Store
+Media/Shrift: src/assets/images/threads.png
+Media/Shrift: src/assets/images/presentation.png
+Media/Shrift: src/assets/images/kruzhok_opyt_raboty.svg
+Media/Shrift: src/assets/images/koltsa_fon1.svg
+Media/Shrift: src/assets/images/foto.png
+Media/Shrift: src/assets/images/center.png
+Media/Shrift: src/assets/images/rings_with_circle.svg
+Media/Shrift: src/assets/images/portfolio.svg
+Media/Shrift: src/assets/images/logo.svg
+Media/Shrift: src/assets/images/niti/niti4.png
+Media/Shrift: src/assets/images/niti/niti5.png
+Media/Shrift: src/assets/images/niti/niti1.png
+Media/Shrift: src/assets/images/niti/niti2.png
+Media/Shrift: src/assets/images/niti/niti3.png
+Media/Shrift: src/assets/images/code/code4.png
+Media/Shrift: src/assets/images/code/code3.png
+Media/Shrift: src/assets/images/code/code2.png
+Media/Shrift: src/assets/images/code/code1.png
+Media/Shrift: src/assets/images/presentations/2-1.png
+Media/Shrift: src/assets/images/presentations/2-3.png
+Media/Shrift: src/assets/images/presentations/2-2.png
+Media/Shrift: src/assets/images/presentations/2-5.png
+Media/Shrift: src/assets/images/presentations/2-4.png
+Media/Shrift: src/assets/images/presentations/1-1.png
+Media/Shrift: src/assets/images/presentations/3-2.png
+Media/Shrift: src/assets/images/presentations/1-2.png
+Media/Shrift: src/assets/images/presentations/3-1.png
+Media/Shrift: src/assets/images/presentations/1-3.png
+Media/Shrift: src/assets/images/fizics/fizics3.png
+Media/Shrift: src/assets/images/fizics/fizics2.png
+Media/Shrift: src/assets/images/fizics/fizics1.png
+Media/Shrift: src/assets/fonts/Onest-Light.ttf
+Media/Shrift: src/assets/fonts/Onest-ExtraBold.ttf
+Media/Shrift: src/assets/fonts/Onest-ExtraLight.ttf
+Other file: src/assets/fonts/.DS_Store
+Media/Shrift: src/assets/fonts/Onest-Medium.ttf
+Media/Shrift: src/assets/fonts/Onest-Thin.ttf
+Media/Shrift: src/assets/fonts/MV-SKIFER.otf
+Media/Shrift: src/assets/fonts/Onest-Bold.ttf
+Media/Shrift: src/assets/fonts/Onest-SemiBold.ttf
+Media/Shrift: src/assets/fonts/Onest-Regular.ttf
+Media/Shrift: src/assets/fonts/Onest-VariableFont_wght.ttf
+Media/Shrift: src/assets/fonts/Onest-Black.ttf
+Other file: src/services/.DS_Store
+
+File: src/services/image.service.js
+--------------------------------------------------
+// src/services/image.service.js
+/**
+ * Сервис для управления загрузкой и кешированием изображений
+ * @class
+ */
+
+import { observable } from "@legendapp/state";
+import { from } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+
+export class ImageService {
+
+  /**
+   * Создает экземпляр сервиса
+   * @constructor
+   */
+  constructor() {
+    this.status$ = observable('init');
+    this.retryCount$ = observable(0);
+    this.imageCache = new Map();
+    this.preloadQueue = new Set();
+    this.loadingPromises = new Map();
+  }
+
+  /**
+     * Загружает изображение с возможностью приоритизации
+     * @param {string} src - URL изображения
+     * @param {boolean} [priority=false] - Флаг приоритетной загрузки
+     * @returns {Promise<HTMLImageElement>} Промис с загруженным изображением
+     * @throws {Error} Ошибка при неудачной загрузке
+     */
+  loadImage(src, priority = false) {
+    // Если изображение уже в кеше, возвращаем его
+    if (this.imageCache.has(src)) {
+      this.status$.set('loaded');
+      return Promise.resolve(this.imageCache.get(src));
+    }
+
+    // Если изображение уже загружается, возвращаем существующий промис
+    if (this.loadingPromises.has(src)) {
+      return this.loadingPromises.get(src);
+    }
+
+    // Создаем новый промис для загрузки
+    const loadPromise = new Promise((resolve, reject) => {
+      this.status$.set('loading');
+
+      const img = new Image();
+
+      img.onload = () => {
+        this.imageCache.set(src, img);
+        this.status$.set('loaded');
+        this.retryCount$.set(0);
+        this.loadingPromises.delete(src);
+        resolve(img);
+      };
+
+      img.onerror = () => {
+        if (this.retryCount$.get() < 3) {
+          setTimeout(() => {
+            this.retryCount$.set(prev => prev + 1);
+            this.status$.set('retrying');
+            img.src = src;
+          }, 1000 * this.retryCount$.get());
+        } else {
+          this.status$.set('error');
+          this.loadingPromises.delete(src);
+          reject(new Error('Failed to load image'));
+        }
+      };
+
+      if (priority) {
+        img.fetchPriority = 'high';
+      }
+
+      img.src = src;
+    });
+
+    this.loadingPromises.set(src, loadPromise);
+    return loadPromise;
+  }
+
+  /**
+     * Предзагружает набор изображений с поддержкой параллельной загрузки
+     * @param {string[]} sources - Массив URL изображений
+     * @param {Object} [options] - Опции загрузки
+     * @param {number} [options.concurrency=3] - Количество параллельных загрузок
+     * @param {boolean} [options.priority=false] - Приоритет загрузки
+     * @returns {Promise<HTMLImageElement[]>} Промис с массивом загруженных изображений
+     */
+  preloadImages(sources, { concurrency = 3, priority = false } = {}) {
+    if (!sources?.length) return Promise.resolve([]);
+
+    // Фильтруем уже загруженные или загружающиеся изображения
+    const newSources = sources.filter(src =>
+      !this.imageCache.has(src) &&
+      !this.preloadQueue.has(src)
+    );
+
+    // Добавляем новые источники в очередь
+    newSources.forEach(src => this.preloadQueue.add(src));
+
+    return from(newSources).pipe(
+      mergeMap(src => from(this.loadImage(src, priority)), concurrency)
+    ).toPromise()
+      .finally(() => {
+        // Очищаем очередь после загрузки
+        newSources.forEach(src => this.preloadQueue.delete(src));
+      });
+  }
+
+  /**
+     * Очищает кеш изображений
+     * @param {boolean} [preserveCritical=true] - Сохранять ли критические изображения
+     */
+  clearCache(preserveCritical = true) {
+    if (!preserveCritical) {
+      this.imageCache.clear();
+    } else {
+      // Находим критические изображения (первые в каждом проекте)
+      const criticalImages = Array.from(this.imageCache.keys())
+        .filter(key => key.includes('slide0') || key.includes('cover'));
+
+      this.imageCache.clear();
+
+      // Восстанавливаем критические изображения
+      criticalImages.forEach(key => {
+        if (this.imageCache.has(key)) {
+          const img = this.imageCache.get(key);
+          this.imageCache.set(key, img);
+        }
+      });
+    }
+
+    this.status$.set('init');
+    this.retryCount$.set(0);
+  }
+}
+
+export const imageService = new ImageService();
+==================================================
+
+File: src/services/index.js
+--------------------------------------------------
+// src/services/index.js
+export * from './image.service';
+export * from './navigation.service';
+==================================================
+
+File: src/services/navigation.service.js
+--------------------------------------------------
+// src/services/navigation.service.js
+/**
+ * Сервис для управления навигацией по слайдам
+ * @namespace
+ */
+import { observable } from '@legendapp/state';
+import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
+
+// Включаем отслеживание для React
+enableReactTracking({
+  auto: true,
+});
+
+const state = observable({
+  currentSlideIndex: 0,
+  totalSlides: 0
+});
+
+// Действия
+const navigationActions = {
+
+  /**
+   * Устанавливает общее количество слайдов
+   * @param {number} total - Количество слайдов
+   */
+  setTotalSlides: (total) => {
+    state.totalSlides.set(total);
+  },
+
+  /**
+   * Переключает на следующий слайд
+   * @throws {Error} Если достигнут последний слайд
+   */
+  nextSlide: () => {
+    const currentIndex = state.currentSlideIndex.get();
+    const totalSlides = state.totalSlides.get();
+    if (currentIndex < totalSlides - 1) {
+      state.currentSlideIndex.set(currentIndex + 1);
+    }
+  },
+
+  /**
+   * Переключает на предыдущий слайд
+   * @throws {Error} Если достигнут первый слайд
+   */
+  prevSlide: () => {
+    const currentIndex = state.currentSlideIndex.get();
+    if (currentIndex > 0) {
+      state.currentSlideIndex.set(currentIndex - 1);
+    }
+  },
+
+  /**
+   * Сбрасывает навигацию в начальное состояние
+   */
+  reset: () => {
+    state.currentSlideIndex.set(0);
+    state.totalSlides.set(0);
+  }
+};
+
+// Селекторы
+const navigationSelectors = {
+  useCurrentSlide: () => state.currentSlideIndex.get(),
+  useTotalSlides: () => state.totalSlides.get(),
+};
+
+export const navigationService = {
+  ...navigationActions,
+  ...navigationSelectors
+};
+==================================================

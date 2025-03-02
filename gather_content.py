@@ -1,77 +1,76 @@
 import os
-from fnmatch import fnmatch
 from pathlib import Path
 
-EXCLUDED_DIRS = {
-    'node_modules', 'dist', '.git', '.vite', 
-    'cache', 'build', '__pycache__'
-}
+def collect_codebase_to_file(source_dir="."):
+    """
+    Собирает кодовую базу из source_dir в текстовый файл для предоставления ИИ.
+    Удаляет предыдущий файл, если он существует, и исключает себя и выходной файл из обработки.
+    """
+    # Определяем расширения для разных типов файлов
+    code_extensions = {'.py', '.js', '.java', '.cpp', '.c', '.h', '.ts', '.html', '.css'}
+    media_extensions = {'.jpg', '.png', '.gif', '.bmp', '.svg', '.ttf', '.otf', '.woff', '.woff2', 
+                       '.pdf', '.doc', '.docx', '.xls', '.xlsx'}
+    ignore_patterns = {'__pycache__', '.git', 'node_modules', 'dist', 'build', '*.egg-info', 
+                      'venv', '.venv', '*.pyc', '*.pyo', '*.pyd'}
 
-EXCLUDED_FILES = {
-    'package-lock.json',
-    'yarn.lock',
-    '.env',
-    '.env.local',
-    'project_contents.txt',
-    'gather_content.py',
-    '.DS_Store'  # Добавлен в исключения
-}
-
-EXCLUDED_EXTENSIONS = {
-    '.png', '.jpg', '.jpeg', '.gif', '.ico', '.svg', 
-    '.webp', '.pdf', '.zip', '.exe', '.dll', '.ttf'
-}
-
-def is_excluded_path(path: Path) -> bool:
-    """Проверяет, должен ли путь быть исключен."""
-    # Проверяем каждую часть пути на исключенные директории
-    for part in path.parts:
-        if part in EXCLUDED_DIRS:
-            return True
-    return False
-
-def is_excluded_file(file_path: Path) -> bool:
-    """Проверяет, должен ли файл быть исключен."""
-    return (
-        file_path.name in EXCLUDED_FILES or
-        file_path.suffix.lower() in EXCLUDED_EXTENSIONS or
-        any(fnmatch(file_path.name, pattern) for pattern in EXCLUDED_FILES)
-    )
-
-def gather_project_content(output_file: str = 'project_contents.txt') -> None:
-    """Собирает содержимое проекта в один файл, пропуская исключенные пути."""
-    start_path = Path.cwd()
-    output_path = Path(output_file)
-
-    # Удаление предыдущего файла
-    try:
-        output_path.unlink(missing_ok=True)
-    except Exception as e:
-        print(f"Ошибка при удалении файла: {e}")
-        return
-
+    output_file = "project_codebase.txt"
+    script_file = os.path.basename(__file__)  # Имя текущего скрипта
+    
+    # Удаляем предыдущий файл, если он существует
+    if os.path.exists(output_file):
+        os.remove(output_file)
+        print(f"Удален предыдущий файл: {output_file}")
+    
     with open(output_file, 'w', encoding='utf-8') as outfile:
-        for path in start_path.rglob('*'):
-            # Пропускаем директории и исключенные пути
-            if not path.is_file() or is_excluded_path(path) or is_excluded_file(path):
+        outfile.write(f"Project Codebase (Generated on {os.path.basename(os.getcwd())})\n")
+        outfile.write("=" * 50 + "\n\n")
+        
+        # Проходим по всем файлам и директориям
+        for root, dirs, files in os.walk(source_dir):
+            rel_root = os.path.relpath(root, source_dir)
+            
+            # Пропускаем игнорируемые директории
+            if any(pattern in rel_root for pattern in ignore_patterns):
                 continue
+                
+            for file in files:
+                file_path = os.path.join(root, file)
+                rel_path = os.path.relpath(file_path, source_dir)
+                
+                # Пропускаем текущий скрипт и выходной файл
+                if file == script_file or file == output_file:
+                    continue
+                    
+                # Пропускаем игнорируемые файлы
+                if any(file.endswith(pattern.strip('*')) or pattern in file 
+                      for pattern in ignore_patterns):
+                    continue
+                    
+                # Определяем расширение файла
+                _, ext = os.path.splitext(file)
+                ext = ext.lower()
+                
+                if ext in code_extensions:
+                    # Для кодовых файлов пишем полный контент
+                    outfile.write(f"\nFile: {rel_path}\n")
+                    outfile.write("-" * 50 + "\n")
+                    try:
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                            outfile.write(content)
+                    except Exception as e:
+                        outfile.write(f"(Error reading file: {e})\n")
+                    outfile.write("\n" + "=" * 50 + "\n")
+                    
+                elif ext in media_extensions:
+                    # Для медиа-файлов и шрифтов только название
+                    outfile.write(f"Media/Shrift: {rel_path}\n")
+                    
+                else:
+                    # Для остальных файлов тоже только название
+                    outfile.write(f"Other file: {rel_path}\n")
 
-            try:
-                content = path.read_text(encoding='utf-8')
-                relative_path = path.relative_to(start_path)
-                
-                outfile.write(f"\n{'=' * 50}\n")
-                outfile.write(f"Файл: {relative_path}\n")
-                outfile.write(f"{'=' * 50}\n\n")
-                outfile.write(content)
-                
-            except UnicodeDecodeError:
-                print(f"Пропущен бинарный файл: {path}")
-            except PermissionError:
-                print(f"Нет доступа к файлу: {path}")
-            except Exception as e:
-                print(f"Ошибка при обработке {path}: {e}")
+    print(f"Кодовая база собрана в файл: {output_file}")
 
 if __name__ == "__main__":
-    gather_project_content()
-    print("Файлы проекта собраны в project_contents.txt")
+    collect_codebase_to_file()
