@@ -1,7 +1,7 @@
 // src/components/features/Portfolio/PortfolioCard.jsx
 import React, { useCallback } from 'react';
 import { CARD_STYLES } from '@constants/styles';
-import { ProgressiveImage } from '@ui';
+import ProgressiveImage from '@/components/ui/ProgressiveImage';
 
 /**
  * Компонент карточки портфолио
