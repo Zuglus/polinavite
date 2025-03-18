@@ -10,16 +10,15 @@ import codePlaceholder from "@images/code/code4.png";
 import fizicsPostcard from "@images/fizics/fizics1.png";
 import fizicsCards from "@images/fizics/fizics2.png";
 import fizicsPlaceholder from "@images/fizics/fizics3.png";
-import presentation11 from "@images/presentations/1-1.png";
-import presentation12 from "@images/presentations/1-2.png";
-import presentation13 from "@images/presentations/1-3.png";
-import presentation21 from "@images/presentations/2-1.png";
-import presentation22 from "@images/presentations/2-2.png";
-import presentation23 from "@images/presentations/2-3.png";
-import presentation24 from "@images/presentations/2-4.png";
-import presentation25 from "@images/presentations/2-5.png";
-import presentation31 from "@images/presentations/3-1.png";
-import presentation32 from "@images/presentations/3-2.png";
+import presentation0 from "@images/presentations/0.png";
+import presentation1 from "@images/presentations/1.png";
+import presentation2 from "@images/presentations/2.png";
+import presentation3 from "@images/presentations/3.png";
+import presentation4 from "@images/presentations/4.png";
+import presentation5 from "@images/presentations/5.png";
+import presentation6 from "@images/presentations/6.png";
+import presentation7 from "@images/presentations/7.png";
+import presentation8 from "@images/presentations/8.png";
 
 export const projects = [
   {
@@ -122,64 +121,31 @@ export const projects = [
     audience: "",
     slides: [
       {
-        image: presentation31,
-        task: "разработка учебной презентации по Сталинградской битве",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации",
+        image: presentation0,
       },
       {
-        image: presentation32,
-        task: "разработка учебной презентации по Сталинградской битве",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации",
+        image: presentation1,
       },
       {
-        image: presentation21,
-        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+        image: presentation2,
       },
       {
-        image: presentation22,
-        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+        image: presentation3,
       },
       {
-        image: presentation23,
-        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+        image: presentation4,
       },
       {
-        image: presentation24,
-        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+        image: presentation5,
       },
       {
-        image: presentation25,
-        task: "создание презентации для выступления по экологическим проблемам г. Красноярска",
-        solution:
-          "подбор иллюстраций, расстановка смысловых акцентов, структурирование информации, редизайн графиков",
+        image: presentation6,
       },
       {
-        image: presentation11,
-        task: "создание презентации услуги по грузоперевозкам и переезду",
-        solution:
-          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
+        image: presentation7,
       },
       {
-        image: presentation12,
-        task: "создание презентации услуги по грузоперевозкам и переезду",
-        solution:
-          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
-      },
-      {
-        image: presentation13,
-        task: "создание презентации услуги по грузоперевозкам и переезду",
-        solution:
-          "расстановка смысловых акцентов, интерактивность (в мобильной версии при нажатии на телефон на 3 слайде автоматически набирается номер), создание ощущения надежности, броская типографика и цвета для привлечения внимания молодой целевой аудитории",
+        image: presentation8,
       },
     ],
   },
