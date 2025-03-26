@@ -1,22 +1,54 @@
 // src/hooks/useImageLoad.js
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { imageService } from '@/services';
-import { observable } from '@legendapp/state';
 
-// Создаем observable для статуса
-const loadStatus = observable('init');
+/**
+ * Хук для загрузки и отслеживания состояния изображения
+ * @param {string} src - URL изображения
+ * @param {boolean} [priority=false] - Приоритет загрузки
+ * @returns {Object} Состояние загрузки изображения
+ * @property {string} status - Статус загрузки ('init', 'loading', 'loaded', 'error')
+ * @property {number} retryCount - Количество попыток загрузки
+ * @property {Function} reload - Функция для повторной загрузки изображения
+ */
+export const useImageLoad = (src, priority = false) => {
+  const [status, setStatus] = useState(imageService.status$.get());
+  const [retryCount, setRetryCount] = useState(imageService.retryCount$.get());
 
-export const useImageLoad = (src) => {
   useEffect(() => {
     if (!src) return;
 
-    const subscription = imageService.status$
-      .subscribe(newStatus => loadStatus.set(newStatus));
+    // Подписываемся на изменения состояния
+    const statusSubscription = imageService.status$.subscribe(newStatus => {
+      setStatus(newStatus);
+    });
 
-    imageService.loadImage(src).catch(console.error);
+    const retrySubscription = imageService.retryCount$.subscribe(count => {
+      setRetryCount(count);
+    });
 
-    return () => subscription.unsubscribe();
-  }, [src]);
+    // Загружаем изображение
+    imageService.loadImage(src, priority).catch(error => {
+      console.error('Error loading image:', error);
+    });
 
-  return loadStatus.get();
+    // Очистка подписок при размонтировании
+    return () => {
+      statusSubscription.unsubscribe();
+      retrySubscription.unsubscribe();
+    };
+  }, [src, priority]);
+
+  // Метод для повторной загрузки изображения
+  const reload = () => {
+    imageService.retryCount$.set(0);
+    imageService.status$.set('loading');
+    return imageService.loadImage(src, true);
+  };
+
+  return {
+    status,
+    retryCount,
+    reload
+  };
 };
