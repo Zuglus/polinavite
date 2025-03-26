@@ -1,37 +1,33 @@
-// src/components/ui/Skeleton.jsx
-/**
- * Компонент для отображения состояния загрузки с поддержкой анимации
- * @component
- * @param {Object} props
- * @param {string} [props.className] - Дополнительные CSS классы
- * @param {('default'|'circle'|'text')} [props.variant='default'] - Вариант отображения
- * @param {('pulse'|'wave'|'none')} [props.animation='pulse'] - Тип анимации
- * @returns {React.ReactElement} Компонент-заглушка с анимацией
- */
-
+// src/components/ui/Skeleton.tsx
 import React from 'react';
 
-/**
- * Компонент Skeleton с поддержкой анимации и различных размеров
- * @param {Object} props
- * @param {string} [props.className] - Дополнительные классы
- * @param {string} [props.variant='default'] - Вариант скелетона ('default', 'circle', 'text')
- * @param {string} [props.animation='pulse'] - Тип анимации ('pulse', 'wave', 'none')
- */
-const Skeleton = ({ 
+// Определяем типы для props
+export type SkeletonVariant = 'default' | 'circle' | 'text';
+export type SkeletonAnimation = 'pulse' | 'wave' | 'none';
+
+export interface SkeletonProps {
+  /** Дополнительные CSS классы */
+  className?: string;
+  /** Вариант отображения */
+  variant?: SkeletonVariant;
+  /** Тип анимации */
+  animation?: SkeletonAnimation;
+}
+
+const Skeleton: React.FC<SkeletonProps> = ({ 
   className = '',
   variant = 'default',
   animation = 'pulse'
 }) => {
   const baseClasses = 'relative overflow-hidden rounded-[1.875rem] md:rounded-[1.25rem]';
   
-  const variantClasses = {
+  const variantClasses: Record<SkeletonVariant, string> = {
     default: 'h-full w-full min-h-[31rem]',
     circle: 'rounded-full',
     text: 'h-4 w-3/4'
   };
 
-  const animationClasses = {
+  const animationClasses: Record<SkeletonAnimation, string> = {
     pulse: 'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent',
     wave: 'animate-pulse',
     none: ''
@@ -48,6 +44,7 @@ const Skeleton = ({
         ${bgClass}
         ${className}
       `}
+      data-testid="skeleton"
     >
       <div className="grid h-full w-full place-items-center">
         <svg

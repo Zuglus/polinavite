@@ -13,8 +13,14 @@ import { IImageService, ImageMetrics, PreloadOptions } from '@/types/services';
 import { ImageLoadStatus } from '@/types';
 
 export class ImageService implements IImageService {
-  status$: Observable<ImageLoadStatus>;
-  retryCount$: Observable<number>;
+  status$: {
+    get(): ImageLoadStatus;
+    set(value: ImageLoadStatus): void;
+  };
+  retryCount$: {
+    get(): number;
+    set(value: number | ((prev: number) => number)): void;
+  };
   private imageCache: LRUCache<string, HTMLImageElement>;
   private preloadQueue: Set<string>;
   private loadingPromises: Map<string, Promise<HTMLImageElement>>;
@@ -207,7 +213,7 @@ export class ImageService implements IImageService {
           (img as any).fetchPriority = 'high';
         } else {
           // Для браузеров без поддержки fetchPriority
-          img.loading = 'eager';
+          (img as any).loading = 'eager';
         }
       }
 

@@ -62,8 +62,14 @@ export interface ImageMetrics {
  * Интерфейс для сервиса изображений
  */
 export interface IImageService {
-  status$: Observable<ImageLoadStatus>;
-  retryCount$: Observable<number>;
+  status$: {
+    get(): ImageLoadStatus;
+    set(value: ImageLoadStatus): void;
+  };
+  retryCount$: {
+    get(): number;
+    set(value: number | ((prev: number) => number)): void;
+  };
   loadImage(src: string, priority?: boolean): Promise<HTMLImageElement>;
   preloadImages(sources: string[], options?: PreloadOptions): Promise<HTMLImageElement[]>;
   clearCache(preserveCritical?: boolean): void;
@@ -83,4 +89,5 @@ export interface INavigationService {
   reset(): void;
   useCurrentSlide(): number;
   useTotalSlides(): number;
+  useDirection(): 'left' | 'right' | 'none';
 }

@@ -91,8 +91,3 @@ vi.mock('framer-motion', () => {
     AnimatePresence: (props: any) => React.createElement(React.Fragment, null, props.children),
   };
 });
-
-// Мок для событий браузера
-beforeEach(() => {
-  vi.resetAllMocks();
-});

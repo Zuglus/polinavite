@@ -15,6 +15,7 @@ enableReactTracking({
 interface NavigationState {
   currentSlideIndex: number;
   totalSlides: number;
+  direction: 'left' | 'right' | 'none';
 }
 
 class NavigationService implements INavigationService {
@@ -23,7 +24,8 @@ class NavigationService implements INavigationService {
   constructor() {
     this.state = observable<NavigationState>({
       currentSlideIndex: 0,
-      totalSlides: 0
+      totalSlides: 0,
+      direction: 'none'
     });
   }
 
@@ -37,24 +39,35 @@ class NavigationService implements INavigationService {
 
   /**
    * Переключает на следующий слайд
-   * @throws {Error} Если достигнут последний слайд
    */
   nextSlide(): void {
     const currentIndex = this.state.currentSlideIndex.get();
     const totalSlides = this.state.totalSlides.get();
+    
+    this.state.direction.set('right');
+    
     if (currentIndex < totalSlides - 1) {
       this.state.currentSlideIndex.set(currentIndex + 1);
+    } else {
+      // Циклический переход к первому слайду
+      this.state.currentSlideIndex.set(0);
     }
   }
 
   /**
    * Переключает на предыдущий слайд
-   * @throws {Error} Если достигнут первый слайд
    */
   prevSlide(): void {
     const currentIndex = this.state.currentSlideIndex.get();
+    const totalSlides = this.state.totalSlides.get();
+    
+    this.state.direction.set('left');
+    
     if (currentIndex > 0) {
       this.state.currentSlideIndex.set(currentIndex - 1);
+    } else {
+      // Циклический переход к последнему слайду
+      this.state.currentSlideIndex.set(totalSlides - 1);
     }
   }
 
@@ -64,6 +77,7 @@ class NavigationService implements INavigationService {
   reset(): void {
     this.state.currentSlideIndex.set(0);
     this.state.totalSlides.set(0);
+    this.state.direction.set('none');
   }
 
   /**
@@ -80,6 +94,14 @@ class NavigationService implements INavigationService {
    */
   useTotalSlides(): number {
     return this.state.totalSlides.get();
+  }
+
+  /**
+   * Получает текущее направление навигации
+   * @returns {string} Направление навигации ('left', 'right', 'none')
+   */
+  useDirection(): 'left' | 'right' | 'none' {
+    return this.state.direction.get();
   }
 }
 

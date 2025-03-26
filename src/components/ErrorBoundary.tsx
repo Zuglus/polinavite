@@ -1,8 +1,20 @@
-import React from 'react';
+// src/components/ErrorBoundary.tsx
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { errorService } from '@/services/error.service';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+  errorCount: number;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { 
       hasError: false, 
@@ -12,11 +24,11 @@ class ErrorBoundary extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Увеличиваем счетчик ошибок
     this.setState(prevState => ({
       error,
@@ -36,7 +48,7 @@ class ErrorBoundary extends React.Component {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
 
-  handleRetry = () => {
+  handleRetry = (): void => {
     this.setState({ 
       hasError: false,
       error: null,
@@ -44,7 +56,7 @@ class ErrorBoundary extends React.Component {
     });
   };
 
-  render() {
+  render(): ReactNode {
     if (this.state.hasError) {
       // Если произошло слишком много ошибок, показываем сообщение о перезагрузке
       if (this.state.errorCount > 3) {
@@ -80,7 +92,7 @@ class ErrorBoundary extends React.Component {
 
       // Для некритичных ошибок показываем кнопку повтора
       return (
-        <div className="flex h-screen w-full items-center justify-center bg-primary text-white">
+        <div className="flex h-screen w-full items-center justify-center bg-primary text-white" data-testid="error-view">
           <div className="text-center p-8 max-w-lg">
             <h1 className="text-2xl font-bold mb-4">
               Что-то пошло не так

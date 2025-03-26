@@ -1,27 +1,34 @@
-// src/components/ui/ProgressiveImage.jsx
+// src/components/ui/ProgressiveImage.tsx
 /**
  * Компонент для постепенной загрузки изображений с поддержкой анимации и состояний загрузки
- * @component
- * @param {Object} props - Свойства компонента
- * @param {string} props.src - URL изображения для загрузки
- * @param {string} props.alt - Альтернативный текст для изображения
- * @param {string} [props.className] - Дополнительные CSS классы
- * @param {boolean} [props.priority=false] - Флаг приоритетной загрузки
- * @param {boolean} [props.lazy=true] - Использовать ли ленивую загрузку
- * @param {string} [props.placeholderSrc] - URL для заглушки низкого качества
- * @returns {React.ReactElement} Компонент с изображением и состояниями загрузки
  */
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, ImgHTMLAttributes } from 'react';
 import { observer } from '@legendapp/state/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Skeleton } from '@ui';
-import { imageService } from '@services';
-import { useLazyImage } from '@hooks/useIntersectionObserver';
-import { errorService } from '@services/error.service';
+import Skeleton from '@/components/ui/Skeleton';
+import { imageService } from '@/services/image.service';
+import { useLazyImage } from '@/hooks/useIntersectionObserver';
+import { errorService } from '@/services/error.service';
+import { ImageLoadStatus } from '@/types';
+
+export interface ProgressiveImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'onLoad' | 'onError'> {
+  /** URL изображения для загрузки */
+  src: string;
+  /** Альтернативный текст для изображения */
+  alt: string;
+  /** Дополнительные CSS классы */
+  className?: string;
+  /** Флаг приоритетной загрузки */
+  priority?: boolean;
+  /** Использовать ли ленивую загрузку */
+  lazy?: boolean;
+  /** URL для заглушки низкого качества */
+  placeholderSrc?: string;
+}
 
 // Создаем компонент с поддержкой React.memo для оптимизации рендеринга
-const ProgressiveImage = observer(({ 
+const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({ 
   src, 
   alt, 
   className = '', 
@@ -32,29 +39,35 @@ const ProgressiveImage = observer(({
   ...rest
 }) => {
   // Создаем ref для элемента и используем хук для ленивой загрузки
-  const imageRef = useRef(null);
-  const shouldLoad = useLazyImage(imageRef, {
+  const imageRef = useRef<HTMLDivElement>(null);
+  const { isIntersecting, wasIntersected } = useLazyImage(imageRef, {
     rootMargin: '200px', // Предзагрузка при приближении к области видимости
     triggerOnce: true,    // Загружать только один раз
     fallbackToEager: true // Использовать eager загрузку, если IntersectionObserver не поддерживается
   });
 
+  const shouldLoad = isIntersecting || wasIntersected || !lazy || priority;
+
   // Состояние для отслеживания статуса загрузки
-  const status = imageService.status$.get();
+  const status = imageService.status$.get() as ImageLoadStatus;
   const retryCount = imageService.retryCount$.get();
 
   // Состояние для fade-in эффекта
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showPlaceholder, setShowPlaceholder] = useState(!!placeholderSrc);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [showPlaceholder, setShowPlaceholder] = useState<boolean>(!!placeholderSrc);
 
   // Функция для расчета размеров контейнера в соответствии с aspect ratio
   const calculateAspectRatio = () => {
-    if (style.aspectRatio) {
-      return { aspectRatio: style.aspectRatio };
-    }
-    
-    if (style.width && style.height) {
-      return { aspectRatio: `${style.width}/${style.height}` };
+    if (typeof style === 'object' && style !== null) {
+      if ('aspectRatio' in style) {
+        return { aspectRatio: style.aspectRatio };
+      }
+      
+      if ('width' in style && 'height' in style) {
+        return { 
+          aspectRatio: `${style.width}/${style.height}`
+        };
+      }
     }
     
     return {};
@@ -67,7 +80,7 @@ const ProgressiveImage = observer(({
   };
 
   // Обработчик ошибки загрузки
-  const handleError = (error) => {
+  const handleError = (error: Error | null) => {
     console.error('Image load error:', error);
     setShowPlaceholder(false);
     
@@ -81,7 +94,7 @@ const ProgressiveImage = observer(({
   // Эффект для загрузки изображения
   useEffect(() => {
     // Если lazy=true и изображение не должно загружаться, выходим
-    if (lazy && !shouldLoad && !priority) {
+    if (!shouldLoad) {
       return;
     }
 
@@ -89,16 +102,17 @@ const ProgressiveImage = observer(({
       imageService.loadImage(src, priority)
         .catch(handleError);
     }
-  }, [src, priority, lazy, shouldLoad]);
+  }, [src, priority, shouldLoad]);
 
   // Аспект для контейнера
   const aspectStyles = calculateAspectRatio();
+  const combinedStyle = { ...aspectStyles, ...style };
 
   return (
     <div 
       ref={imageRef}
       className="relative w-full h-full overflow-hidden isolate"
-      style={{...aspectStyles, ...style}}
+      style={combinedStyle}
     >
       <AnimatePresence mode="wait">
         {/* Skeleton при загрузке */}
@@ -144,6 +158,7 @@ const ProgressiveImage = observer(({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 flex items-center justify-center"
+            data-testid="error-message"
           >
             <div className="bg-red-500/10 backdrop-blur-sm rounded-lg p-4 text-red-500 text-center">
               <p>Ошибка загрузки</p>
@@ -181,7 +196,8 @@ const ProgressiveImage = observer(({
               loading={priority ? "eager" : "lazy"}
               decoding="async"
               onLoad={handleLoad}
-              onError={handleError}
+              onError={() => handleError(new Error(`Failed to load image: ${src}`))}
+              data-testid="loaded-image"
               {...rest}
             />
           </motion.div>
