@@ -1,51 +1,28 @@
-// src/utils/LRUCache.test.js
-import { LRUCache } from './LRUCache';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { LRUCache } from './LRUCache.js';
 
-/**
- * Простая функция для ручного тестирования LRUCache
- * @returns {void}
- */
-export function testLRUCache() {
-  console.log('Testing LRUCache...');
+describe('LRUCache', () => {
+  let cache;
   
-  // Создаем кеш размером 3 элемента
-  const cache = new LRUCache(3);
-  
-  // Добавляем элементы
-  cache.set('a', 1);
-  cache.set('b', 2);
-  cache.set('c', 3);
-  
-  console.log('Cache after adding 3 items:', cache.keys());
-  console.log('Cache size:', cache.size);
-  
-  // Получаем элемент (делаем его самым недавно использованным)
-  console.log('Get a:', cache.get('a'));
-  console.log('Cache after getting a:', cache.keys());
-  
-  // Добавляем еще один элемент (должен вытеснить b, т.к. a был недавно использован)
-  cache.set('d', 4);
-  
-  console.log('Cache after adding d:', cache.keys());
-  console.log('b should be evicted, has b:', cache.has('b'));
-  
-  // Проверяем статистику
-  console.log('Cache stats:', cache.getStats());
-  
-  // Тестируем изменение размера кеша
-  cache.resize(2);
-  console.log('Cache after resize to 2:', cache.keys());
-  
-  // Очищаем кеш
-  cache.clear();
-  console.log('Cache after clear:', cache.keys());
-  console.log('Cache size after clear:', cache.size);
-  
-  console.log('LRUCache test complete.');
-}
+  beforeEach(() => {
+    cache = new LRUCache(3);
+  });
 
-// Автоматический запуск теста при импорте модуля в режиме разработки
-if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-  window.testLRUCache = testLRUCache;
-  console.log('LRUCache test function registered as window.testLRUCache()');
-}
+  it('should create a cache with the specified size', () => {
+    expect(cache.capacity).toBe(3);
+    expect(cache.size).toBe(0);
+  });
+  
+  it('should add items to the cache', () => {
+    cache.set('a', 1);
+    cache.set('b', 2);
+    
+    expect(cache.size).toBe(2);
+    expect(cache.get('a')).toBe(1);
+    expect(cache.get('b')).toBe(2);
+  });
+  
+  it('should return undefined for non-existent keys', () => {
+    expect(cache.get('notexist')).toBeUndefined();
+  });
+});

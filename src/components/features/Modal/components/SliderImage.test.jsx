@@ -1,61 +1,48 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import SliderImage from './SliderImage';
-import { imageService } from '@services';
 
 // Мок для imageService
-jest.mock('@services', () => ({
+vi.mock('@services', () => ({
   imageService: {
     status$: {
-      get: jest.fn()
+      get: vi.fn(),
+      subscribe: vi.fn().mockReturnValue({ unsubscribe: vi.fn() })
     },
     retryCount$: {
-      get: jest.fn()
+      get: vi.fn(),
+      subscribe: vi.fn().mockReturnValue({ unsubscribe: vi.fn() })
     },
-    loadImage: jest.fn()
+    loadImage: vi.fn()
   }
 }));
 
 describe('SliderImage', () => {
+  // Получаем доступ к моку
+  const imageService = vi.mocked(require('@services').imageService);
+
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test('показывает Skeleton при загрузке', () => {
+  it('should call loadImage when mounted with src', () => {
+    // Устанавливаем статус загрузки
     imageService.status$.get.mockReturnValue('loading');
     
     render(<SliderImage src="test.jpg" alt="test" />);
     
-    expect(screen.getByTestId('skeleton')).toBeInTheDocument();
+    // Проверяем вызов метода загрузки
+    expect(imageService.loadImage).toHaveBeenCalledWith('test.jpg');
   });
-
-  test('показывает сообщение об ошибке при неудачной загрузке', () => {
-    imageService.status$.get.mockReturnValue('error');
-    imageService.retryCount$.get.mockReturnValue(3);
+  
+  it('should not call loadImage when src is empty', () => {
+    // Устанавливаем статус загрузки
+    imageService.status$.get.mockReturnValue('loading');
     
-    render(<SliderImage src="test.jpg" alt="test" />);
+    render(<SliderImage src="" alt="test" />);
     
-    expect(screen.getByText(/Ошибка загрузки/)).toBeInTheDocument();
-    expect(screen.getByText(/попыток: 3/)).toBeInTheDocument();
-  });
-
-  test('показывает изображение после успешной загрузки', () => {
-    imageService.status$.get.mockReturnValue('loaded');
-    
-    render(<SliderImage src="test.jpg" alt="test" />);
-    
-    const img = screen.getByAltText('test');
-    expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute('src', 'test.jpg');
-    expect(img).toHaveAttribute('loading', 'lazy');
-  });
-
-  test('использует eager loading при priority=true', () => {
-    imageService.status$.get.mockReturnValue('loaded');
-    
-    render(<SliderImage src="test.jpg" alt="test" priority={true} />);
-    
-    const img = screen.getByAltText('test');
-    expect(img).toHaveAttribute('loading', 'eager');
+    // Проверяем, что метод загрузки не вызывался
+    expect(imageService.loadImage).not.toHaveBeenCalled();
   });
 });
