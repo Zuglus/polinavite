@@ -1,4 +1,5 @@
 import React from 'react';
+import { errorService } from '@/services/error.service';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -22,6 +23,14 @@ class ErrorBoundary extends React.Component {
       errorInfo,
       errorCount: prevState.errorCount + 1
     }));
+
+    // Интеграция с errorService
+    errorService.handleError(error, {
+      component: this.constructor.name,
+      errorInfo,
+      reactTrace: errorInfo?.componentStack,
+      isCritical: this.state.errorCount >= 3
+    });
 
     // Отправка ошибки в сервис мониторинга (если будет добавлен)
     console.error('ErrorBoundary caught an error:', error, errorInfo);
@@ -48,6 +57,15 @@ class ErrorBoundary extends React.Component {
               <p className="mb-4">
                 Пожалуйста, перезагрузите страницу для продолжения работы.
               </p>
+              <div className="text-sm text-white/60 mb-4">
+                {this.state.error && (
+                  <div className="overflow-hidden rounded bg-white/5 p-2 mb-2">
+                    <code className="break-all whitespace-pre-wrap text-left block text-xs">
+                      {this.state.error.toString()}
+                    </code>
+                  </div>
+                )}
+              </div>
               <button
                 onClick={() => window.location.reload()}
                 className="px-6 py-2 bg-secondary rounded-lg font-medium 
@@ -70,6 +88,15 @@ class ErrorBoundary extends React.Component {
             <p className="mb-4">
               Произошла ошибка при загрузке компонента.
             </p>
+            <div className="text-sm text-white/60 mb-4">
+              {this.state.error && (
+                <div className="overflow-hidden rounded bg-white/5 p-2 mb-2">
+                  <code className="break-all whitespace-pre-wrap text-left block text-xs">
+                    {this.state.error.toString()}
+                  </code>
+                </div>
+              )}
+            </div>
             <button
               onClick={this.handleRetry}
               className="px-6 py-2 bg-secondary rounded-lg font-medium 
