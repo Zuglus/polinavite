@@ -1,11 +1,16 @@
-// main.jsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import '@assets/main.css';
-import ErrorBoundary from '@components/ErrorBoundary';
+// src/app/app.tsx
+import React, { Suspense } from 'react';
+import { ErrorBoundary } from './providers/error-boundary';
+import './styles/main.css';
 
-const App = React.lazy(() => import('./App'));
+/**
+ * Ленивая загрузка домашней страницы
+ */
+const HomePage = React.lazy(() => import('@pages/home'));
 
+/**
+ * Компонент для отображения во время загрузки
+ */
 const Loader = () => (
   <div className="flex h-screen w-full items-center justify-center bg-primary">
     <div className="relative">
@@ -71,7 +76,6 @@ const Loader = () => (
       {/* Текст */}
       <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full text-center">
         <div className="text-secondary text-xl tracking-widest animate-pulse-slow font-mv-skifer">
-          {/* Текст загрузки */}
           ЗАГРУЗКА
         </div>
       </div>
@@ -79,14 +83,17 @@ const Loader = () => (
   </div>
 );
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-root.render(
-  <React.StrictMode>
+/**
+ * Корневой компонент приложения
+ */
+const App: React.FC = () => {
+  return (
     <ErrorBoundary>
-      <React.Suspense fallback={<Loader />}>
-        <App />
-      </React.Suspense>
+      <Suspense fallback={<Loader />}>
+        <HomePage />
+      </Suspense>
     </ErrorBoundary>
-  </React.StrictMode>
-);
+  );
+};
+
+export default App;

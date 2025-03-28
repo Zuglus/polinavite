@@ -18,20 +18,34 @@
     "baseUrl": ".",
     "types": ["vitest/globals", "node"],
     "paths": {
+      /* Feature Sliced Design слои */
+      "@app/*": ["src/app/*"],
+      "@pages/*": ["src/pages/*"],
+      "@widgets/*": ["src/widgets/*"],
+      "@features/*": ["src/features/*"],
+      "@entities/*": ["src/entities/*"],
+      "@shared/*": ["src/shared/*"],
+      
+      /* Сокращения для shared слоя */
+      "@shared-ui/*": ["src/shared/ui/*"],
+      "@shared-lib/*": ["src/shared/lib/*"],
+      "@shared-api/*": ["src/shared/api/*"],
+      "@shared-config/*": ["src/shared/config/*"],
+      "@shared-model/*": ["src/shared/model/*"],
+      
+      /* Обратная совместимость */
       "@/*": ["src/*"],
-      "@ui": ["src/components/ui"],
-      "@ui/*": ["src/components/ui/*"],
-      "@features/*": ["src/components/features/*"],
-      "@services": ["src/services"],
-      "@services/*": ["src/services/*"],
-      "@stores/*": ["src/stores/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@utils/*": ["src/utils/*"],
-      "@constants/*": ["src/constants/*"],
-      "@assets/*": ["src/assets/*"],
-      "@images/*": ["src/assets/images/*"]
+      "@ui/*": ["src/shared/ui/*"],
+      "@assets/*": ["src/app/assets/*"],
+      "@images/*": ["src/app/assets/images/*"],
+      "@fonts/*": ["src/app/assets/fonts/*"]
     }
   },
-  "include": ["src", "vite.config.js"],
+  "include": [
+    "src",
+    "vite.config.js",
+    "scripts",
+    ".eslintrc.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
