@@ -1,5 +1,4 @@
-// src/types/services.ts
-import { Observable, ImageLoadStatus } from './index';
+// src/shared/model/service-types.ts
 
 /**
  * Категории ошибок
@@ -57,6 +56,11 @@ export interface ImageMetrics {
   cacheSize?: number;
   cacheCapacity?: number;
 }
+
+/**
+ * Тип статуса загрузки изображения
+ */
+export type ImageLoadStatus = 'init' | 'loading' | 'retrying' | 'loaded' | 'error';
 
 /**
  * Интерфейс для сервиса изображений

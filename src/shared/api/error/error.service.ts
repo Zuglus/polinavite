@@ -1,14 +1,20 @@
-// src/services/error.service.ts
+// src/shared/api/error/error.service.ts
 /**
  * Сервис для централизованной обработки ошибок
  * @class
  */
-import { IErrorService, ErrorRecord, ErrorCategory } from '@/types/services';
+import { ErrorCategory } from "@shared/model/service-types";
 
-export class ErrorService implements IErrorService {
-  private errorHandlers: Array<(error: Error, context: Record<string, any>, category: string) => void>;
-  private errorLogs: ErrorRecord[];
-  private errorCategories: Record<string, string>;
+export class ErrorService {
+  private errorHandlers = [];
+  private errorLogs = [];
+  private errorCategories = {
+    NETWORK: ErrorCategory.NETWORK,
+    IMAGE: ErrorCategory.IMAGE,
+    UI: ErrorCategory.UI,
+    STATE: ErrorCategory.STATE,
+    UNKNOWN: ErrorCategory.UNKNOWN
+  };
 
   /**
    * Создает экземпляр сервиса обработки ошибок
@@ -17,13 +23,6 @@ export class ErrorService implements IErrorService {
   constructor() {
     this.errorHandlers = [];
     this.errorLogs = [];
-    this.errorCategories = {
-      NETWORK: ErrorCategory.NETWORK,
-      IMAGE: ErrorCategory.IMAGE,
-      UI: ErrorCategory.UI,
-      STATE: ErrorCategory.STATE,
-      UNKNOWN: ErrorCategory.UNKNOWN
-    };
   }
 
   /**
@@ -31,7 +30,7 @@ export class ErrorService implements IErrorService {
    * @param {Function} handler - Функция-обработчик ошибки
    * @returns {Function} Функция для отмены регистрации обработчика
    */
-  registerHandler(handler: (error: Error, context: Record<string, any>, category: string) => void): () => void {
+  registerHandler(handler) {
     if (typeof handler !== 'function') {
       throw new Error('Handler must be a function');
     }
@@ -50,7 +49,7 @@ export class ErrorService implements IErrorService {
    * @param {Object} context - Контекст ошибки
    * @returns {string} Категория ошибки
    */
-  categorizeError(error: Error, context: Record<string, any> = {}): string {
+  categorizeError(error, context = {}) {
     // Определение по свойству name объекта Error
     if (error.name === 'NetworkError' || error.message?.includes('network') || 
         error.message?.includes('fetch') || error.message?.includes('http')) {
@@ -80,12 +79,12 @@ export class ErrorService implements IErrorService {
    * @param {Error} error - Объект ошибки
    * @param {Object} context - Контекст ошибки
    */
-  handleError(error: Error, context: Record<string, any> = {}): void {
+  handleError(error, context = {}) {
     const timestamp = new Date();
     const category = this.categorizeError(error, context);
     
     // Создаем запись об ошибке
-    const errorRecord: ErrorRecord = {
+    const errorRecord = {
       error,
       context,
       timestamp,
@@ -116,7 +115,7 @@ export class ErrorService implements IErrorService {
   /**
    * Очищает журнал ошибок
    */
-  clearErrorLogs(): void {
+  clearErrorLogs() {
     this.errorLogs = [];
   }
 
@@ -124,7 +123,7 @@ export class ErrorService implements IErrorService {
    * Возвращает журнал ошибок
    * @returns {Array} Массив записей об ошибках
    */
-  getErrorLogs(): ErrorRecord[] {
+  getErrorLogs() {
     return [...this.errorLogs];
   }
 
@@ -133,7 +132,7 @@ export class ErrorService implements IErrorService {
    * @param {string} category - Категория ошибки
    * @returns {Array} Массив записей об ошибках выбранной категории
    */
-  getErrorsByCategory(category: string): ErrorRecord[] {
+  getErrorsByCategory(category) {
     return this.errorLogs.filter(log => log.category === category);
   }
 }
