@@ -1,6 +1,6 @@
 // src/components/ErrorBoundary.tsx
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { errorService } from '@/services/error.service';
+import { errorService } from "@shared/api/error/error.service";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
