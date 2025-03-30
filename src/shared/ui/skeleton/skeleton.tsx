@@ -1,4 +1,3 @@
-// src/components/ui/Skeleton.tsx
 import React from 'react';
 
 // Определяем типы для props
@@ -14,6 +13,9 @@ export interface SkeletonProps {
   animation?: SkeletonAnimation;
 }
 
+/**
+ * Компонент для отображения загрузочного состояния
+ */
 const Skeleton: React.FC<SkeletonProps> = ({ 
   className = '',
   variant = 'default',

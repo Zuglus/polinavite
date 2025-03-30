@@ -1,5 +1,5 @@
 // src/constants/portfolioData.ts
-import { PortfolioItem } from '../types';
+import { PortfolioItem } from '@shared/model/types';
 
 // Импортируем изображения обложек
 import nitiImage from '@images/threads.png';
@@ -7,6 +7,9 @@ import codeImage from '@images/code.png';
 import fizicsImage from '@images/day.png';
 import presentationImage from '@images/presentation.png';
 
+/**
+ * Данные для отображения карточек портфолио
+ */
 export const portfolioData: PortfolioItem[] = [
   { id: 'project1', image: nitiImage, alt: "НИТИ" },
   { id: 'project2', image: codeImage, alt: "КОДИИМ" },

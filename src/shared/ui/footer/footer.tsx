@@ -1,19 +1,16 @@
-// src/components/ui/Footer.jsx
+import React from 'react';
+
 /**
  * Компонент подвала сайта с контактной информацией
- * @component
- * @returns {React.ReactElement} Компонент с контактной информацией и ссылками
  */
-
-import React from 'react';
-import buttonCircle from '@images/koltsa_fon1.svg';
-
-const Footer = () => {
+const Footer: React.FC = () => {
     const telegram = "https://t.me/Migranovap";
+    const buttonCircleImage = '/images/koltsa_fon1.svg';
+    
     return (
         <footer className="relative mt-[12.375rem] md:mt-[9.75rem] pb-[30.9375rem] md:pb-[20.625rem]">
             <div className="absolute -top-96 left-1/2 w-[56rem] md:w-[40rem] -translate-x-[36rem] md:-translate-x-[24.5rem] -translate-y-[13rem] md:-translate-y-[3rem] overflow-hidden">
-                <img src={buttonCircle} alt="" className="w-full h-full object-contain" />
+                <img src={buttonCircleImage} alt="" className="w-full h-full object-contain" />
             </div>
             <div className="mx-auto px-4 max-w-[75rem] relative">
                 <a

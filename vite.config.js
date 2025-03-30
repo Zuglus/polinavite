@@ -54,6 +54,13 @@ export default defineConfig({
       '@shared-model': path.resolve(__dirname, './src/shared/model'),
       
       // Обратная совместимость с прежними путями
+      '@components': path.resolve(__dirname, './src/shared/ui'),
+      '@features': path.resolve(__dirname, './src/features'),
+      '@services': path.resolve(__dirname, './src/shared/api'),
+      '@stores': path.resolve(__dirname, './src/shared/model/stores'),
+      '@hooks': path.resolve(__dirname, './src/shared/lib/hooks'),
+      '@utils': path.resolve(__dirname, './src/shared/lib'),
+      '@constants': path.resolve(__dirname, './src/shared/config'),
       '@assets': path.resolve(__dirname, './src/app/assets'),
       '@images': path.resolve(__dirname, './src/app/assets/images'),
       '@fonts': path.resolve(__dirname, './src/app/assets/fonts'),
@@ -93,13 +100,5 @@ export default defineConfig({
     port: 3000,
     strictPort: true,
     open: true
-  },
-  // Добавляем поддержку SSG (Static Site Generation)
-  ssgOptions: {
-    script: 'async',
-    formatting: 'minify',
-    crittersOptions: {
-      preload: 'swap',
-    },
   },
 });

@@ -1,25 +1,29 @@
-// src/components/features/Portfolio/PortfolioSection.view.jsx
 import React from 'react';
-import { PortfolioCard } from '@features/Portfolio';
-import { SECTION_STYLES } from '@constants/styles';
+import { ProjectCard } from '@entities/project';
+import { SECTION_STYLES } from '@shared/config/styles';
+import { PortfolioItem } from '@shared/model/types';
 
-// Импортируем изображения
-import rings from '@images/rings_with_circle.svg';
+interface PortfolioSectionViewProps {
+  portfolioData: PortfolioItem[];
+  onCardClick: (id: string) => void;
+}
 
 /**
  * Презентационный компонент для секции портфолио
- * Отвечает только за отображение данных
- * @param {Object} props - Свойства компонента 
- * @param {Array} props.portfolioData - Данные проектов для отображения
- * @param {Function} props.onCardClick - Обработчик клика по карточке
  */
-const PortfolioSectionView = ({ portfolioData, onCardClick }) => {
+const PortfolioSectionView: React.FC<PortfolioSectionViewProps> = ({ 
+  portfolioData, 
+  onCardClick 
+}) => {
+  // Используем заглушку для изображения вместо импорта
+  const ringsImage = '/images/rings_with_circle.svg';
+
   return (
     <section className={SECTION_STYLES.CONTAINER}>
       <div className={SECTION_STYLES.HEADER_WRAPPER}>
         <div className={SECTION_STYLES.DECORATION}>
           <img 
-            src={rings}
+            src={ringsImage}
             alt="Декоративные кольца" 
             className={SECTION_STYLES.DECORATION_IMAGE}
             loading="eager"
@@ -30,7 +34,7 @@ const PortfolioSectionView = ({ portfolioData, onCardClick }) => {
 
       <div className={SECTION_STYLES.GRID}>
         {portfolioData.map((project) => (
-          <PortfolioCard
+          <ProjectCard
             key={project.id}
             project={project}
             onClick={onCardClick}

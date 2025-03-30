@@ -1,16 +1,11 @@
-// src/components/ui/ProgressiveImage.tsx
-/**
- * Компонент для постепенной загрузки изображений с поддержкой анимации и состояний загрузки
- */
-
 import React, { useRef, useState, useEffect, ImgHTMLAttributes } from 'react';
 import { observer } from '@legendapp/state/react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Skeleton from '@/components/ui/Skeleton';
-import { imageService } from '@/services/image.service';
-import { useLazyImage } from '@/hooks/useIntersectionObserver';
-import { errorService } from '@/services/error.service';
-import { ImageLoadStatus } from '@/types';
+import { Skeleton } from '@shared/ui';
+import { imageService } from '@shared/api/image/image.service';
+import { useLazyImage } from '@shared/lib/hooks';
+import { errorService } from '@shared/api/error/error.service';
+import { ImageLoadStatus } from '@shared/model/types';
 
 export interface ProgressiveImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'onLoad' | 'onError'> {
   /** URL изображения для загрузки */
@@ -27,7 +22,9 @@ export interface ProgressiveImageProps extends Omit<ImgHTMLAttributes<HTMLImageE
   placeholderSrc?: string;
 }
 
-// Создаем компонент с поддержкой React.memo для оптимизации рендеринга
+/**
+ * Компонент для постепенной загрузки изображений с поддержкой анимации
+ */
 const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({ 
   src, 
   alt, 
@@ -206,6 +203,3 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({
     </div>
   );
 });
-
-// Экспортируем мемоизированный компонент
-export default React.memo(ProgressiveImage);

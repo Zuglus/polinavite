@@ -1,22 +1,28 @@
-// src/components/features/Portfolio/PortfolioSection.container.jsx
 import React, { useCallback } from 'react';
-import PortfolioSectionView from './PortfolioSection.view';
-import { portfolioData } from '@/constants/portfolioData';
-import { projects } from '@/constants/projectsData';
-import { modalStore } from '@/stores';
+import { portfolioData } from '@shared/config/portfolio-data';
+import { projects } from '@shared/config/projects-data';
+import { modalStore } from '@shared/model/stores/modal-store';
+import PortfolioSectionView from './portfolio-section-view';
+
+interface PortfolioSectionProps {
+  onCardClick?: (id: string) => void;
+}
 
 /**
  * Контейнерный компонент для секции портфолио
- * Отвечает за логику работы с данными и обработку событий
  */
-const PortfolioSectionContainer = () => {
+const PortfolioSection: React.FC<PortfolioSectionProps> = ({ onCardClick }) => {
   // Обработчик клика по карточке проекта
-  const handleCardClick = useCallback((id) => {
-    const project = projects.find(p => p.id === id);
-    if (project) {
-      modalStore.openModal(id, project);
+  const handleCardClick = useCallback((id: string) => {
+    if (onCardClick) {
+      onCardClick(id);
+    } else {
+      const project = projects.find(p => p.id === id);
+      if (project) {
+        modalStore.openModal(id, project);
+      }
     }
-  }, []);
+  }, [onCardClick]);
 
   return (
     <PortfolioSectionView 
@@ -26,4 +32,4 @@ const PortfolioSectionContainer = () => {
   );
 };
 
-export default React.memo(PortfolioSectionContainer);
+export default React.memo(PortfolioSection);

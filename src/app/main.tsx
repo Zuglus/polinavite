@@ -1,8 +1,8 @@
-// src/app/main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
 import App from './app';
+import { HelmetProvider } from 'react-helmet-async';
 
 // Включаем отслеживание для @legendapp/state
 enableReactTracking({
@@ -19,7 +19,9 @@ const initApp = () => {
 
   root.render(
     <React.StrictMode>
-      <App />
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
     </React.StrictMode>
   );
 };

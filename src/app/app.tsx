@@ -1,4 +1,3 @@
-// src/app/app.tsx
 import React, { Suspense } from 'react';
 import { ErrorBoundary } from './providers/error-boundary';
 import './styles/main.css';

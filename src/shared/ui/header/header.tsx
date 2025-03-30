@@ -1,28 +1,24 @@
-// src/components/ui/Header.jsx
+import React from 'react';
+
 /**
  * Компонент заголовка сайта
- * @component
- * @returns {React.ReactElement} Компонент с логотипом и заголовком
  */
+const Header: React.FC = () => {
+  const logoImage = '/images/logo.svg';
 
-import React from 'react';
-import logo from "@images/logo.svg";
-
-// Вынесенные константы стилей
-const HEADER_STYLES = {
-  CONTAINER: "relative mx-auto px-4 py-[3.75rem] max-w-[75rem]",
-  LOGO: "h-[12rem] md:h-[8rem] w-auto object-contain",
-  TITLE_PRIMARY: "font-mv-skifer text-[7.3125rem] md:text-[4.875rem] leading-none",
-  TITLE_SECONDARY: "font-light font-onest text-[2.25rem] md:text-[1.5rem] leading-tight tracking-wider",
-  LAYOUT: {
-    WRAPPER: "flex justify-center items-center",
-    INNER: "flex items-center gap-[2rem]",
-    TEXT_CONTAINER: "flex flex-col text-left whitespace-nowrap",
-    TITLE_ROW: "flex items-center gap-[1.5rem]"
-  }
-};
-
-const Header = () => {
+  // Вынесенные константы стилей
+  const HEADER_STYLES = {
+    CONTAINER: "relative mx-auto px-4 py-[3.75rem] max-w-[75rem]",
+    LOGO: "h-[12rem] md:h-[8rem] w-auto object-contain",
+    TITLE_PRIMARY: "font-mv-skifer text-[7.3125rem] md:text-[4.875rem] leading-none",
+    TITLE_SECONDARY: "font-light font-onest text-[2.25rem] md:text-[1.5rem] leading-tight tracking-wider",
+    LAYOUT: {
+      WRAPPER: "flex justify-center items-center",
+      INNER: "flex items-center gap-[2rem]",
+      TEXT_CONTAINER: "flex flex-col text-left whitespace-nowrap",
+      TITLE_ROW: "flex items-center gap-[1.5rem]"
+    }
+  };
 
   return (
     <header className={HEADER_STYLES.CONTAINER}>
@@ -31,7 +27,7 @@ const Header = () => {
           {/* Логотип */}
           <div className={HEADER_STYLES.LOGO}>
             <img 
-              src={logo} 
+              src={logoImage} 
               alt="Логотип Полина Мигранова" 
               className="w-full h-full"
             />

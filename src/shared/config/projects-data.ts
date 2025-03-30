@@ -1,3 +1,5 @@
+import { Project } from '@shared/model/types';
+
 import nitiSlide1 from "@images/niti/niti1.png";
 import nitiSlide2 from "@images/niti/niti2.png";
 import nitiSlide3 from "@images/niti/niti3.png";
@@ -20,7 +22,7 @@ import presentation6 from "@images/presentations/6.png";
 import presentation7 from "@images/presentations/7.png";
 import presentation8 from "@images/presentations/8.png";
 
-export const projects = [
+export const projects: Project[] = [
   {
     id: "project1",
     title: "НИТИ",

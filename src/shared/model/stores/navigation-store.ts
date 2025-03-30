@@ -1,19 +1,31 @@
-// src/stores/navigationStore.js
 import { observable } from '@legendapp/state';
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
 
+// Включаем отслеживание для React
 enableReactTracking({
   auto: true,
 });
 
-const state = observable({
+// Состояние навигации
+interface NavigationState {
+  currentSlideIndex: number;
+  totalSlides: number;
+  direction: 'left' | 'right' | 'none';
+}
+
+// Базовый стейт
+const state = observable<NavigationState>({
   currentSlideIndex: 0,
   totalSlides: 0,
-  direction: 'none' // 'left' или 'right'
+  direction: 'none'
 });
 
-const navigationActions = {
-  setTotalSlides: (total) => {
+/**
+ * Хранилище для управления навигацией по слайдам
+ */
+export const navigationStore = {
+  // Действия
+  setTotalSlides: (total: number) => {
     state.totalSlides.set(total);
   },
 
@@ -39,16 +51,10 @@ const navigationActions = {
     state.currentSlideIndex.set(0);
     state.totalSlides.set(0);
     state.direction.set('none');
-  }
-};
+  },
 
-const navigationSelectors = {
+  // Селекторы
   useCurrentSlide: () => state.currentSlideIndex.get(),
   useTotalSlides: () => state.totalSlides.get(),
   useDirection: () => state.direction.get(),
-};
-
-export const navigationStore = {
-  ...navigationActions,
-  ...navigationSelectors
 };

@@ -1,35 +1,69 @@
-// src/components/features/Modal/components/SliderImage.tsx
 import React, { useEffect } from 'react';
 import { useSelector } from '@legendapp/state/react';
-import Skeleton from '@/components/ui/Skeleton';
-import { IMAGE_STYLES } from '@/constants/styles';
-import { imageService } from '@/services/image.service';
-import { SliderImageProps } from './SliderImage.types';
+import { Skeleton } from '@shared/ui';
+import { IMAGE_STYLES } from '@shared/config/styles';
+import { imageService } from '@shared/api/image/image.service';
+import { ImageLoadStatus } from '@shared/model/types';
 
-const SliderImage: React.FC<SliderImageProps> = ({ src, alt = 'Slide image', priority = false }) => {
-  const status = useSelector(() => imageService.status$.get());
+export interface SliderImageProps {
+  /**
+   * URL изображения
+   */
+  src: string;
+  
+  /**
+   * Альтернативный текст для изображения
+   */
+  alt?: string;
+  
+  /**
+   * Флаг приоритетной загрузки
+   */
+  priority?: boolean;
+  
+  /**
+   * Индекс слайда (для оптимизации перерендера)
+   */
+  index?: number;
+}
+
+/**
+ * Компонент для отображения изображения в слайдере с состояниями загрузки
+ */
+const SliderImage: React.FC<SliderImageProps> = ({ 
+  src, 
+  alt = 'Slide image', 
+  priority = false,
+  index
+}) => {
+  // Используем реактивные переменные из сервиса изображений
+  const status = useSelector(() => imageService.status$.get()) as ImageLoadStatus;
   const retryCount = useSelector(() => imageService.retryCount$.get());
 
+  // Загружаем изображение при монтировании компонента
   useEffect(() => {
     if (src) {
-      imageService.loadImage(src);
+      imageService.loadImage(src, priority);
     }
-  }, [src]);
+  }, [src, priority]);
 
   return (
     <div className={IMAGE_STYLES.CONTAINER} data-testid="slider-image-container">
-      {status === 'loading' && (
+      {/* Скелетон при загрузке */}
+      {(status === 'loading' || status === 'retrying') && (
         <div data-testid="slider-loading">
           <Skeleton />
         </div>
       )}
 
+      {/* Сообщение об ошибке */}
       {status === 'error' && (
         <div className={IMAGE_STYLES.ERROR} data-testid="slider-error">
           Ошибка загрузки (попыток: {retryCount})
         </div>
       )}
 
+      {/* Загруженное изображение */}
       {status === 'loaded' && (
         <img
           src={src}
