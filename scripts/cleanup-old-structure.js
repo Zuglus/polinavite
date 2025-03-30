@@ -1,70 +1,89 @@
-// scripts/cleanup-old-structure.js
+/**
+ * Скрипт для очистки устаревших каталогов и файлов после миграции на FSD
+ * Запускать после успешного тестирования новой структуры
+ */
+
 import fs from 'fs';
 import path from 'path';
-import { promisify } from 'util';
 import { fileURLToPath } from 'url';
-
-const readdir = promisify(fs.readdir);
-const stat = promisify(fs.stat);
-const rm = promisify(fs.rm);
 
 // Получаем текущую директорию
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const componentsDir = path.resolve(rootDir, 'src/components');
+
+// Список устаревших каталогов, которые следует удалить
+const obsoleteDirs = [
+  'src/components',
+  // Добавляем остальные по мере необходимости
+];
+
+// Список пустых файлов для обратной совместимости, которые следует оставить
+const compatibilityFiles = [
+  'src/services/index.ts',
+  'src/utils/index.ts',
+];
 
 /**
- * Удаляет старую структуру директорий с компонентами
+ * Удаляет файл или каталог рекурсивно
+ * @param {string} targetPath - Путь к файлу или каталогу
+ * @param {boolean} isDryRun - Режим симуляции (без удаления)
  */
-async function cleanupOldStructure() {
-  try {
-    console.log('🧹 Начинаем очистку старой структуры компонентов...');
-    
-    // Проверяем, существует ли директория components
-    if (!fs.existsSync(componentsDir)) {
-      console.log('✅ Директория components уже удалена.');
-      return;
+function removePath(targetPath, isDryRun = false) {
+  const fullPath = path.resolve(rootDir, targetPath);
+  
+  // Проверяем, существует ли путь
+  if (!fs.existsSync(fullPath)) {
+    console.log(`Путь не существует: ${targetPath}`);
+    return;
+  }
+  
+  // Проверяем, не является ли путь файлом совместимости
+  if (compatibilityFiles.includes(targetPath)) {
+    console.log(`Оставляем файл совместимости: ${targetPath}`);
+    return;
+  }
+  
+  const stats = fs.statSync(fullPath);
+  
+  if (stats.isDirectory()) {
+    if (isDryRun) {
+      console.log(`[СИМУЛЯЦИЯ] Удаление каталога: ${targetPath}`);
+    } else {
+      console.log(`Удаление каталога: ${targetPath}`);
+      fs.rmSync(fullPath, { recursive: true, force: true });
     }
-    
-    // Получаем список директорий для удаления
-    const dirs = await readdir(componentsDir);
-    
-    for (const dir of dirs) {
-      const dirPath = path.join(componentsDir, dir);
-      const dirStat = await stat(dirPath);
-      
-      if (dirStat.isDirectory()) {
-        console.log(`🗑️ Удаляем директорию: ${dirPath}`);
-        await rm(dirPath, { recursive: true });
-      } else {
-        console.log(`🗑️ Удаляем файл: ${dirPath}`);
-        await rm(dirPath);
-      }
+  } else {
+    if (isDryRun) {
+      console.log(`[СИМУЛЯЦИЯ] Удаление файла: ${targetPath}`);
+    } else {
+      console.log(`Удаление файла: ${targetPath}`);
+      fs.unlinkSync(fullPath);
     }
-    
-    // Удаляем саму директорию components
-    console.log(`🗑️ Удаляем основную директорию: ${componentsDir}`);
-    await rm(componentsDir, { recursive: true });
-    
-    console.log('✅ Очистка старой структуры успешно завершена!');
-  } catch (error) {
-    console.error('❌ Ошибка при очистке старой структуры:', error);
-    process.exit(1);
   }
 }
 
-// Запрашиваем подтверждение перед удалением
-console.log('⚠️ ВНИМАНИЕ: Эта операция удалит все компоненты из директории src/components');
-console.log('Убедитесь, что все компоненты были успешно мигрированы в новую структуру FSD.');
-console.log('\nДля продолжения введите "yes":');
-
-process.stdin.once('data', (data) => {
-  const input = data.toString().trim().toLowerCase();
+/**
+ * Основная функция очистки
+ * @param {boolean} isDryRun - Режим симуляции (без удаления)
+ */
+function cleanup(isDryRun = true) {
+  console.log(`${isDryRun ? '[СИМУЛЯЦИЯ]' : ''} Начинаем очистку устаревших файлов и каталогов...`);
   
-  if (input === 'yes') {
-    cleanupOldStructure();
-  } else {
-    console.log('❌ Операция отменена.');
-    process.exit(0);
+  // Обрабатываем каждый устаревший каталог
+  for (const dir of obsoleteDirs) {
+    removePath(dir, isDryRun);
   }
-});
+  
+  console.log(`${isDryRun ? '[СИМУЛЯЦИЯ]' : ''} Очистка завершена.`);
+}
+
+// Проверяем аргументы командной строки
+const args = process.argv.slice(2);
+const isDryRun = !args.includes('--force');
+
+if (isDryRun) {
+  console.log('Запуск в режиме симуляции. Для реального удаления добавьте флаг --force');
+}
+
+// Запускаем очистку
+cleanup(isDryRun);

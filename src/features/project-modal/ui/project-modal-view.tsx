@@ -1,8 +1,8 @@
-// src/components/features/Modal/ProjectModal.view.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ModalHeader } from '@features/Modal';
-import { ModalSlider } from '@features/Modal';
+import { ModalHeader } from '@features/project-modal';
+import { Slider } from '@features/slider';
+import { Project } from '@shared/model/types';
 
 const ANIMATION_VARIANTS = {
   hidden: { opacity: 0, scale: 0.9 },
@@ -18,14 +18,22 @@ const ANIMATION_VARIANTS = {
   }
 };
 
+interface ProjectModalViewProps {
+  /**
+   * Проект для отображения в модальном окне
+   */
+  project: Project;
+  
+  /**
+   * Обработчик закрытия модального окна
+   */
+  onClose: () => void;
+}
+
 /**
  * Презентационный компонент для модального окна проекта
- * Отвечает только за отображение данных
- * @param {Object} props - Свойства компонента
- * @param {Object} props.project - Данные проекта
- * @param {Function} props.onClose - Функция закрытия модального окна
  */
-const ProjectModalView = ({ project, onClose }) => {
+const ProjectModalView: React.FC<ProjectModalViewProps> = ({ project, onClose }) => {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
@@ -34,6 +42,7 @@ const ProjectModalView = ({ project, onClose }) => {
       exit="exit"
       variants={ANIMATION_VARIANTS}
       onClick={onClose}
+      data-testid="project-modal"
     >
       <motion.div
         className="relative w-full max-w-7xl mx-auto my-4 bg-primary border border-white/10 rounded-[1.875rem] md:rounded-[1.25rem] shadow-xl overflow-hidden"
@@ -43,7 +52,7 @@ const ProjectModalView = ({ project, onClose }) => {
         <div className="h-[90vh] overflow-y-auto modal-scrollbar">
           <div className="p-[3.75rem] md:p-[2.5rem]">
             <ModalHeader project={project} />
-            <ModalSlider slides={project.slides} />
+            <Slider slides={project.slides} />
           </div>
         </div>
 
@@ -57,6 +66,7 @@ const ProjectModalView = ({ project, onClose }) => {
                    transition-all duration-300 ease-in-out
                    shadow-lg"
           aria-label="Закрыть"
+          data-testid="close-modal-button"
         >
           <svg
             className="w-12 h-12 md:w-6 md:h-6 text-white/80 group-hover:text-white
@@ -78,4 +88,4 @@ const ProjectModalView = ({ project, onClose }) => {
   );
 };
 
-export default React.memo(ProjectModalView);
+export default ProjectModalView;

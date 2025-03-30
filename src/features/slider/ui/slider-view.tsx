@@ -1,19 +1,39 @@
-// src/components/features/Modal/ModalSlider.view.jsx
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SliderImage, NavigationButtons } from './components';
+import { SliderImage, NavigationButtons } from '@features/slider';
+import { Slide } from '@shared/model/types';
+
+interface SliderViewProps {
+  /**
+   * Текущий слайд
+   */
+  currentSlide: Slide;
+  
+  /**
+   * Индекс текущего слайда
+   */
+  currentIndex: number;
+  
+  /**
+   * Направление анимации
+   */
+  direction: 'left' | 'right' | 'none';
+  
+  /**
+   * Флаг загрузки
+   */
+  isLoading: boolean;
+  
+  /**
+   * Обработчик навигации
+   */
+  onNavigate: (direction: 'next' | 'prev') => void;
+}
 
 /**
- * Презентационный компонент для слайдера в модальном окне
- * Отвечает только за отображение данных
- * @param {Object} props - Свойства компонента
- * @param {Object} props.currentSlide - Данные текущего слайда
- * @param {number} props.currentIndex - Индекс текущего слайда
- * @param {string} props.direction - Направление анимации ('left', 'right')
- * @param {boolean} props.isLoading - Флаг загрузки
- * @param {Function} props.onNavigate - Обработчик навигации
+ * Презентационный компонент для слайдера
  */
-const ModalSliderView = ({ 
+const SliderView: React.FC<SliderViewProps> = ({ 
   currentSlide, 
   currentIndex, 
   direction,
@@ -21,7 +41,7 @@ const ModalSliderView = ({
   onNavigate
 }) => {
   const variants = {
-    enter: (direction) => ({
+    enter: (direction: string) => ({
       x: direction === 'right' ? 1000 : -1000,
       opacity: 0
     }),
@@ -30,7 +50,7 @@ const ModalSliderView = ({
       x: 0,
       opacity: 1
     },
-    exit: (direction) => ({
+    exit: (direction: string) => ({
       zIndex: 0,
       x: direction === 'right' ? -1000 : 1000,
       opacity: 0
@@ -100,4 +120,4 @@ const ModalSliderView = ({
   );
 };
 
-export default React.memo(ModalSliderView);
+export default React.memo(SliderView);

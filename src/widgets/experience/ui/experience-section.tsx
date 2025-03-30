@@ -1,14 +1,12 @@
 import React from 'react';
 import { ExperienceItem } from '@entities/experience';
 import { Experience } from '@shared/model/types';
+import circleImage from '@images/kruzhok_opyt_raboty.svg';
 
 /**
  * Компонент секции с опытом работы
  */
 const ExperienceSection: React.FC = () => {
-  // Заглушки для изображений
-  const circleImage = '/images/kruzhok_opyt_raboty.svg';
-  const buttonCircleImage = '/images/koltsa_fon1.svg';
 
   // Данные об опыте работы
   const experienceData: Experience[] = [
@@ -30,7 +28,6 @@ const ExperienceSection: React.FC = () => {
   return (
     <section className="relative mx-auto px-4 py-[0.75rem] max-w-[75rem]">
       <div className="absolute top-3/4 left-1/2 w-[56rem] md:w-auto -translate-x-[35.7rem] md:-translate-x-[23rem] overflow-hidden">
-        <img src={buttonCircleImage} alt="" className="w-full h-full object-contain" />
       </div>
 
       {experienceData.map((item) => (

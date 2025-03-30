@@ -1,6 +1,17 @@
 import React from "react";
+import { Project } from "@shared/model/types";
 
-const ModalHeader = ({ project }) => {
+interface ModalHeaderProps {
+  /**
+   * Проект для отображения в заголовке модального окна
+   */
+  project: Project;
+}
+
+/**
+ * Компонент для отображения заголовка модального окна проекта
+ */
+const ModalHeader: React.FC<ModalHeaderProps> = ({ project }) => {
   // Если project отсутствует или нет ни одного поля - не рендерим компонент
   if (!project || !(project.title || project.description || project.audience)) {
     return null;

@@ -1,10 +1,10 @@
 import React from 'react';
+import logoImage from '@images/logo.svg';
 
 /**
  * Компонент заголовка сайта
  */
 const Header: React.FC = () => {
-  const logoImage = '/images/logo.svg';
 
   // Вынесенные константы стилей
   const HEADER_STYLES = {

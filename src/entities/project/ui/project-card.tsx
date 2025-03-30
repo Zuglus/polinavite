@@ -1,18 +1,24 @@
-// src/components/features/Portfolio/PortfolioCard.jsx
 import React, { useCallback } from 'react';
-import { CARD_STYLES } from '@constants/styles';
-import ProgressiveImage from '@/components/ui/ProgressiveImage';
+import { CARD_STYLES } from '@shared/config/styles';
+import { ProgressiveImage } from '@shared/ui';
+import { PortfolioItem } from '@shared/model/types';
+
+interface ProjectCardProps {
+  /**
+   * Данные проекта
+   */
+  project: PortfolioItem;
+  
+  /**
+   * Обработчик клика по карточке
+   */
+  onClick: (id: string) => void;
+}
 
 /**
- * Компонент карточки портфолио
- * @param {Object} props - Свойства компонента
- * @param {Object} props.project - Данные проекта
- * @param {string} props.project.id - Уникальный идентификатор проекта
- * @param {string} props.project.image - Импортированное изображение проекта
- * @param {string} props.project.alt - Альтернативный текст для изображения
- * @param {Function} props.onClick - Обработчик клика по карточке
+ * Компонент карточки проекта в портфолио
  */
-const PortfolioCard = ({ project, onClick }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
   const handleClick = useCallback(() => {
     onClick(project.id);
   }, [onClick, project.id]);
@@ -23,6 +29,7 @@ const PortfolioCard = ({ project, onClick }) => {
       className={CARD_STYLES.CONTAINER}
       onClick={handleClick}
       aria-label={`Открыть проект: ${project.alt}`}
+      data-testid="portfolio-card"
     >
       <ProgressiveImage 
         src={project.image} 
@@ -33,7 +40,7 @@ const PortfolioCard = ({ project, onClick }) => {
   );
 };
 
-export default React.memo(PortfolioCard, (prevProps, nextProps) => {
+export default React.memo(ProjectCard, (prevProps, nextProps) => {
   return prevProps.project.id === nextProps.project.id && 
          prevProps.project.image === nextProps.project.image;
 });

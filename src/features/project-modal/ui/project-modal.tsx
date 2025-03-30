@@ -1,21 +1,30 @@
-// src/components/features/Modal/ProjectModal.container.jsx
 import React, { useEffect, useCallback } from 'react';
-import ProjectModalView from './ProjectModal.view';
-import { modalStore } from '@stores';
+import ProjectModalView from './project-modal-view';
+import { modalStore } from '@shared/model/stores';
+import { Project } from '@shared/model/types';
+
+interface ProjectModalProps {
+  /**
+   * Проект для отображения в модальном окне
+   */
+  project: Project;
+  
+  /**
+   * Обработчик закрытия модального окна
+   */
+  onClose: () => void;
+}
 
 /**
  * Контейнерный компонент для модального окна проекта
  * Отвечает за логику работы с данными и обработку событий
- * @param {Object} props - Свойства компонента
- * @param {Object} props.project - Данные проекта
- * @param {Function} props.onClose - Функция закрытия модального окна
  */
-const ProjectModalContainer = ({ project, onClose }) => {
+const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const handleKeyDown = useCallback((e) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       handleClose();
     } else if (e.key === 'ArrowRight') {
@@ -42,4 +51,4 @@ const ProjectModalContainer = ({ project, onClose }) => {
   );
 };
 
-export default React.memo(ProjectModalContainer);
+export default React.memo(ProjectModal);

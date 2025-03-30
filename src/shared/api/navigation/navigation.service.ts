@@ -1,11 +1,11 @@
-// src/services/navigation.service.ts
+// src/shared/api/navigation/navigation.service.ts
 /**
  * Сервис для управления навигацией по слайдам
  * @namespace
  */
 import { observable, ObservableObject } from '@legendapp/state';
 import { enableReactTracking } from "@legendapp/state/config/enableReactTracking";
-import { INavigationService } from '@/types/services';
+import { INavigationService } from '@shared/model/service-types';
 
 // Включаем отслеживание для React
 enableReactTracking({
@@ -18,7 +18,7 @@ interface NavigationState {
   direction: 'left' | 'right' | 'none';
 }
 
-class NavigationService implements INavigationService {
+export class NavigationService implements INavigationService {
   private state: ObservableObject<NavigationState>;
 
   constructor() {

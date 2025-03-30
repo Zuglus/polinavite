@@ -25,7 +25,7 @@ export interface ProgressiveImageProps extends Omit<ImgHTMLAttributes<HTMLImageE
 /**
  * Компонент для постепенной загрузки изображений с поддержкой анимации
  */
-const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({ 
+export const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({ 
   src, 
   alt, 
   className = '', 
@@ -203,3 +203,6 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = observer(({
     </div>
   );
 });
+
+// Экспорт по умолчанию для обратной совместимости
+export default ProgressiveImage;

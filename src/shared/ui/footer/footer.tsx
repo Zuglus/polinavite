@@ -1,11 +1,11 @@
 import React from 'react';
+import buttonCircleImage from '@images/koltsa_fon1.svg';
 
 /**
  * Компонент подвала сайта с контактной информацией
  */
 const Footer: React.FC = () => {
     const telegram = "https://t.me/Migranovap";
-    const buttonCircleImage = '/images/koltsa_fon1.svg';
     
     return (
         <footer className="relative mt-[12.375rem] md:mt-[9.75rem] pb-[30.9375rem] md:pb-[20.625rem]">

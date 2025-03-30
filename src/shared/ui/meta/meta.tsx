@@ -1,4 +1,3 @@
-// src/shared/ui/meta/meta.tsx
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -26,7 +25,7 @@ export interface MetaProps {
 /**
  * Компонент для управления SEO метаданными
  */
-const Meta: React.FC<MetaProps> = ({
+export const Meta: React.FC<MetaProps> = ({
   title = 'Полина Мигранова | Графический дизайнер',
   description = 'Портфолио графического дизайнера Полины Миграновой. Создание современного дизайна, брендинг, иллюстрации и веб-дизайн.',
   keywords = 'графический дизайнер, дизайн, брендинг, логотипы, веб-дизайн, Полина Мигранова',
@@ -62,4 +61,5 @@ const Meta: React.FC<MetaProps> = ({
   );
 };
 
+// Экспорт по умолчанию для обратной совместимости
 export default Meta;

@@ -2,6 +2,7 @@ import React from 'react';
 import { ProjectCard } from '@entities/project';
 import { SECTION_STYLES } from '@shared/config/styles';
 import { PortfolioItem } from '@shared/model/types';
+import ringsImage from '@images/rings_with_circle.svg';
 
 interface PortfolioSectionViewProps {
   portfolioData: PortfolioItem[];
@@ -16,7 +17,6 @@ const PortfolioSectionView: React.FC<PortfolioSectionViewProps> = ({
   onCardClick 
 }) => {
   // Используем заглушку для изображения вместо импорта
-  const ringsImage = '/images/rings_with_circle.svg';
 
   return (
     <section className={SECTION_STYLES.CONTAINER}>

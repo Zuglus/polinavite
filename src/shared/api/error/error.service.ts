@@ -3,18 +3,12 @@
  * Сервис для централизованной обработки ошибок
  * @class
  */
-import { ErrorCategory } from "@shared/model/service-types";
+import { ErrorCategory, ErrorRecord } from "@shared/model/service-types";
 
 export class ErrorService {
-  private errorHandlers = [];
-  private errorLogs = [];
-  private errorCategories = {
-    NETWORK: ErrorCategory.NETWORK,
-    IMAGE: ErrorCategory.IMAGE,
-    UI: ErrorCategory.UI,
-    STATE: ErrorCategory.STATE,
-    UNKNOWN: ErrorCategory.UNKNOWN
-  };
+  private errorHandlers: Array<(error: Error, context: Record<string, any>, category: string) => void>;
+  private errorLogs: ErrorRecord[];
+  private errorCategories: Record<string, ErrorCategory>;
 
   /**
    * Создает экземпляр сервиса обработки ошибок
@@ -23,6 +17,13 @@ export class ErrorService {
   constructor() {
     this.errorHandlers = [];
     this.errorLogs = [];
+    this.errorCategories = {
+      NETWORK: ErrorCategory.NETWORK,
+      IMAGE: ErrorCategory.IMAGE,
+      UI: ErrorCategory.UI,
+      STATE: ErrorCategory.STATE,
+      UNKNOWN: ErrorCategory.UNKNOWN
+    };
   }
 
   /**
@@ -30,7 +31,7 @@ export class ErrorService {
    * @param {Function} handler - Функция-обработчик ошибки
    * @returns {Function} Функция для отмены регистрации обработчика
    */
-  registerHandler(handler) {
+  registerHandler(handler: (error: Error, context: Record<string, any>, category: string) => void): () => void {
     if (typeof handler !== 'function') {
       throw new Error('Handler must be a function');
     }
@@ -49,7 +50,7 @@ export class ErrorService {
    * @param {Object} context - Контекст ошибки
    * @returns {string} Категория ошибки
    */
-  categorizeError(error, context = {}) {
+  categorizeError(error: Error, context: Record<string, any> = {}): string {
     // Определение по свойству name объекта Error
     if (error.name === 'NetworkError' || error.message?.includes('network') || 
         error.message?.includes('fetch') || error.message?.includes('http')) {
@@ -79,12 +80,12 @@ export class ErrorService {
    * @param {Error} error - Объект ошибки
    * @param {Object} context - Контекст ошибки
    */
-  handleError(error, context = {}) {
+  handleError(error: Error, context: Record<string, any> = {}): void {
     const timestamp = new Date();
     const category = this.categorizeError(error, context);
     
     // Создаем запись об ошибке
-    const errorRecord = {
+    const errorRecord: ErrorRecord = {
       error,
       context,
       timestamp,
@@ -115,7 +116,7 @@ export class ErrorService {
   /**
    * Очищает журнал ошибок
    */
-  clearErrorLogs() {
+  clearErrorLogs(): void {
     this.errorLogs = [];
   }
 
@@ -123,7 +124,7 @@ export class ErrorService {
    * Возвращает журнал ошибок
    * @returns {Array} Массив записей об ошибках
    */
-  getErrorLogs() {
+  getErrorLogs(): ErrorRecord[] {
     return [...this.errorLogs];
   }
 
@@ -132,7 +133,7 @@ export class ErrorService {
    * @param {string} category - Категория ошибки
    * @returns {Array} Массив записей об ошибках выбранной категории
    */
-  getErrorsByCategory(category) {
+  getErrorsByCategory(category: string): ErrorRecord[] {
     return this.errorLogs.filter(log => log.category === category);
   }
 }

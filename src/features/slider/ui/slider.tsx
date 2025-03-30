@@ -1,25 +1,29 @@
-// src/components/features/Modal/ModalSlider.container.jsx
 import React, { useState, useEffect } from 'react';
 import { observer } from '@legendapp/state/react';
-import { navigationStore } from '@/stores/navigationStore';
-import ModalSliderView from './ModalSlider.view';
-import { imageService } from '@/services';
+import { navigationService } from '@shared/api';
+import SliderView from './slider-view';
+import { imageService } from '@shared/api';
+import { Slide } from '@shared/model/types';
+
+interface SliderProps {
+  /**
+   * Массив слайдов для отображения
+   */
+  slides: Slide[];
+}
 
 /**
- * Контейнерный компонент для слайдера в модальном окне
- * Отвечает за логику работы с данными и обработку событий
- * @param {Object} props - Свойства компонента
- * @param {Array} props.slides - Данные слайдов
+ * Контейнерный компонент для слайдера
  */
-const ModalSliderContainer = observer(({ slides }) => {
-  const currentIndex = navigationStore.useCurrentSlide();
-  const direction = navigationStore.useDirection();
+const Slider = observer<SliderProps>(({ slides }) => {
+  const currentIndex = navigationService.useCurrentSlide();
+  const direction = navigationService.useDirection();
   const [isLoading, setIsLoading] = useState(true);
 
   // Предзагрузка всех изображений при монтировании компонента
   useEffect(() => {
     if (slides?.length > 0) {
-      navigationStore.setTotalSlides(slides.length);
+      navigationService.setTotalSlides(slides.length);
       
       const imageUrls = slides.map(slide => slide.image);
       
@@ -39,15 +43,15 @@ const ModalSliderContainer = observer(({ slides }) => {
     }
 
     return () => {
-      navigationStore.reset();
+      navigationService.reset();
     };
   }, [slides]);
 
-  const handleNavigation = (direction) => {
+  const handleNavigation = (direction: 'next' | 'prev') => {
     if (!isLoading) {
       direction === 'next' 
-        ? navigationStore.nextSlide()
-        : navigationStore.prevSlide();
+        ? navigationService.nextSlide()
+        : navigationService.prevSlide();
     }
   };
 
@@ -56,7 +60,7 @@ const ModalSliderContainer = observer(({ slides }) => {
   const currentSlide = slides[currentIndex] || {};
 
   return (
-    <ModalSliderView 
+    <SliderView 
       currentSlide={currentSlide}
       currentIndex={currentIndex}
       direction={direction}
@@ -66,4 +70,4 @@ const ModalSliderContainer = observer(({ slides }) => {
   );
 });
 
-export default ModalSliderContainer;
+export default Slider;

@@ -49,8 +49,6 @@ const HomePage: React.FC = observer(() => {
       
       {/* Основные разделы */}
       <PortfolioSection onCardClick={handleCardClick} />
-      <ResumeSection />
-      <ExperienceSection />
       
       {/* Подвал сайта */}
       <Footer />

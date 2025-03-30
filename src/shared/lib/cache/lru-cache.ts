@@ -1,4 +1,3 @@
-// src/utils/LRUCache.ts
 /**
  * Реализация кеша по алгоритму LRU (Least Recently Used)
  * @class

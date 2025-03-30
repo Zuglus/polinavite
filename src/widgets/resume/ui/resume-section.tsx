@@ -1,13 +1,12 @@
 import React from 'react';
+import bigringsImage from '@images/portfolio.svg';
+import fotoImage from '@images/foto.png';
+import ringsImage from '@images/rings_with_circle.svg';
 
 /**
  * Компонент секции с резюме
  */
 const ResumeSection: React.FC = () => {
-  // Заглушки для изображений
-  const bigringsImage = '/images/portfolio.svg';
-  const fotoImage = '/images/foto.png';
-  const ringsImage = '/images/rings_with_circle.svg';
 
   return (
     <section className="relative mx-auto px-4 py-[3.75rem] max-w-[75rem]">

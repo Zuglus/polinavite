@@ -1,18 +1,17 @@
-// src/services/image.service.ts
+// src/shared/api/image/image.service.ts
 /**
  * Сервис для управления загрузкой и кешированием изображений
  * @class
  */
 
-import { observable, Observable } from "@legendapp/state";
-import { from, Observable as RxObservable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-import { LRUCache } from '@/utils/LRUCache';
-import { errorService } from '@/services/error.service';
-import { IImageService, ImageMetrics, PreloadOptions } from '@/types/services';
-import { ImageLoadStatus } from '@/types';
+import { observable } from "@legendapp/state";
+import { from } from "rxjs";
+import { mergeMap } from "rxjs/operators";
+import { LRUCache } from "@shared/lib/cache";
+import { errorService } from "@shared/api/error/error.service";
+import { ImageLoadStatus, ImageMetrics, PreloadOptions } from "@shared/model/service-types";
 
-export class ImageService implements IImageService {
+export class ImageService {
   status$: {
     get(): ImageLoadStatus;
     set(value: ImageLoadStatus): void;

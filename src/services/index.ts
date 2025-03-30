@@ -1,4 +1,2 @@
-// src/services/index.ts
-export * from './image.service';
-export * from './navigation.service';
-export * from './error.service';
+// Реэкспорт сервисов из новой структуры для обратной совместимости
+export * from '@shared/api';
