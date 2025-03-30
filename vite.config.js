@@ -1,15 +1,13 @@
+// vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
-
-// Плагин для генерации статического HTML
 import { createHtmlPlugin } from 'vite-plugin-html';
 
 export default defineConfig({
   plugins: [
     react(),
-    // Плагин для статического HTML с возможностью добавления метаданных для SEO
     createHtmlPlugin({
       minify: true,
       pages: [
@@ -27,7 +25,6 @@ export default defineConfig({
         },
       ],
     }),
-    // Добавляем анализатор размера бандла
     visualizer({
       open: false,
       gzipSize: true,
@@ -55,7 +52,6 @@ export default defineConfig({
       
       // Обратная совместимость с прежними путями
       '@components': path.resolve(__dirname, './src/shared/ui'),
-      '@features': path.resolve(__dirname, './src/features'),
       '@services': path.resolve(__dirname, './src/shared/api'),
       '@stores': path.resolve(__dirname, './src/shared/model/stores'),
       '@hooks': path.resolve(__dirname, './src/shared/lib/hooks'),
@@ -67,7 +63,6 @@ export default defineConfig({
     }
   },
   build: {
-    // Оптимизация сборки
     target: 'es2018',
     outDir: 'dist',
     assetsDir: 'assets',
@@ -81,7 +76,6 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Стратегия разделения кода
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'framer-motion': ['framer-motion'],
@@ -91,11 +85,9 @@ export default defineConfig({
       }
     }
   },
-  // Оптимизация для предварительной загрузки
   optimizeDeps: {
     include: ['react', 'react-dom', '@legendapp/state', 'framer-motion', 'rxjs']
   },
-  // Настройки сервера разработки
   server: {
     port: 3000,
     strictPort: true,
