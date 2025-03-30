@@ -1,7 +1,7 @@
-// src/hooks/useImageLoad.ts
+// src/shared/lib/hooks/use-image-load.ts
 import { useState, useEffect } from 'react';
-import { imageService } from '@/services';
-import { ImageLoadStatus } from '@/types';
+import { imageService } from '@shared/api/image/image.service';
+import { ImageLoadStatus } from '@shared/model/types';
 
 /**
  * Результат работы хука useImageLoad
