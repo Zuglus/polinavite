@@ -35,7 +35,6 @@ export default defineConfig({
   resolve: {
     alias: {
       // Feature Sliced Design слои
-      '@': path.resolve(__dirname, './src'),
       '@app': path.resolve(__dirname, './src/app'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@widgets': path.resolve(__dirname, './src/widgets'),
@@ -49,17 +48,6 @@ export default defineConfig({
       '@shared-api': path.resolve(__dirname, './src/shared/api'),
       '@shared-config': path.resolve(__dirname, './src/shared/config'),
       '@shared-model': path.resolve(__dirname, './src/shared/model'),
-      
-      // Обратная совместимость с прежними путями
-      '@components': path.resolve(__dirname, './src/shared/ui'),
-      '@services': path.resolve(__dirname, './src/shared/api'),
-      '@stores': path.resolve(__dirname, './src/shared/model/stores'),
-      '@hooks': path.resolve(__dirname, './src/shared/lib/hooks'),
-      '@utils': path.resolve(__dirname, './src/shared/lib'),
-      '@constants': path.resolve(__dirname, './src/shared/config'),
-      '@assets': path.resolve(__dirname, './src/app/assets'),
-      '@images': path.resolve(__dirname, './src/app/assets/images'),
-      '@fonts': path.resolve(__dirname, './src/app/assets/fonts'),
     }
   },
   build: {

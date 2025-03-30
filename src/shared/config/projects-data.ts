@@ -1,26 +1,26 @@
 import { Project } from '@shared/model/types';
 
-import nitiSlide1 from "@images/niti/niti1.png";
-import nitiSlide2 from "@images/niti/niti2.png";
-import nitiSlide3 from "@images/niti/niti3.png";
-import nitiSlide4 from "@images/niti/niti4.png";
-import nitiSlide5 from "@images/niti/niti5.png";
-import codeEventDesign from "@images/code/code1.png";
-import codeBootcampMerch from "@images/code/code2.png";
-import codeSmmMaterials from "@images/code/code3.png";
-import codePlaceholder from "@images/code/code4.png";
-import fizicsPostcard from "@images/fizics/fizics1.png";
-import fizicsCards from "@images/fizics/fizics2.png";
-import fizicsPlaceholder from "@images/fizics/fizics3.png";
-import presentation0 from "@images/presentations/0.png";
-import presentation1 from "@images/presentations/1.png";
-import presentation2 from "@images/presentations/2.png";
-import presentation3 from "@images/presentations/3.png";
-import presentation4 from "@images/presentations/4.png";
-import presentation5 from "@images/presentations/5.png";
-import presentation6 from "@images/presentations/6.png";
-import presentation7 from "@images/presentations/7.png";
-import presentation8 from "@images/presentations/8.png";
+import nitiSlide1 from "@app/assets/images/niti/niti1.png";
+import nitiSlide2 from "@app/assets/images/niti/niti2.png";
+import nitiSlide3 from "@app/assets/images/niti/niti3.png";
+import nitiSlide4 from "@app/assets/images/niti/niti4.png";
+import nitiSlide5 from "@app/assets/images/niti/niti5.png";
+import codeEventDesign from "@app/assets/images/code/code1.png";
+import codeBootcampMerch from "@app/assets/images/code/code2.png";
+import codeSmmMaterials from "@app/assets/images/code/code3.png";
+import codePlaceholder from "@app/assets/images/code/code4.png";
+import fizicsPostcard from "@app/assets/images/fizics/fizics1.png";
+import fizicsCards from "@app/assets/images/fizics/fizics2.png";
+import fizicsPlaceholder from "@app/assets/images/fizics/fizics3.png";
+import presentation0 from "@app/assets/images/presentations/0.png";
+import presentation1 from "@app/assets/images/presentations/1.png";
+import presentation2 from "@app/assets/images/presentations/2.png";
+import presentation3 from "@app/assets/images/presentations/3.png";
+import presentation4 from "@app/assets/images/presentations/4.png";
+import presentation5 from "@app/assets/images/presentations/5.png";
+import presentation6 from "@app/assets/images/presentations/6.png";
+import presentation7 from "@app/assets/images/presentations/7.png";
+import presentation8 from "@app/assets/images/presentations/8.png";
 
 export const projects: Project[] = [
   {

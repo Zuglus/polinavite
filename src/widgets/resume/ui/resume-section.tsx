@@ -1,7 +1,7 @@
 import React from 'react';
-import bigringsImage from '@images/portfolio.svg';
-import fotoImage from '@images/foto.png';
-import ringsImage from '@images/rings_with_circle.svg';
+import bigringsImage from '@app/assets/images/portfolio.svg';
+import fotoImage from '@app/assets/images/foto.png';
+import ringsImage from '@app/assets/images/rings_with_circle.svg';
 
 /**
  * Компонент секции с резюме

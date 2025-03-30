@@ -1,5 +1,5 @@
 import React from 'react';
-import buttonCircleImage from '@images/koltsa_fon1.svg';
+import buttonCircleImage from '@app/assets/images/koltsa_fon1.svg';
 
 /**
  * Компонент подвала сайта с контактной информацией
