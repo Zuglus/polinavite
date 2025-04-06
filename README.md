@@ -108,18 +108,15 @@ npm run lint
 npm run format
 ```
 
-## CI/CD
-
-Проект настроен для автоматического деплоя на Netlify. При пуше в ветку `main` запускается процесс сборки и деплоя.
-
 ## Документация
 
-Дополнительная документация доступна в директории `docs`:
+Документация доступна в Wiki репозитория:
 
-- [Архитектура проекта](./docs/architecture.md)
-- [Инструкции по обновлению контента](./docs/content-update.md)
-- [Руководство по сборке и деплою](./docs/deploy.md)
-- [Руководство по тестированию](./docs/testing.md)
+- [Архитектура проекта](https://github.com/Zuglus/polinavite/wiki/Architecture)
+- [Инструкции по обновлению контента](https://github.com/Zuglus/polinavite/wiki/Content-Update)
+- [Руководство по сборке и деплою](https://github.com/Zuglus/polinavite/wiki/Deployment)
+- [Руководство по тестированию](https://github.com/Zuglus/polinavite/wiki/Testing)
+- [Feature Sliced Design](https://github.com/Zuglus/polinavite/wiki/Feature-Sliced-Design)
 
 ## Вклад в проект
 

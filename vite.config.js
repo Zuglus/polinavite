@@ -18,8 +18,8 @@ export default defineConfig({
           injectOptions: {
             data: {
               title: 'Полина Мигранова | Графический дизайнер',
-              description: 'Портфолио графического дизайнера Полины Миграновой. Создание современного дизайна, брендинг, иллюстрации и веб-дизайн.',
-              keywords: 'графический дизайнер, дизайн, брендинг, логотипы, веб-дизайн, Полина Мигранова',
+              description: 'Портфолио графического дизайнера Полины Миграновой. Дизайнер образовательных и научно-просветительских проектов, графический дизайнер, дизайнер научно-просветительских презентаций.',
+              keywords: 'графический дизайнер, дизайн, дизайнер презентаций, Полина Мигранова, заказать презентацию',
             },
           },
         },
@@ -41,13 +41,18 @@ export default defineConfig({
       '@features': path.resolve(__dirname, './src/features'),
       '@entities': path.resolve(__dirname, './src/entities'),
       '@shared': path.resolve(__dirname, './src/shared'),
-      
+
       // Детализация для shared слоя
       '@shared-ui': path.resolve(__dirname, './src/shared/ui'),
       '@shared-lib': path.resolve(__dirname, './src/shared/lib'),
       '@shared-api': path.resolve(__dirname, './src/shared/api'),
       '@shared-config': path.resolve(__dirname, './src/shared/config'),
       '@shared-model': path.resolve(__dirname, './src/shared/model'),
+
+      // Доступ к ресурсам приложения
+      '@app-assets': path.resolve(__dirname, './src/app/assets'),
+      '@images': path.resolve(__dirname, './src/app/assets/images'),
+      '@fonts': path.resolve(__dirname, './src/app/assets/fonts'),
     }
   },
   build: {

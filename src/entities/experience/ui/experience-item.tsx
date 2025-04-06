@@ -1,6 +1,11 @@
 import React from 'react';
+import { Experience } from '@shared/model/types';
 
-const ExperienceItem = ({ experience }) => {
+interface ExperienceItemProps {
+  experience: Experience;
+}
+
+const ExperienceItem: React.FC<ExperienceItemProps> = ({ experience }) => {
   const { year, company, position, duties, circleImage } = experience;
   return (
     <div className="ml-[30.1025rem] md:ml-[31.875rem] mb-[7.21875rem] md:mb-[4.8125rem]">
@@ -21,7 +26,7 @@ const ExperienceItem = ({ experience }) => {
             {position}
           </h3>
           <ul className="font-extralight text-[3.28125rem] md:text-[2.1875rem] list-none relative">
-            {duties.map((duty, index) => (
+            {duties.map((duty: string, index: number) => (
               <li key={index} className="mb-[0.75rem] md:mb-[0.5rem]">
                 <span className="-left-[4.71rem] md:-left-[3.14rem] absolute font-onest font-thin">
                   &rarr;

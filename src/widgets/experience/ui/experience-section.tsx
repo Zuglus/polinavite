@@ -1,7 +1,7 @@
 import React from 'react';
 import { ExperienceItem } from '@entities/experience';
 import { Experience } from '@shared/model/types';
-import circleImage from '@app/assets/images/kruzhok_opyt_raboty.svg';
+import circleImage from '@images/kruzhok_opyt_raboty.svg';
 
 /**
  * Компонент секции с опытом работы

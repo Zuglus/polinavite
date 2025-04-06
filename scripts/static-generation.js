@@ -3,9 +3,14 @@ import { build } from 'vite';
 import fs from 'fs';
 import path from 'path';
 import * as cheerio from 'cheerio';
-import { createSitemap } from './scripts/create-sitemap.js';
-import { optimizeImages } from './scripts/optimize-images.js';
-import { compressAssets } from './scripts/compress-assets.js';
+import { createSitemap } from './create-sitemap.js';
+import { optimizeImages } from './optimize-images.js';
+import { compressAssets } from './compress-assets.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * Функция для статической генерации сайта
@@ -20,7 +25,7 @@ async function staticGenerate() {
     console.log('✅ Базовая сборка завершена');
     
     // Путь к результирующему HTML файлу
-    const htmlPath = path.resolve(__dirname, 'dist', 'index.html');
+    const htmlPath = path.resolve(__dirname, '../dist', 'index.html');
     
     // Читаем и модифицируем HTML
     const html = fs.readFileSync(htmlPath, 'utf-8');

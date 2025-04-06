@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImage from '@app/assets/images/logo.svg';
+import logoImage from '@images/logo.svg';
 
 /**
  * Компонент заголовка сайта

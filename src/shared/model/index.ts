@@ -1,2 +1,10 @@
 export * from './types';
-export * from './service-types';
+export {
+    ErrorCategory,
+    ErrorRecord,
+    IErrorService,
+    PreloadOptions,
+    ImageMetrics,
+    IImageService,
+    INavigationService
+  } from './service-types';

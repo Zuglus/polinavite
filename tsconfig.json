@@ -33,10 +33,8 @@
       "@shared-config/*": ["src/shared/config/*"],
       "@shared-model/*": ["src/shared/model/*"],
       
-      /* Обратная совместимость */
-      "@/*": ["src/*"],
-      "@ui/*": ["src/shared/ui/*"],
-      "@assets/*": ["src/app/assets/*"],
+      /* Доступ к ресурсам приложения */
+      "@app-assets/*": ["src/app/assets/*"],
       "@images/*": ["src/app/assets/images/*"],
       "@fonts/*": ["src/app/assets/fonts/*"]
     }

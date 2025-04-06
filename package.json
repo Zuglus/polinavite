@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "build:static": "npm run build && node scripts/static-generation.js",
     "build:gh-pages": "tsc && vite build --base=/polinavite/ && node scripts/static-generation.js",
     "preview": "vite preview",

@@ -2,6 +2,11 @@
 import fs from 'fs';
 import path from 'path';
 import { gzipSync, brotliCompressSync, constants } from 'node:zlib';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
  * Сжимает статические ресурсы для повышения производительности

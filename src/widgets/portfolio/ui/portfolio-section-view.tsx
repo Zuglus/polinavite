@@ -2,7 +2,7 @@ import React from 'react';
 import { ProjectCard } from '@entities/project';
 import { SECTION_STYLES } from '@shared/config/styles';
 import { PortfolioItem } from '@shared/model/types';
-import ringsImage from '@app/assets/images/rings_with_circle.svg';
+import ringsImage from '@images/rings_with_circle.svg';
 
 interface PortfolioSectionViewProps {
   portfolioData: PortfolioItem[];
